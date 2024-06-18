@@ -13,6 +13,8 @@ library Liquidity {
 
     using CLPToken for State;
 
+    event AddLiquidity(address indexed user, uint256 amount, uint256 clpAmount, uint256 poolBalance);
+
     function validateAddLiquidity(State storage state, uint256 amount) external view {
         if (amount == 0) {
             revert Errors.NULL_AMOUNT();
@@ -30,10 +32,10 @@ library Liquidity {
 
         uint256 clpAmount = balance == 0 || clpSupply == 0 ? amount : amount * clpSupply / balance;
 
-        state.incrementPoolBalance(amount);
-        
-        // state.mintCLP(user, clpAmount);
+        state.incrementPoolBalance(msg.sender, amount);
 
-        // emit AddLiquidity(user, amount, clpAmount, state.poolBalance());
+        state.mintCLP(user, msg.sender, clpAmount);
+
+        emit AddLiquidity(user, amount, clpAmount, state.poolBalance);
     }
 }
