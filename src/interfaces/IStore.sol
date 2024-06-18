@@ -1,8 +1,19 @@
+<<<<<<< HEAD
 pragma solidity ^0.8.24;
 
 interface IStore {
     event GovernanceUpdated(address indexed oldGov, address indexed newGov);
 
+=======
+// SPDX-License-Identifier: BUSL-1.1
+pragma solidity ^0.8.24;
+
+interface IStore {
+    // Events
+    event GovernanceUpdated(address indexed oldGov, address indexed newGov);
+
+    // Structs
+>>>>>>> 8b14b612aaf4c28935528fddd50e6d838ac5e56a
     struct Market {
         string symbol;
         address feed;
@@ -71,7 +82,13 @@ interface IStore {
 
     function getCLPSupply() external view returns (uint256);
 
+<<<<<<< HEAD
     function getEstimatedOutputTokens(uint256 amountIn, address tokenIn, uint24 poolFee) external returns (uint256 amountOut);
+=======
+    function getEstimatedOutputTokens(uint256 amountIn, address tokenIn, uint24 poolFee)
+        external
+        returns (uint256 amountOut);
+>>>>>>> 8b14b612aaf4c28935528fddd50e6d838ac5e56a
 
     function getFundingFactor(string memory market) external view returns (uint256);
 
@@ -155,7 +172,14 @@ interface IStore {
 
     function setPoolWithdrawalFee(uint256 amount) external;
 
+<<<<<<< HEAD
     function swapExactInputSingle(address user, uint256 amountIn, uint256 amountOutMin, address tokenIn, uint24 poolFee) external payable returns (uint256 amountOut);
+=======
+    function swapExactInputSingle(address user, uint256 amountIn, uint256 amountOutMin, address tokenIn, uint24 poolFee)
+        external
+        payable
+        returns (uint256 amountOut);
+>>>>>>> 8b14b612aaf4c28935528fddd50e6d838ac5e56a
 
     function transferIn(address user, uint256 amount) external;
 
@@ -168,7 +192,11 @@ interface IStore {
     function updateGov(address _gov) external;
 
     function updateOrder(Order memory order) external;
+<<<<<<< HEAD
 
 
 
 }
+=======
+}
+>>>>>>> 8b14b612aaf4c28935528fddd50e6d838ac5e56a
