@@ -19,7 +19,7 @@ library CLPToken {
     }
 
     function incrementPoolBalance(State storage state, uint256 amount) external {
-        require(to == state.pool, "!contract");
+        // require(to == state.pool, "!contract");
 
         state.poolBalance += amount;
     }
