@@ -1,82 +1,83 @@
 
+import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.20;
-
-struct ChainLink {
-    uint256 public constant UNIT = 10 ** 18;
-    uint256 public constant GRACE_PERIOD_TIME = 3600;
-}
+import"./interfaces/IStore.sol";
+// struct ChainLink {
+//     uint256  constant UNIT = 10 ** 18;
+//     uint256  constant GRACE_PERIOD_TIME = 3600;
+// }
 struct Store{
         // constants
-    uint256 public constant MAX_FEE = 500; // in bps = 5%
-    uint256 public constant MAX_KEEPER_FEE_SHARE = 2000; // in bps = 20%
-    uint256 public constant MAX_POOL_WITHDRAWAL_FEE = 500; // in bps = 5%
-    uint256 public constant FUNDING_INTERVAL = 1 hours; // In seconds.
+    // uint256  constant MAX_FEE = 500; // in bps = 5%
+    // uint256  constant MAX_KEEPER_FEE_SHARE = 2000; // in bps = 20%
+    // uint256  constant MAX_POOL_WITHDRAWAL_FEE = 500; // in bps = 5%
+    // uint256  constant FUNDING_INTERVAL = 1 hours; // In seconds.
 
     // contracts
-    address public currency;
-    address public swapRouter;
-    address public quoter;
-    address public weth;
+    address  currency;
+    address  swapRouter;
+    address  quoter;
+    address  weth;
 
 
-    // Variables
-    uint256 public poolFeeShare = 5000; // in bps
-    uint256 public keeperFeeShare = 1000; // in bps
-    uint256 public poolWithdrawalFee = 10; // in bps
-    uint256 public minimumMarginLevel = 2000; // 20% in bps, at which account is liquidated
+    // // Variables
+    // uint256  poolFeeShare = 5000; // in bps
+    // uint256  keeperFeeShare = 1000; // in bps
+    // uint256  poolWithdrawalFee = 10; // in bps
+    // uint256  minimumMarginLevel = 2000; // 20% in bps, at which account is liquidated
 
-    uint256 public bufferBalance;
-    uint256 public poolBalance;
-    uint256 public poolLastPaid;
+    uint256  bufferBalance;
+    uint256  poolBalance;
+    uint256  poolLastPaid;
 
-    uint256 public bufferPayoutPeriod = 7 days;
+    // uint256  bufferPayoutPeriod = 7 days;
 
-    uint256 internal orderId;
+    uint256  orderId;
 
-    mapping(uint256 => Order) private orders;
-    mapping(address => EnumerableSet.UintSet) private userOrderIds; // user => [order ids..]
-    EnumerableSet.UintSet private orderIds; // [order ids..]
+    mapping(uint256 => IStore.Order)  orders;
+    mapping(address => EnumerableSet.UintSet)  userOrderIds; // user => [order ids..]
+    EnumerableSet.UintSet  orderIds; // [order ids..]
 
-    string[] public marketList; // "ETH-USD", "BTC-USD", etc
-    mapping(string => Market) private markets;
+    string[]  marketList; // "ETH-USD", "BTC-USD", etc
+    mapping(string => Market)  markets;
 
-    mapping(bytes32 => Position) private positions; // key = user,market
-    EnumerableSet.Bytes32Set private positionKeys; // [position keys..]
-    mapping(address => EnumerableSet.Bytes32Set) private positionKeysForUser; // user => [position keys..]
+    mapping(bytes32 => Position)  positions; // key = user,market
+    EnumerableSet.Bytes32Set  positionKeys; // [position keys..]
+    mapping(address => EnumerableSet.Bytes32Set)  positionKeysForUser; // user => [position keys..]
 
-    mapping(string => uint256) private OILong;
-    mapping(string => uint256) private OIShort;
+    mapping(string => uint256)  OILong;
+    mapping(string => uint256)  OIShort;
 
-    mapping(address => uint256) private balances; // user => amount
-    mapping(address => uint256) private lockedMargins; // user => amount
-    EnumerableSet.AddressSet private usersWithLockedMargin; // [users...]
+    mapping(address => uint256)  balances; // user => amount
+    mapping(address => uint256)  lockedMargins; // user => amount
+    EnumerableSet.AddressSet  usersWithLockedMargin; // [users...]
 
     // Funding
-    mapping(string => int256) private fundingTrackers; // market => funding tracker (long) (short is opposite) // in UNIT * bps
-    mapping(string => uint256) private fundingLastUpdated; // market => last time fundingTracker was updated. In seconds.
+    mapping(string => int256)  fundingTrackers; // market => funding tracker (long) (short is opposite) // in UNIT * bps
+    mapping(string => uint256)  fundingLastUpdated; // market => last time fundingTracker was updated. In seconds.
 
 }
 struct ContractAddress{
 
-    address public trade;
-    address public pool;
-    address public clp;
-    address public store;
+    address  trade;
+    address  pool;
+    address  clp;
+    address  store;
 
 }
 struct RemainingData{
     //what is this address
     //find in store and pool  smart contracts
-    address public gov;
+    address  gov;
     // find to store and pool smart contracts
-    uint256 public constant BPS_DIVIDER = 10000;
+    // uint256  constant BPS_DIVIDER = 10000;
 
 }
 struct Pool{
-    address public treasury;
-    IStore public store;
+    address  treasury;
+    IStore  store;
 }
 struct State {
     RemainingData remainingData;

@@ -6,6 +6,11 @@ import {RecapStorage, State} from "./state.sol";
 
 contract Pool is RecapStorage{
     using PoolLibrary for State;
+     constructor(address _gov) {
+         initialization(_gov);
 
-
+    }
+    function updateGov(address newGov)public{
+        state.updateGov(newGov);
+    }
 }
