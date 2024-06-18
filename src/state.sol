@@ -4,10 +4,10 @@ import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.20;
 import"./interfaces/IStore.sol";
-// struct ChainLink {
+struct ChainLink {
 //     uint256  constant UNIT = 10 ** 18;
 //     uint256  constant GRACE_PERIOD_TIME = 3600;
-// }
+}
 struct Store{
         // constants
     // uint256  constant MAX_FEE = 500; // in bps = 5%
@@ -41,9 +41,9 @@ struct Store{
     EnumerableSet.UintSet  orderIds; // [order ids..]
 
     string[]  marketList; // "ETH-USD", "BTC-USD", etc
-    mapping(string => Market)  markets;
+    mapping(string => IStore.Market)  markets;
 
-    mapping(bytes32 => Position)  positions; // key = user,market
+    mapping(bytes32 => IStore.Position)  positions; // key = user,market
     EnumerableSet.Bytes32Set  positionKeys; // [position keys..]
     mapping(address => EnumerableSet.Bytes32Set)  positionKeysForUser; // user => [position keys..]
 
