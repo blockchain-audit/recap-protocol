@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
-import 
 
 // struct ContractAddress{
     // address public trade;
@@ -34,4 +33,10 @@ abstract contract RecapStorage {
     State internal state;
 }
 
-
+struct Constant {
+    uint256 constant BPS_DIVIDER;
+    uint256 constant MAX_FEE;
+    uint256 constant MAX_KEEPER_FEE_SHARE;
+    uint256 constant MAX_POOL_WITHDRAWAL_FEE;
+    uint256 constant FUNDING_INTERVAL;
+}
