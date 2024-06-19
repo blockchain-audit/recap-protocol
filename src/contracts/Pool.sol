@@ -11,6 +11,11 @@ contract Pool is CapStorage{
 
     function addLiquidity(uint256 amount) public payable {
         state.validateAddLiquidity(amount);
-        state.executeAddLiquidity(amount, msg.sender);
+        state.executeAddLiquidity(amount);
+    }
+
+    function removeLiquidity(uint256 amount) public payable {
+        state.validateRemoveLiquidity(amount);
+        state.executeRemoveLiquidity(amount);
     }
 } 
