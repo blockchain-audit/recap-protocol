@@ -2,20 +2,19 @@
 pragma solidity ^0.8.13;
 
 import "@hack/interfaces/IChainlink.sol";
-import "@hack/interfaces/IPool.sol";
-import "@hack/interfaces/IStore.sol";
 import "@chainlink/interfaces/AggregatorV3Interface.sol";
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 
 import "./interfaces/IStore.sol";
 import "./interfaces/ICLP.sol";
+import "./interfaces/IPool.sol";
 
-struct chinLink{
+struct ChinLink{
     uint256  UNIT ;
     uint256 GRACE_PERIOD_TIME  ;
     AggregatorV3Interface sequencerUptimeFeed;
 }
-struct pool {
+struct Pool {
     uint256 BPS_DIVIDER   ;
     address  gov;
     address  trade;
@@ -30,7 +29,7 @@ struct StoreConstants{
     uint256 MAX_POOL_WITHDRAWAL_FEE ;
     uint256 FUNDING_INTERVAL ;
 }
-struct storeaddressContracts {
+struct StoreAddressContracts {
     address  gov;
     address  currency;
     address  clp;
@@ -52,10 +51,10 @@ struct StoreVariables{
     uint256  orderId;
 }
 struct StoreMapping {
-    mapping(uint256 => Order)  orders;
+    mapping(uint256 => IStore.Order)  orders;
     mapping(address => EnumerableSet.UintSet)  userOrderIds;
-    // mapping(string => Market)  markets;
-    // mapping(bytes32 => Position)  positions;
+    mapping(string => IStore.Market)  markets;
+    mapping(bytes32 => IStore.Position)  positions;
     mapping(address => EnumerableSet.Bytes32Set)  positionKeysForUser;
     mapping(string => uint256)  OILong;
     mapping(string => uint256)  OIShort;
@@ -84,6 +83,19 @@ struct Trade {
     IStore  store;
 }
 
-contract aa{
-    uint a;
+struct State {
+    ChinLink chinLink;
+    Pool pool;
+    StoreConstants storeConstants;
+    StoreAddressContracts storeAddressContracts;
+    StoreVariables storeVariables;
+    StoreMapping storeMapping;
+    StoreStruct storeStruct;
+    StoreArray storeArray;
+    Trade trade;
+    
 }
+
+// contract aa{
+//     uint a;
+// }
