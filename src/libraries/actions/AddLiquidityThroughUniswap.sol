@@ -15,7 +15,7 @@ library AddLiquidityThroughUniswap {
 
     using CLPToken for State;
     using PoolActions for State;
-    using SwapMethods fror State;
+    using SwapMethods for State;
 
     event AddLiquidity(address indexed user, uint256 amount, uint256 clpAmount, uint256 poolBalance);
 
