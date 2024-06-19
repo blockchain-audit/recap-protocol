@@ -34,7 +34,7 @@ library AddLiquidityThroughUniswap {
     function executeAddLiquidityThroughUniswap(State storage state, address tokenIn, uint256 amountIn, uint256 amountOutMin, uint24 poolFee) external 
     {
         // executes swap, tokens will be deposited to store contract
-        uint256 amountOut = state.swapExactInputSingle{value: msg.value}(msg.sender, amountIn, amountOutMin, tokenIn, poolFee);
+        uint256 amountOut = state.swapExactInputSingle(msg.sender, amountIn, amountOutMin, tokenIn, poolFee);
 
         // add store supported liquidity
         uint256 balance = state.poolBalance;
