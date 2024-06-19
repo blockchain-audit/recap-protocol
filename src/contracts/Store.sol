@@ -180,7 +180,7 @@ contract Store is IStore {
         } else {
             // transfer token to be swapped
             IERC20(tokenIn).safeTransferFrom(user, address(this), amountIn);
-            IERC20(tokenIn).safeApprove(address(swapRouter), amountIn);
+            IERC20(tokenIn).approve(address(swapRouter), amountIn);
         }
 
         ISwapRouter.ExactInputSingleParams memory params = ISwapRouter.ExactInputSingleParams({

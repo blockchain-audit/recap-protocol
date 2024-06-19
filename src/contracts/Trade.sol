@@ -78,7 +78,7 @@ contract Trade is ITrade {
         // equity after withdraw
         int256 upl = getUpl(user);
         uint256 lockedMargin = store.getLockedMargin(user);
-        int256 equity = int256(balance - amount) + upl; 
+        int256 equity = int256(balance - amount) + upl;
 
         // adjust amount if equity after withdrawing < lockedMargin
         if (equity < int256(lockedMargin)) {
@@ -173,7 +173,7 @@ contract Trade is ITrade {
             params.fee,
             params.orderType,
             params.isReduceOnly
-            );
+        );
 
         if (tpPrice > 0) {
             IStore.Order memory tpOrder = IStore.Order({
@@ -202,7 +202,7 @@ contract Trade is ITrade {
                 tpOrder.fee,
                 tpOrder.orderType,
                 tpOrder.isReduceOnly
-                );
+            );
         }
 
         if (slPrice > 0) {
@@ -232,7 +232,7 @@ contract Trade is ITrade {
                 slOrder.fee,
                 slOrder.orderType,
                 slOrder.isReduceOnly
-                );
+            );
         }
     }
 
@@ -402,7 +402,7 @@ contract Trade is ITrade {
             position.fundingTracker,
             fee,
             keeperFee
-            );
+        );
     }
 
     function _decreasePosition(IStore.Order memory order, uint256 price, address keeper) internal {
@@ -493,7 +493,7 @@ contract Trade is ITrade {
             keeperFee,
             pnl,
             fundingFee
-            );
+        );
     }
 
     function closePositionWithoutProfit(string memory _market) external {
@@ -542,7 +542,7 @@ contract Trade is ITrade {
             0,
             0,
             0
-            );
+        );
     }
 
     function liquidateUsers() external {
@@ -585,7 +585,7 @@ contract Trade is ITrade {
                     chainlinkPrice,
                     fee,
                     liquidatorFee
-                    );
+                );
             }
 
             // Credit full user balance minus fees
