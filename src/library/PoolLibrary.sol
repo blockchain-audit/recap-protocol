@@ -1,18 +1,20 @@
 
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.20;
-// import {RecapStorage, State} from "../../src/state.sol";
-import"../src/state.sol";
-import"../../src/interfaces/IPool.sol";
-library PoolLibrary is IPool {
-    
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.13;
+import "../state.sol";
 
-    modifier onlyTrade() {
+import {RecapStorage} from "../state.sol";
+// import"../../src/interfaces/IPool.sol";
+import {Errors} from "./Errors.sol";
+
+library PoolLibrary  {
+
+    modifier onlyTrade(State storage state) {
         require(msg.sender == state.contractAddr.trade, "!trade");
         _;
     }
 
-    modifier onlyGov() {
+    modifier onlyGov(State storage state) {
         require(msg.sender == state.remainingData.gov, "!governance");
         _;
     }
@@ -20,81 +22,46 @@ library PoolLibrary is IPool {
     function initialization(State storage state,address _gov)public{
          state.remainingData.gov=_gov;
     }
-    function updateGov(State storage state,address _gov) external onlyGov {
-        require(_gov != address(0), "!address");
+    function valiedGov(address _gov)external view{
+        if(_gov != address(0)){
+            revert Errors.NULL_ADDRESS();
+        }
+    }
+    function updateGov(State storage state,address _gov) external onlyGov(state) {
         address oldGov = state.remainingData.gov;
         state.remainingData.gov = _gov;
-        emit GovernanceUpdated(oldGov, _gov);
+        // emit state.pool.store.GovernanceUpdated(oldGov, _gov);
     }
     // function link(address _trade, address _store, address _treasury) external onlyGov {
     //     trade = _trade;
     //     store = IStore(_store);
     //     treasury = _treasury;
     // }
+   
+    // function removeLiquidity(uint256 amount) external {
+    //     require(amount > 0, "!amount");
 
-    function addLiquidity(State storage state,uint256 amount) external {
-        require(amount > 0, "!amount");
-        uint256 balance = state.pool.store.poolBalance();
-        address user = msg.sender;
-        state.pool.store.transferIn(user, amount);
+    //     address user = msg.sender;
+    //     uint256 balance = state.pool.store.poolBalance();
+    //     uint256 clpSupply = state.pool.store.getCLPSupply();
+    //     require(balance > 0 && clpSupply > 0, "!empty");
 
-        uint256 clpSupply = state.pool.store.getCLPSupply();
+    //     uint256 userBalance = state.pool.store.getUserPoolBalance(user);
+    //     if (amount > userBalance) amount = userBalance;
 
-        uint256 clpAmount = balance == 0 || clpSupply == 0 ? amount : amount * clpSupply / balance;
+    //     uint256 feeAmount = amount * state.pool.store.poolWithdrawalFee() / BPS_DIVIDER;
+    //     uint256 amountMinusFee = amount - feeAmount;
 
-        state.pool.store.incrementPoolBalance(amount);
-        state.pool.store.mintCLP(user, clpAmount);
+    //     // CLP amount
+    //     uint256 clpAmount = amountMinusFee * clpSupply / balance;
 
-        emit AddLiquidity(user, amount, clpAmount, store.poolBalance());
-    }
+    //     store.decrementPoolBalance(amountMinusFee);
+    //     store.burnCLP(user, clpAmount);
 
-    function addLiquidityThroughUniswap(address tokenIn, uint256 amountIn, uint256 amountOutMin, uint24 poolFee)
-        external
-        payable
-    {
-        require(poolFee > 0, "!poolFee");
-        require(msg.value != 0 || amountIn > 0 && tokenIn != address(0), "!input");
+    //     store.transferOut(user, amountMinusFee);
 
-        address user = msg.sender;
-
-        // executes swap, tokens will be deposited to store contract
-        uint256 amountOut = state.pool.store.swapExactInputSingle{value: msg.value}(user, amountIn, amountOutMin, tokenIn, poolFee);
-
-        // add store supported liquidity
-        uint256 balance = state.pool.store.poolBalance();
-        uint256 clpSupply = state.pool.store.getCLPSupply();
-        uint256 clpAmount = balance == 0 || clpSupply == 0 ? amountOut : amountOut * clpSupply / balance;
-
-        state.pool.store.incrementPoolBalance(amountOut);
-        state.pool.store.mintCLP(user, clpAmount);
-
-        emit AddLiquidity(user, amountOut, clpAmount, store.poolBalance());
-    }
-
-    function removeLiquidity(uint256 amount) external {
-        require(amount > 0, "!amount");
-
-        address user = msg.sender;
-        uint256 balance = state.pool.store.poolBalance();
-        uint256 clpSupply = state.pool.store.getCLPSupply();
-        require(balance > 0 && clpSupply > 0, "!empty");
-
-        uint256 userBalance = state.pool.store.getUserPoolBalance(user);
-        if (amount > userBalance) amount = userBalance;
-
-        uint256 feeAmount = amount * state.pool.store.poolWithdrawalFee() / BPS_DIVIDER;
-        uint256 amountMinusFee = amount - feeAmount;
-
-        // CLP amount
-        uint256 clpAmount = amountMinusFee * clpSupply / balance;
-
-        store.decrementPoolBalance(amountMinusFee);
-        store.burnCLP(user, clpAmount);
-
-        store.transferOut(user, amountMinusFee);
-
-        emit RemoveLiquidity(user, amount, feeAmount, clpAmount, state.pool.store.poolBalance());
-    }
+    //     emit RemoveLiquidity(user, amount, feeAmount, clpAmount, state.pool.store.poolBalance());
+    // }
 
     // function creditTraderLoss(address user, string memory market, uint256 amount) external onlyTrade {
     //     store.incrementBufferBalance(amount);

@@ -1,11 +1,12 @@
+// SPDX-License-Identifier: MIT
 
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.19;
 import"./interfaces/IStore.sol";
 struct ChainLink {
-//     uint256  constant UNIT = 10 ** 18;
+    //= 10 ** 18;constant
+    uint256 UNIT ;
 //     uint256  constant GRACE_PERIOD_TIME = 3600;
 }
 struct Store{
