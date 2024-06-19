@@ -6,8 +6,8 @@ import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import "@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol";
 import "@uniswap/v3-periphery/contracts/interfaces/IQuoter.sol";
 
-import "./interfaces/IStore.sol";
-import "./interfaces/ICLP.sol";
+import "../interfaces/IStore.sol";
+import "../interfaces/ICLP.sol";
 
 contract Store is IStore {
     using EnumerableSet for EnumerableSet.UintSet;

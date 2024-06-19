@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.13;
 
-import "./interfaces/IPool.sol";
-import "./interfaces/IStore.sol";
+import "../interfaces/IPool.sol";
+import "../interfaces/IStore.sol";
 
 contract Pool is IPool {
     uint256 public constant BPS_DIVIDER = 10000;
