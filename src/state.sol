@@ -9,7 +9,7 @@ import "./interfaces/IStore.sol";
 import "./interfaces/ICLP.sol";
 import "./interfaces/IPool.sol";
 
-struct ChinLink{
+struct ChainLink{
     uint256  UNIT ;
     uint256 GRACE_PERIOD_TIME  ;
     AggregatorV3Interface sequencerUptimeFeed;
@@ -84,18 +84,32 @@ struct Trade {
 }
 
 struct State {
-    ChinLink chinLink;
+    ChainLink chainLink;
     Pool pool;
-    StoreConstants storeConstants;
+    // StoreConstants storeConstants;
     StoreAddressContracts storeAddressContracts;
     StoreVariables storeVariables;
     StoreMapping storeMapping;
     StoreStruct storeStruct;
     StoreArray storeArray;
     Trade trade;
-    
+
 }
 
+abstract contract Storage {
+    State internal state;
+    StoreConstants public immutable constants;
+        
+    constructor() {
+        constants = StoreConstants({
+        BPS_DIVIDER: 10000,
+        MAX_FEE: 500,
+        MAX_KEEPER_FEE_SHARE: 2000,
+        MAX_POOL_WITHDRAWAL_FEE: 500,
+        FUNDING_INTERVAL: 1 hours
+        });
+    }
+}
 // contract aa{
 //     uint a;
 // }
