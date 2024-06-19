@@ -10,6 +10,7 @@ import {PoolActions} from "./PoolActions.sol";
 import {SwapMethods} from "./SwapMethods.sol";
 
 import {Errors} from "../Errors.sol";
+import {Events} from "../Events.sol";
 
 library Liquidate {
 
@@ -17,9 +18,6 @@ library Liquidate {
     using PoolActions for State;
     using SwapMethods for State;
 
-    event AddLiquidity(address indexed user, uint256 amount, uint256 clpAmount, uint256 poolBalance);
-
-    // Add liquidity
     function validateAddLiquidity(State storage state, uint256 amount) external view {
         if (amount == 0) {
             revert Errors.NULL_INPUT();
@@ -37,7 +35,7 @@ library Liquidate {
 
         state.incrementPoolBalance(amount);
         state.mintCLP(clpAmount);
-        emit AddLiquidity(user, amount, clpAmount, state.variables.poolBalance);
+        emit Events.AddLiquidity(user, amount, clpAmount, state.variables.poolBalance);
     }
 
     function validateAddLiquidityThroughUniswap(State storage state, address tokenIn, uint256 amountIn, uint256 amountOutMin, uint24 poolFee) external view {

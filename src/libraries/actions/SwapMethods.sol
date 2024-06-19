@@ -4,7 +4,8 @@ pragma solidity ^0.8.24;
 import "forge-std/console.sol";
 
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import "@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol";
+// import "@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol";
+import "../../../lib/v3-periphery/contracts/interfaces/ISwapRouter.sol";
 
 library SwapMethods {
 

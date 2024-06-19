@@ -10,14 +10,13 @@ import {PoolActions} from "./PoolActions.sol";
 import {SwapMethods} from "./SwapMethods.sol";
 
 import {Errors} from "../Errors.sol";
+import {Events} from "../Events.sol";
 
 library AddLiquidityThroughUniswap {
 
     using CLPToken for State;
     using PoolActions for State;
     using SwapMethods for State;
-
-    event AddLiquidity(address indexed user, uint256 amount, uint256 clpAmount, uint256 poolBalance);
 
     function validateAddLiquidityThroughUniswap(State storage state, address tokenIn, uint256 amountIn, uint256 amountOutMin, uint24 poolFee) external view {
         if (poolFee > 0) {
@@ -50,6 +49,6 @@ library AddLiquidityThroughUniswap {
         state.incrementPoolBalance(amountOut);
         state.mintCLP(clpAmount);
 
-        emit AddLiquidity(amountOut, clpAmount, store.variables.poolBalance);
+        emit Events.AddLiquidity(amountOut, clpAmount, store.variables.poolBalance);
     }
 }
