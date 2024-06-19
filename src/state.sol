@@ -98,18 +98,21 @@ struct State {
 
 abstract contract Storage {
     State internal state;
-    StoreConstants public immutable constants;
-        
-    constructor() {
-        constants = StoreConstants({
+    StoreConstants public constants = StoreConstants({
         BPS_DIVIDER: 10000,
         MAX_FEE: 500,
         MAX_KEEPER_FEE_SHARE: 2000,
         MAX_POOL_WITHDRAWAL_FEE: 500,
         FUNDING_INTERVAL: 1 hours
         });
+
+
+        // uint256 public constant BPS_DIVIDER = 10000;
+        // uint256 public constant MAX_FEE = 500; // in bps = 5%
+        // uint256 public constant MAX_KEEPER_FEE_SHARE = 2000; // in bps = 20%
+        // uint256 public constant MAX_POOL_WITHDRAWAL_FEE = 500; // in bps = 5%
+        // uint256 public constant FUNDING_INTERVAL = 1 hours; // In seconds.
     }
-}
 // contract aa{
 //     uint a;
 // }
