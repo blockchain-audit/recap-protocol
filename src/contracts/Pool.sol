@@ -3,7 +3,8 @@ pragma solidity ^0.8.24;
 
 import "./CapStorage.sol";
 
-import {Liquidity} from "../libraries/actions/Liquidity.sol";
+import {AddLiquidity} from "../libraries/actions/AddLiquidity.sol";
+import {AddLiquidityThroughUniswap} from "../libraries/actions/AddLiquidityThroughUniswap.sol";
 
 contract Pool is CapStorage{
 
@@ -15,8 +16,8 @@ contract Pool is CapStorage{
     }
 
     function addLiquidityThroughUniswap(address tokenIn, uint256 amountIn, uint256 amountOutMin, uint24 poolFee)public payable{
-        state.validateAddLiquidityThroughUniswap(address tokenIn, uint256 amountIn, uint256 amountOutMin, uint24 poolFee);
-        state.executeAddLiquidityThroughUniswap(address tokenIn, uint256 amountIn, uint256 amountOutMin, uint24 poolFee);
+        state.validateAddLiquidityThroughUniswap( tokenIn,  amountIn,  amountOutMin,  poolFee);
+        state.executeAddLiquidityThroughUniswap( tokenIn,  amountIn,  amountOutMin,  poolFee);
     }
 
     
