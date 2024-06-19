@@ -3,6 +3,4 @@ pragma solidity ^0.8.20;
 
 import {State} from "../storge.sol";
 
-library  fees {
-    
-}
+library fees {}

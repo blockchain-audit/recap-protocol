@@ -3,8 +3,12 @@ pragma solidity 0.8.20;
 
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 
-struct ContractAddresses {
+struct Gov {
     address gov;
+}
+
+struct ContractAddresses {
+    // address gov;
     address currency;
     address clp;
     address swapRouter;
@@ -31,8 +35,9 @@ struct Buffer {
     uint256 bufferPayoutPeriod;
 }
 
-struct OrderData {
+struct Orders {
     mapping(uint256 => Order) orders;
+    uint256 orderId;
     mapping(address => EnumerableSet.UintSet) userOrderIds;
     EnumerableSet.UintSet orderIds;
 }
@@ -76,3 +81,5 @@ struct State {
 abstract contract Storage {
     State internal state;
 }
+
+//init var

@@ -12,7 +12,11 @@ library Math {
         return (amount * feeBps) / BPS_DIVIDER;
     }
 
-    function calculateAmountToSendPool(uint256 bufferBalance, uint256 timePassed, uint256 bufferPayoutPeriod) internal pure returns (uint256) {
+    function calculateAmountToSendPool(uint256 bufferBalance, uint256 timePassed, uint256 bufferPayoutPeriod)
+        internal
+        pure
+        returns (uint256)
+    {
         uint256 amountToSendPool = (bufferBalance * timePassed) / bufferPayoutPeriod;
         return amountToSendPool > bufferBalance ? bufferBalance : amountToSendPool;
     }

@@ -5,6 +5,12 @@ import "./interfaces/IPool.sol";
 import "./interfaces/IStore.sol";
 import "./Math.sol"; // Importing the Math library
 
+uint256 public constant BPS_DIVIDER = 10000;
+uint256 public constant MAX_FEE = 500; // in bps = 5%
+uint256 public constant MAX_KEEPER_FEE_SHARE = 2000; // in bps = 20%
+uint256 public constant MAX_POOL_WITHDRAWAL_FEE = 500; // in bps = 5%
+uint256 public constant FUNDING_INTERVAL = 1 hours; // In seconds.
+
 contract Pool is IPool {
     using Math for uint256;
 
@@ -167,6 +173,6 @@ contract Pool is IPool {
             fee, // paid by user //
             poolFee,
             isLiquidation
-            );
+        );
     }
 }
