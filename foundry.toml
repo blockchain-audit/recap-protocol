@@ -16,7 +16,7 @@ remappings = [
     "@hack/=src/",
     "solmate/=lib/solmate/src/",
     "@openzeppelin/=lib/openzeppelin-contracts/",
-    "@chainlink=lib/chainlink/contracts/src/v0.8/shared/",
+    "@chainlink=lib/chainlink/contracts/src/v0.8/",
   
 ]
 fs_permissions = [
