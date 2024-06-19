@@ -60,11 +60,11 @@ class ERC20 {
 
 
     lemma validate_transfer(prior: mapping<address,uint>, after: mapping<address,uint>, src: address, dst: address, wad: uint)
-    requires prior.Get(src) >= wad                              // enough bal
-    requires after.data[src := 0][dst := 0] == prior.data[src := 0][dst := 0] // only mod src/dst
-    requires {src,dst} <= prior.Keys() && prior.Keys() == after.Keys()  // min diff in keys
-    requires (dst == src) || prior.data[src] - wad == after.data[src]   // src acc decreased
-    requires (dst == src) || prior.data[dst] + wad == after.data[dst]   // dst acc increased
+    requires prior.Get(src) >= wad
+    requires after.data[src := 0][dst := 0] == prior.data[src := 0][dst := 0]
+    requires {src,dst} <= prior.Keys() && prior.Keys() == after.Keys()
+    requires (dst == src) || prior.data[src] - wad == after.data[src]
+    requires (dst == src) || prior.data[dst] + wad == after.data[dst]
     requires (dst != src) || after == prior
     ensures sum(prior.Items()) == sum(after.Items()) {
         var b1 := (src, prior.data[src]);
