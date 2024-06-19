@@ -3,6 +3,8 @@ pragma solidity ^0.8.24;
 
 import "forge-std/console.sol";
 
+import {State} from "../../contracts/CapStorage.sol";
+
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 // import "@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol";
 import "../../../lib/v3-periphery/contracts/interfaces/ISwapRouter.sol";
@@ -17,17 +19,17 @@ library SwapMethods {
     {
         if (msg.value != 0) {
             // there are no direct ETH pairs in Uniswapv3, so router converts ETH to WETH before swap
-            tokenIn = weth;
+            tokenIn = state.contracts.weth;
             amountIn = msg.value;
         } else {
             // transfer token to be swapped
             IERC20(tokenIn).safeTransferFrom(msg.sender, address(this), amountIn);
-            IERC20(tokenIn).safeApprove(address(state.contracts.swapRouter), amountIn);
+            IERC20(tokenIn).forceApprove(address(state.contracts.swapRouter), amountIn);
         }
 
         ISwapRouter.ExactInputSingleParams memory params = ISwapRouter.ExactInputSingleParams({
             tokenIn: tokenIn,
-            tokenOut: currency, // store supported currency
+            tokenOut: state.contracts.currency, // store supported currency
             fee: poolFee,
             recipient: address(this),
             deadline: block.timestamp + 15,

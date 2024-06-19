@@ -18,7 +18,7 @@ library AddLiquidityThroughUniswap {
     using PoolActions for State;
     using SwapMethods for State;
 
-    function validateAddLiquidityThroughUniswap(State storage state, address tokenIn, uint256 amountIn, uint256 amountOutMin, uint24 poolFee) external view {
+    function validateAddLiquidityThroughUniswap(State storage state, address tokenIn, uint256 amountIn, uint24 poolFee) external view {
         if (poolFee > 0) {
             revert Errors.NULL_INPUT();
         }
@@ -28,18 +28,17 @@ library AddLiquidityThroughUniswap {
         }
 
         if (address(state.contracts.swapRouter) != address(0)) {
-            Errors.NULL_ADDRESS();
+            revert Errors.NULL_ADDRESS();
         }
     }
 
      function executeAddLiquidityThroughUniswap(State storage state, address tokenIn, uint256 amountIn, uint256 amountOutMin, uint24 poolFee)
         external
-        payable
     {
         address user = msg.sender;
 
         // executes swap, tokens will be deposited to store contract
-        uint256 amountOut = state.swapExactInputSingle{value: msg.value}(amountIn, amountOutMin, tokenIn, poolFee);
+        uint256 amountOut = state.swapExactInputSingle(amountIn, amountOutMin, tokenIn, poolFee);
 
         // add store supported liquidity
         uint256 balance = state.variables.poolBalance;
@@ -49,6 +48,6 @@ library AddLiquidityThroughUniswap {
         state.incrementPoolBalance(amountOut);
         state.mintCLP(clpAmount);
 
-        emit Events.AddLiquidity(amountOut, clpAmount, store.variables.poolBalance);
+        emit Events.AddLiquidity(user, amountOut, clpAmount, state.variables.poolBalance);
     }
 }
