@@ -73,6 +73,6 @@ struct State {
     FundingData fundingData;
 }
 
-abstract contract SizeStorage {
+abstract contract Storage {
     State internal state;
 }
