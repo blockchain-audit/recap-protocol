@@ -9,22 +9,26 @@ import {CLPToken} from "./CLPToken.sol";
 
 import {Errors} from "../Errors.sol";
 
-library Liquidity {
+import {PoolActions} from "./PoolActions.sol";
+
+import {Events} from "../Events.sol";
+
+library AddLiquidity {
 
     using CLPToken for State;
+    using PoolActions for State;
 
     function validateAddLiquidity(State storage state, uint256 amount) external view {
-        if (amount == 0) {
+        if (amount <= 0) {
             revert Errors.NULL_AMOUNT();
         }
     }
 
-    function executeAddLiquidity(State storage state, uint256 amount, address user) external {
-        require(amount > 0, "!amount");
+    function executeAddLiquidity(State storage state, uint256 amount) external {
 
         uint256 balance = state.poolBalance;
 
-        state.transferIn(user, msg.sender, amount);
+        state.transferIn(amount);
 
         uint256 clpSupply = state.getCLPSupply();
 
@@ -32,8 +36,8 @@ library Liquidity {
 
         state.incrementPoolBalance(amount);
         
-        // state.mintCLP(user, clpAmount);
+        state.mintCLP(clpAmount);
 
-        // emit AddLiquidity(user, amount, clpAmount, state.poolBalance());
+        emit Events.AddLiquidity(msg.sender, amount, clpAmount, state.poolBalance);
     }
 }

@@ -45,7 +45,7 @@ struct State {
     uint256 MAX_KEEPER_FEE_SHARE;
     uint256 MAX_POOL_WITHDRAWAL_FEE;
     uint256 FUNDING_INTERVAL;
-
+    
     address gov;
     address currency;
     address clp;
