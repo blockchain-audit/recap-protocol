@@ -8,7 +8,8 @@ import {AddLiquidityThroughUniswap} from "../libraries/actions/AddLiquidityThrou
 
 contract Pool is CapStorage{
 
-    using Liquidity for State;
+    using AddLiquidity for State;
+    using AddLiquidityThroughUniswap for State;
 
     function addLiquidity(uint256 amount) public payable {
         state.validateAddLiquidity(amount);

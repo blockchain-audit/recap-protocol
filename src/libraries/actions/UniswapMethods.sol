@@ -2,8 +2,15 @@
 pragma solidity 0.8.24;
 
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import "../../../lib/v3-periphery/contracts/interfaces/IQuoter.sol";
+
 import "../../../lib/v3-periphery/contracts/interfaces/ISwapRouter.sol";
-import "@uniswap/v3-periphery/contracts/interfaces/IQuoter.sol";
+
+import {Events} from "../Events.sol";
+
+import {CLPToken} from "./CLPToken.sol";
+
+import {State} from "../../contracts/CapStorage.sol";
 
 library UniswapMethods{
     using SafeERC20 for IERC20;
@@ -14,12 +21,12 @@ library UniswapMethods{
         address swapRouter=state.addresses.swapRouter;
         if (msg.value != 0) {
             // there are no direct ETH pairs in Uniswapv3, so router converts ETH to WETH before swap
-            tokenIn = weth;
+            tokenIn = state.addresses.weth;
             amountIn = msg.value;
         } else {
             // transfer token to be swapped
             IERC20(tokenIn).safeTransferFrom(msg.sender, address(this), amountIn);
-            IERC20(tokenIn).safeApprove(address(swapRouter), amountIn);
+            IERC20(tokenIn).forceApprove(address(swapRouter), amountIn);
         }
 
         ISwapRouter.ExactInputSingleParams memory params = ISwapRouter.ExactInputSingleParams({

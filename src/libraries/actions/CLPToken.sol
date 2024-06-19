@@ -17,12 +17,12 @@ library CLPToken {
 
 
     function getCLPSupply(State storage state) external view returns (uint256) {
-        return IERC20(state.clp).totalSupply();
+        return IERC20(state.addresses.clp).totalSupply();
     }
 
     function mintCLP(State storage state, uint256 amount) external {
         
-        ICLP(state.clp).mint(msg.sender, amount);
+        ICLP(state.addresses.clp).mint(msg.sender, amount);
     }
 
     function incrementPoolBalance(State storage state ,uint256 amount) external {
@@ -32,6 +32,6 @@ library CLPToken {
 
     function transferIn(State storage state,uint256 amount) external {
 
-        IERC20(state.currency).safeTransferFrom(msg.sender, address(this), amount);
+        IERC20(state.addresses.currency).safeTransferFrom(msg.sender, address(this), amount);
     }
 }

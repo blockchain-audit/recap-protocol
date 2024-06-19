@@ -11,16 +11,13 @@ import {Errors} from "../Errors.sol";
 
 import {Events} from "../Events.sol";
 
-library Liquidity {
+library AddLiquidity {
 
     using CLPToken for State;
-    
-
-    event AddLiquidity(address indexed user, uint256 amount, uint256 clpAmount, uint256 poolBalance);
 
     function validateAddLiquidity(State storage state, uint256 amount) external view {
         if (amount == 0) {
-            revert Errors.NULL_AMOUNT();
+            revert Errors.NULL_INPUT();
         }
     }
 
@@ -38,6 +35,6 @@ library Liquidity {
 
         state.mintCLP( clpAmount);
 
-        emit AddLiquidity(user, amount, clpAmount, state.poolBalance);
+        emit Events.AddLiquidity(msg.sender, amount, clpAmount, state.poolBalance);
     }
 }
