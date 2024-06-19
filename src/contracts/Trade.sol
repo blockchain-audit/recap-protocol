@@ -171,7 +171,7 @@ contract Trade is ITrade {
             params.size,
             params.price,
             params.fee,
-            params.orderType,
+            // params.orderType,
             params.isReduceOnly
             );
 
