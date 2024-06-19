@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
+import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
+
 import "./interfaces/IStorage.sol";
 
 struct CurrencyContracts {
@@ -24,7 +26,7 @@ struct Fee {
     uint256 poolFeeShare; // in bps
     uint256 keeperFeeShare; // in bps
     uint256 poolWithdrawalFee; // in bps
-    uint256 minimumMarginLevel // in bps
+    uint256 minimumMarginLevel;// in bps
 }
 
 struct PoolBalance {
@@ -34,7 +36,7 @@ struct PoolBalance {
 }
 
 struct Buffer {
-    uint256 bufferPayoutPeriod = 7 days;
+    uint256 bufferPayoutPeriod;
 }
 
 struct OrderData {
@@ -79,13 +81,36 @@ struct State {
     PositionData positionData;
     UserData userData;
     Funding funding;
+}
+
+abstract contract SizeStorage {
+    State internal state;
+
+    // constants
     uint256 constant BPS_DIVIDER = 10000;
     uint256 constant MAX_FEE = 500; // in bps = 5%
     uint256 constant MAX_KEEPER_FEE_SHARE = 2000; // in bps = 20%
     uint256 constant MAX_POOL_WITHDRAWAL_FEE = 500; // in bps = 5%
     uint256 constant FUNDING_INTERVAL = 1 hours; // In seconds.
-}
 
-abstract contract SizeStorage {
-    State internal state;
+    // get functions
+    function getBpsDivider() public pure returns (uint256) {
+        return BPS_DIVIDER;
+    }
+
+    function getMaxFee() public pure returns (uint256) {
+        return MAX_FEE;
+    }
+
+    function getMaxKeeperFeeShare() public pure returns (uint256) {
+        return MAX_KEEPER_FEE_SHARE;
+    }
+
+    function getMaxPoolWithdrawalFee() public pure returns (uint256) {
+        return MAX_POOL_WITHDRAWAL_FEE;
+    }
+
+    function getFundingInterval() public pure returns (uint256) {
+        return FUNDING_INTERVAL;
+    }
 }
