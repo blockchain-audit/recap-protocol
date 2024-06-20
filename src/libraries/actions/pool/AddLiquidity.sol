@@ -3,13 +3,13 @@ pragma solidity ^0.8.24;
 
 import "forge-std/console.sol";
 
-import {State} from "../../contracts/CapStorage.sol";
+import {State} from "../../../contracts/CapStorage.sol";
 
-import {CLPToken} from "../CLPToken.sol";
-import {Pool} from "../Pool.sol";
+import {CLPToken} from "../../CLPToken.sol";
+import {Pool} from "../../Pool.sol";
 
-import {Errors} from "../Errors.sol";
-import {Events} from "../Events.sol";
+import {Errors} from "../../Errors.sol";
+import {Events} from "../../Events.sol";
 
 library AddLiquidity {
 

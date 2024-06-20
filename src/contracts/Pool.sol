@@ -3,12 +3,12 @@ pragma solidity ^0.8.24;
 
 import "./CapStorage.sol";
 
-import {AddLiquidity} from "../libraries/actions/AddLiquidity.sol";
-import {AddLiquidityThroughUniswap} from "../libraries/actions/AddLiquidityThroughUniswap.sol";
-import {RemoveLiquidity} from "../libraries/actions/RemoveLiquidity.sol";
-import {CreditTraderLoss} from "../libraries/actions/CreditTraderLoss.sol";
-import {DebitTraderProfit} from "../libraries/actions/DebitTraderProfit.sol";
-import {CreditFee} from "../libraries/actions/CreditFee.sol";
+import {AddLiquidity} from "../libraries/actions/pool/AddLiquidity.sol";
+import {AddLiquidityThroughUniswap} from "../libraries/actions/pool/AddLiquidityThroughUniswap.sol";
+import {RemoveLiquidity} from "../libraries/actions/pool/RemoveLiquidity.sol";
+import {CreditTraderLoss} from "../libraries/actions/pool/CreditTraderLoss.sol";
+import {DebitTraderProfit} from "../libraries/actions/pool/DebitTraderProfit.sol";
+import {CreditFee} from "../libraries/actions/pool/CreditFee.sol";
 
 contract Pool is CapStorage{
 
