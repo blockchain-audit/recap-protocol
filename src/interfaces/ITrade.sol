@@ -1,9 +1,5 @@
 // SPDX-License-Identifier: BUSL-1.1
-<<<<<<< HEAD
-pragma solidity ^0.8.13;
-=======
 pragma solidity ^0.8.24;
->>>>>>> 0cd4141c02bc25a80743f082e767129745105be7
 
 import "./IStore.sol";
 

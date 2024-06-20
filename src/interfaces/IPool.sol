@@ -1,30 +1,4 @@
 // SPDX-License-Identifier: BUSL-1.1
-<<<<<<< HEAD
-pragma solidity ^0.8.13;
-
-interface IPool {
-    event AddLiquidity(address indexed user, uint256 amount, uint256 clpAmount, uint256 poolBalance);
-    event FeePaid(address indexed user, string market, uint256 fee, uint256 poolFee, bool isLiquidation);
-    event GovernanceUpdated(address indexed oldGov, address indexed newGov);
-    event PoolPayIn(
-        address indexed user,
-        string market,
-        uint256 amount,
-        uint256 bufferToPoolAmount,
-        uint256 poolBalance,
-        uint256 bufferBalance
-    );
-    event PoolPayOut(address indexed user, string market, uint256 amount, uint256 poolBalance, uint256 bufferBalance);
-    event RemoveLiquidity(
-        address indexed user, uint256 amount, uint256 feeAmount, uint256 clpAmount, uint256 poolBalance
-    );
-
-    function addLiquidity(uint256 amount) external;
-
-    function addLiquidityThroughUniswap(address tokenIn, uint256 amountIn, uint256 amountOutMin, uint24 poolFee)
-        external
-        payable;
-=======
 pragma solidity ^0.8.24;
 
 interface IPool {
@@ -32,11 +6,10 @@ interface IPool {
     function addLiquidity(uint256 amount) external;
 
     function addLiquidityThroughUniswap(address tokenIn, uint256 amountIn, uint256 amountOutMin, uint24 poolFee) external payable;
->>>>>>> 0cd4141c02bc25a80743f082e767129745105be7
 
-    function creditFee(address user, string memory market, uint256 fee, bool isLiquidation) external;
+    function creditFee(string memory market, uint256 fee, bool isLiquidation) external;
 
-    function creditTraderLoss(address user, string memory market, uint256 amount) external;
+    function creditTraderLoss(string memory market, uint256 amount) external; // we delete address user
 
     function debitTraderProfit(address user, string memory market, uint256 amount) external;
 
