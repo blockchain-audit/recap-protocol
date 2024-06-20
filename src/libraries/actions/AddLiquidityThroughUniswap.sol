@@ -21,7 +21,7 @@ library AddLiquidityThroughUniswap {
     using CLPToken for State;
     using UniswapMethods for State;
 
-    function validateAddLiquidityThroughUniswap(State storage state, address tokenIn, uint256 amountIn, uint256 amountOutMin, uint24 poolFee) external view 
+    function validateAddLiquidityThroughUniswap(State storage state, address tokenIn, uint256 amountIn, uint24 poolFee) external view 
     {
         if (poolFee <= 0) {
             revert Errors.NULL_INPUT();

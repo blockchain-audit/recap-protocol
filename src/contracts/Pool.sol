@@ -7,9 +7,19 @@ import {AddLiquidityThroughUniswap} from "../libraries/actions/AddLiquidityThrou
 
 import {AddLiquidity} from "../libraries/actions/AddLiquidity.sol";
 
+import {RemoveLiquidity} from "../libraries/actions/RemoveLiquidity.sol";
+import {CreditTraderLoss} from "../libraries/actions/CreditTraderLoss.sol";
+import {DebitTraderProfit} from "../libraries/actions/DebitTraderProfit.sol";
+import {CreditFee} from "../libraries/actions/CreditFee.sol";
+
 contract Pool is CapStorage, IPool{
     using AddLiquidityThroughUniswap for State;
     using AddLiquidity for State;
+    using RemoveLiquidity for State;
+    using CreditTraderLoss for State;
+    using DebitTraderProfit for State;
+    using CreditFee for State;
+
 
     function addLiquidity(uint256 amount) external {
         state.validateAddLiquidity(amount);
@@ -19,22 +29,41 @@ contract Pool is CapStorage, IPool{
         external
         payable
     {
-        state.validateAddLiquidityThroughUniswap(tokenIn, amountIn, amountOutMin, poolFee);
+        state.validateAddLiquidityThroughUniswap(tokenIn, amountIn, poolFee);
         state.executeAddLiquidityThroughUniswap(tokenIn, amountIn, amountOutMin, poolFee);
+    }
+    
+    function removeLiquidity(uint256 amount) external{
+        state.validateRemoveLiquidity(amount);
+        state.executeRemoveLiquidity(amount);
+    }
+    
+    function creditTraderLoss(address user, string memory market, uint256 amount) external{
+        state.validateCreditTraderLoss(user, market, amount);
+        state.executeCreditTraderLoss(user, market, amount);
+        
+    }
+    function debitTraderProfit(address user, string memory market, uint256 amount) external{
+        state.validateDebitTraderProfit(user, market, amount);
+        state.executeDebitTraderProfit(user, market, amount);
     }
 
 
 
 
-    function creditFee(address user, string memory market, uint256 fee, bool isLiquidation) external{}
+    function creditFee(address user, string memory market, uint256 fee, bool isLiquidation) external{
+        state.validateCreditFee(user, market, fee, isLiquidation);
+        state.executeCreditFee(user, market, fee, isLiquidation);
+        
+    }
 
-    function creditTraderLoss(address user, string memory market, uint256 amount) external{}
+    
 
-    function debitTraderProfit(address user, string memory market, uint256 amount) external{}
+    
 
     function link(address _trade, address _store, address _treasury) external{}
 
-    function removeLiquidity(uint256 amount) external{}
+    
 
     function updateGov(address _gov) external{}
 } 

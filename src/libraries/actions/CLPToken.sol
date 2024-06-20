@@ -33,7 +33,7 @@ library CLPToken {
         IERC20(state.currency).safeTransferFrom(msg.sender, address(this), amount);
     }
 
-    function transferOut(State storage state, uint256 amount) external {
-        IERC20(state.currency).safeTransfer(msg.sender, amount);
+    function transferOut(State storage state,address user, uint256 amount) external {
+        IERC20(state.currency).safeTransfer(user, amount);
     }
 }

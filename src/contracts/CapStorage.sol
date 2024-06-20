@@ -54,6 +54,7 @@ struct State {
     address weth;
     address trade;
     address pool;
+    address treasury;
 
     uint256 poolFeeShare;
     uint256 keeperFeeShare;
