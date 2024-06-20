@@ -11,7 +11,7 @@ contract Trade is ITrade , ViewFuncTrade{
     // Modifiers
     modifier onlyGov() {
         require(msg.sender == stateTrade.gov, "!governance");
-        _;
+        _;stateTrade
     }
 
     constructor(address _gov) {
@@ -24,7 +24,7 @@ contract Trade is ITrade , ViewFuncTrade{
 
         address oldGov = stateTrade.gov;
         stateTrade.gov = _gov;
-
+stateTrade
         emit GovernanceUpdated(oldGov, _gov);
     }
 
@@ -586,3 +586,4 @@ contract Trade is ITrade , ViewFuncTrade{
     }
 
 }
+stateTrade

@@ -9,8 +9,6 @@ contract ViewFuncTrade is StorageTrade{
     uint256 constant UNIT = 10 ** 18;
 
 
-    // StorageTrade.StateTrade public stateTrade = StorageTrade.stateTrade;
-
         function getExecutableOrderIds() public view returns (uint256[] memory orderIdsToExecute) {
         IStore.Order[] memory orders = stateTrade.storeView.getOrders();
         uint256[] memory _orderIds = new uint256[](orders.length);
