@@ -119,17 +119,6 @@ struct State {
     address treasury;
 }
 
-import {UpdateGov} from "../libraries/actions/UpdateGov.sol";
-
 abstract contract CapStorage {
-    
-    using UpdateGov for State;
-
     State internal state;
-
-
-    function updateGov(address _gov) public {
-        state.validateUpdateGov(_gov);
-        state.executeUpdateGov(_gov);
-    }
 }
