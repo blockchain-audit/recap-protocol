@@ -1,52 +1,60 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.13;
 
+import "lib/openzeppelin-contracts/contracts/token/ERC20/utils/SafeERC20.sol";
+import "lib/openzeppelin-contracts/contracts/utils/structs/EnumerableSet.sol";
+import "lib/v3-periphery/contracts/interfaces/ISwapRouter.sol";
+import "lib/v3-periphery/contracts/interfaces/IQuoter.sol";
 import "../interfaces/IStore.sol";
 import {Store, StoreState, StorageStore} from "./StorageStore.sol";
 
 contract StoreView is StorageStore {
 
+    using EnumerableSet for EnumerableSet.UintSet;
+    using EnumerableSet for EnumerableSet.Bytes32Set;
+    using EnumerableSet for EnumerableSet.AddressSet;
+    using SafeERC20 for IERC20;
     function getCLPSupply() external view returns (uint256) {
-        return IERC20(clp).totalSupply();
+        return IERC20(storeState.clp).totalSupply();
     }
 
     function getBalance(address user) external view returns (uint256) {
-        return balances[user];
+        return storeState.balances[user];
     }
 
     function getUserPoolBalance(address user) external view returns (uint256) {
-        uint256 clpSupply = IERC20(clp).totalSupply();
+        uint256 clpSupply = IERC20(storeState.clp).totalSupply();
         if (clpSupply == 0) return 0;
-        return IERC20(clp).balanceOf(user) * poolBalance / clpSupply;
+        return IERC20(storeState.clp).balanceOf(user) * storeState.poolBalance / clpSupply;
     }
 
     function getLockedMargin(address user) external view returns (uint256) {
-        return lockedMargins[user];
+        return storeState.lockedMargins[user];
     }
 
     function getUsersWithLockedMarginLength() external view returns (uint256) {
-        return usersWithLockedMargin.length();
+        return storeState.usersWithLockedMargin.length();
     }
 
     function getUserWithLockedMargin(uint256 i) external view returns (address) {
-        return usersWithLockedMargin.at(i);
+        return storeState.usersWithLockedMargin.at(i);
     }
 
     function getOILong(string calldata market) external view returns (uint256) {
-        return OILong[market];
+        return storeState.OILong[market];
     }
 
     function getOIShort(string calldata market) external view returns (uint256) {
-        return OIShort[market];
+        return storeState.OIShort[market];
     }
 
     function getOrder(uint256 id) external view returns (IStore.Order memory _order) {
-        return orders[id];
+        return storeState.orders[id];
     }
 
     function getOrders() external view returns (IStore.Order[] memory _orders) {
-        uint256 length = orderIds.length();
-        _orders = new Order[](length);
+        uint256 length = storeState.orderIds.length();
+        _orders = new storeState.Order[](length);
         for (uint256 i = 0; i < length; i++) {
             _orders[i] = orders[orderIds.at(i)];
         }
@@ -71,12 +79,12 @@ contract StoreView is StorageStore {
         return _positions;
     }
 
-    function getPosition(address user, string calldata market) public view returns (Position memory position) {
+    function getPosition(address user, string calldata market) public view returns (IStore.Position memory position) {
         bytes32 key = _getPositionKey(user, market);
         return positions[key];
     }
 
-    function getMarket(string calldata market) external view returns (Market memory _market) {
+    function getMarket(string calldata market) external view returns (IStore.Market memory _market) {
         return markets[market];
     }
 
