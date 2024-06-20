@@ -2,10 +2,10 @@
 pragma solidity ^0.8.24;
 
 import "./CapStorage.sol";
-
+import "../interfaces/IPool.sol";
 import {Liquidity} from "../libraries/Liquidity.sol";
 
-contract Pool is CapStorage{
+contract Pool is IPool, CapStorage {
 
     using Liquidity for State;
 
