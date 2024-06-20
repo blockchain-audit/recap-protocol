@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.13;
 
-import "./interfaces/IChainlink.sol";
+import "./interfaces/IChainLink.sol"; 
 import "./interfaces/IStore.sol";
 import "./interfaces/IPool.sol";
-import "./interfaces/ITrade.sol";
+import "./interfaces/ITrase.sol";
 
 contract Trade is ITrade {
     uint256 public constant UNIT = 10 ** 18;
