@@ -25,13 +25,22 @@ library CLPToken {
         ICLP(state.addresses.clp).mint(msg.sender, amount);
     }
 
-    function incrementPoolBalance(State storage state ,uint256 amount) external {
-
-        state.poolBalance += amount;
+    function burnCLP(Store storage state, uint256 amount) external {
+        ICLP(state.addresses.clp).burn(msg.sender,amount);
     }
 
     function transferIn(State storage state,uint256 amount) external {
 
         IERC20(state.addresses.currency).safeTransferFrom(msg.sender, address(this), amount);
+    }
+
+    function transferOut(Store storage state, uint256 amount) external  {
+        IERC20(state.addresses.currency).safeTransfer(msg.sender, amount);
+    }
+
+    function getUserPoolBalance() external view returns (uint256) {
+        uint256 clpSupply = IERC20(state.addresses.clp).totalSupply();
+        if (clpSupply == 0) return 0;
+        return IERC20(state.addresses.clp).balanceOf(msg.sender) * poolBalance / clpSupply;
     }
 }
