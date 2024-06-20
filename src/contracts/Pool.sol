@@ -49,9 +49,4 @@ contract Pool is CapStorage{
         state.validateCreditFee();
         state.executeCreditFee(user, market, fee, isLiquidation);
     }
-
-    function updateGov(address _gov) public {
-        state.validateUpdateGov(_gov);
-        state.executeUpdateGov(_gov);
-    }
 } 

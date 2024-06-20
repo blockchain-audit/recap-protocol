@@ -12,7 +12,7 @@ import {Pool} from "../Pool.sol";
 import {Errors} from "../Errors.sol";
 import {Events} from "../Events.sol";
 
-library CreditFee {
+library UpdateGov {
 
     using CLPToken for State;
     using Pool for State;
@@ -27,7 +27,7 @@ library CreditFee {
         }
     }
 
-    function validateUpdateGov(State storage state, address _gov) external {
+    function executeUpdateGov(State storage state, address _gov) external {
 
         address oldGov = state.contracts.gov;
         state.contracts.gov = _gov;
