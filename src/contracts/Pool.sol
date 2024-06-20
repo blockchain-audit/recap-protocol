@@ -3,15 +3,21 @@ pragma solidity ^0.8.24;
 
 import "./CapStorage.sol";
 
-import {AddLiquidity} from "../libraries/actions/AddLiquidity.sol";
-import {AddLiquidityThroughUniswap} from "../libraries/actions/AddLiquidityThroughUniswap.sol";
-import {RemoveLiquidity} from "../libraries/actions/RemoveLiquidity.sol";
+import {AddLiquidity} from "../libraries/actions/Pool/AddLiquidity.sol";
+import {AddLiquidityThroughUniswap} from "../libraries/actions/Pool/addLiquidityThroughUniswap.sol";
+import {RemoveLiquidity} from "../libraries/actions/Pool/RemoveLiquidity.sol";
+import {CreditTraderLoss} from "../libraries/actions/Pool/CreditTraderLoss.sol";
+import {DebitTraderProfit} from "../libraries/actions/Pool/DebitTraderProfit.sol";
+import {CreditFee} from "../libraries/actions/Pool/CreditFee.sol";
 
 contract Pool is CapStorage{
 
     using AddLiquidity for State;
     using AddLiquidityThroughUniswap for State;
     using RemoveLiquidity for State;
+    using CreditTraderLoss for State;
+    using DebitTraderProfit for State;
+    using CreditFee for State;
 
     function addLiquidity(uint256 amount) public payable {
         state.validateAddLiquidity(amount);
@@ -28,7 +34,18 @@ contract Pool is CapStorage{
         state.executeRemoveLiquidity(amount);
     }
 
-    
+    function creditTraderLoss(address user, string memory market, uint256 amount) external{
+        state.validateCreditTraderLoss();
+        state.executeCreditTraderLoss(user, market, amount);
+    }
 
-    
+    function debitTraderProfit(address user, string memory market, uint256 amount) external{
+        state.validateDebitTraderProfit(amount);
+        state.executeDebitTraderProfit(user,market,  amount);
+    }   
+
+    function creditFee(address user, string memory market, uint256 fee, bool isLiquidation) external{
+        state.validateCreditFee();
+        state.executeCreditFee(user,market,fee, isLiquidation);
+    }
 } 

@@ -2,15 +2,18 @@
 pragma solidity ^0.8.24;
 
 import "forge-std/console.sol";
-import {Errors} from "../Errors.sol";
-import {State} from "../../contracts/CapStorage.sol";
-import {Events} from "../Events.sol";
-import {CLPToken} from "./CLPToken.sol";
+import {Errors} from "../../Errors.sol";
+import {State} from "../../../contracts/CapStorage.sol";
+import {Events} from "../../Events.sol";
+import {CLPToken} from "../../CLPToken.sol";
 import {UniswapMethods} from "./UniswapMethods.sol";
+
+import {Pool} from "../../Pool.sol";
 
 library AddLiquidityThroughUniswap {
     using UniswapMethods for State;
     using CLPToken for State;
+    using Pool for State;
     function validateAddLiquidityThroughUniswap(
         State storage state,
         address tokenIn,

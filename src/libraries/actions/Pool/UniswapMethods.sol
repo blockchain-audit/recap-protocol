@@ -2,15 +2,15 @@
 pragma solidity 0.8.24;
 
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import "../../../lib/v3-periphery/contracts/interfaces/IQuoter.sol";
+import "../../../../lib/v3-periphery/contracts/interfaces/IQuoter.sol";
 
-import "../../../lib/v3-periphery/contracts/interfaces/ISwapRouter.sol";
+import "../../../../lib/v3-periphery/contracts/interfaces/ISwapRouter.sol";
 
-import {Events} from "../Events.sol";
+import {Events} from "../../Events.sol";
 
-import {CLPToken} from "./CLPToken.sol";
+import {CLPToken} from "../../CLPToken.sol";
 
-import {State} from "../../contracts/CapStorage.sol";
+import {State} from "../../../contracts/CapStorage.sol";
 
 library UniswapMethods{
     using SafeERC20 for IERC20;

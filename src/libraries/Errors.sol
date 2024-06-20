@@ -5,5 +5,8 @@ library Errors {
     
     error NULL_INPUT();
     error NULL_ADDRESS();
+    error NOT_ALLOWED();
+    error NULL_BALANCE();
+    error POOL_BALANCE();
    
 }

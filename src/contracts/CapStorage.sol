@@ -2,6 +2,7 @@
 pragma solidity 0.8.24;
 
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
+import {UpdateGov} from "../libraries/UpdateGov.sol";
 
 struct Market {
     string symbol;
@@ -49,6 +50,7 @@ struct Addresses{
     address weth;
     address trade;
     address pool;
+    address treasury;
 }
 
 struct State {
@@ -90,5 +92,12 @@ struct State {
 
 
 abstract contract CapStorage {
+    using UpdateGov for State;
+    
     State internal state;
+
+    functoion UpdateGov(address sender,address gov) external{
+        state.validateUpdateGov(sender,gov);
+        state.executeUpdateGov(sender,gov);
+    }
 }
