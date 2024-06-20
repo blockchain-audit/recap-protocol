@@ -20,4 +20,3 @@ library Clp {
         return IERC20(state.contractAddr.clp).totalSupply();
     }
 }
-

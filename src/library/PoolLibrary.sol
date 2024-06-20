@@ -25,10 +25,10 @@ library PoolLibrary {
         state.remainingData.BPS_DIVIDER = 1000;
         state.store.poolWithdrawalFee = 10;
         state.store.bufferPayoutPeriod = 7 days;
-        state.store.poolFeeShare=5000;
+        state.store.poolFeeShare = 5000;
     }
 
-    function valiedGov(State storage state,address _gov) external view {
+    function valiedGov(State storage state, address _gov) external view {
         if (_gov != address(0)) {
             revert Errors.NULL_ADDRESS();
         }

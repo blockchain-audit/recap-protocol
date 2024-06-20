@@ -6,7 +6,7 @@ import {Liquidate} from "./library/Liquidate.sol";
 import {PoolLibrary} from "./library/PoolLibrary.sol";
 import {Trader} from "./library/Trader.sol";
 
-contract MainPool is RecapStorage{
+contract MainPool is RecapStorage {
     using PoolLibrary for State;
     using Liquidate for State;
     using Trader for State;
@@ -33,7 +33,7 @@ contract MainPool is RecapStorage{
         uint24 poolFee
     ) public {
         state.valiedUniswap(tokenIn, amountIn, poolFee);
-        state.valiedUniswapDetails(tokenIn, amountIn,poolFee);
+        state.valiedUniswapDetails(tokenIn, amountIn, poolFee);
         state.addLiquidityThroughUniswap(tokenIn, amountIn, amountOutMin, poolFee);
     }
 
@@ -52,7 +52,8 @@ contract MainPool is RecapStorage{
         state.validateDebitTraderProfit();
         state.debitTraderProfit(user, market, amount);
     }
-    function creditFee(address user, string memory market, uint256 fee, bool isLiquidation)public{
-        state.creditFee( user,   market,  fee, isLiquidation);
+
+    function creditFee(address user, string memory market, uint256 fee, bool isLiquidation) public {
+        state.creditFee(user, market, fee, isLiquidation);
     }
 }

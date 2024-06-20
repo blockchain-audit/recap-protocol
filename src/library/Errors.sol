@@ -13,7 +13,7 @@ library Errors {
     error NOT_TRADE_ADDRESS();
     error NULL_INPUT();
     error NULL_BALANCE();
-     error POOL_BALANCE();
+    error POOL_BALANCE();
     // error NULL_MAX_DUE_DATE();
     // error NULL_ARRAY();
     // error NULL_OFFER();

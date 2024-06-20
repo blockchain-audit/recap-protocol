@@ -21,7 +21,7 @@ library Liquidate {
     using User for State;
     //Valiedation function
 
-    function valiedAmountLiquidity(State storage state,uint256 amount) external view {
+    function valiedAmountLiquidity(State storage state, uint256 amount) external view {
         if (amount > 0) {
             revert Errors.NULL_AMOUNT();
         }

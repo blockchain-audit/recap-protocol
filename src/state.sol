@@ -25,7 +25,7 @@ struct Store {
     address quoter;
     address weth;
     // // Variables
-     uint256  poolFeeShare; // in bps
+    uint256 poolFeeShare; // in bps
     // uint256  keeperFeeShare = 1000; // in bps
     uint256 poolWithdrawalFee; // in bps
     // uint256  minimumMarginLevel = 2000; // 20% in bps, at which account is liquidated
