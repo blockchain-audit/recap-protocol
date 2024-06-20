@@ -51,13 +51,15 @@ library Liquidate {
         }
     }
 
-    function valiedUniswap(address tokenIn, uint256 amountIn, uint24 poolFee) external view {
-        require(poolFee > 0, "!poolFee");
+    function valiedUniswap(State storage state, address tokenIn, uint256 amountIn, uint24 poolFee) external view {
+        if (poolFee == 0) {
+            revert Errors.NULL_INPUT();
+        }
         require(msg.value != 0 || amountIn > 0 && tokenIn != address(0), "!input");
     }
     //Function
 
-    function addLiquidity(State storage state, uint256 amount) external {
+    function executeAddLiquidity(State storage state, uint256 amount) external {
         address user = msg.sender;
 
         uint256 balance = state.store.poolBalance;
@@ -72,7 +74,7 @@ library Liquidate {
         emit Events.AddLiquidity(user, amount, clpAmount, state.store.poolBalance);
     }
 
-    function addLiquidityThroughUniswap(
+    function executeAddLiquidityThroughUniswap(
         State storage state,
         address tokenIn,
         uint256 amountIn,
@@ -94,7 +96,7 @@ library Liquidate {
         emit Events.AddLiquidity(user, amountOut, clpAmount, state.store.poolBalance);
     }
 
-    function removeLiquidity(State storage state, uint256 amount) external {
+    function executeremoveLiquidity(State storage state, uint256 amount) external {
         address user = msg.sender;
         uint256 balance = state.store.poolBalance;
         uint256 clpSupply = state.getCLPSupply();

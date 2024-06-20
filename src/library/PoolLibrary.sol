@@ -20,7 +20,7 @@ library PoolLibrary {
     }
     // Methods
 
-    function initialization(State storage state, address _gov) external view {
+    function initialization(State storage state, address _gov) external {
         state.remainingData.gov = _gov;
         state.remainingData.BPS_DIVIDER = 1000;
         state.store.poolWithdrawalFee = 10;
@@ -34,7 +34,7 @@ library PoolLibrary {
         }
     }
 
-    function updateGov(State storage state, address _gov) external view onlyGov(state) {
+    function updateGov(State storage state, address _gov) external onlyGov(state) {
         address oldGov = state.remainingData.gov;
         state.remainingData.gov = _gov;
         emit Events.GovernanceUpdated(oldGov, _gov);

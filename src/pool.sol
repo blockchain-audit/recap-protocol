@@ -22,7 +22,7 @@ contract MainPool is RecapStorage {
 
     function addLiquidity(uint256 amount) public {
         state.valiedAmountLiquidity(amount);
-        state.addLiquidity(amount);
+        state.executeAddLiquidity(amount);
     }
 
     function addLiquidityToUniswap(
@@ -31,15 +31,15 @@ contract MainPool is RecapStorage {
         uint256 amountOutMin,
         address tokenIn,
         uint24 poolFee
-    ) public {
+    ) public payable {
         state.valiedUniswap(tokenIn, amountIn, poolFee);
-        state.valiedUniswapDetails(tokenIn, amountIn, poolFee);
-        state.addLiquidityThroughUniswap(tokenIn, amountIn, amountOutMin, poolFee);
+        state.valiedUniswapDetails(tokenIn, amountIn);
+        state.executeAddLiquidityThroughUniswap(tokenIn, amountIn, amountOutMin, poolFee);
     }
 
     function removeLiquidity(uint256 amount) public {
         state.validateRemoveLiquidity(amount);
-        state.removeLiquidity(amount);
+        state.executeremoveLiquidity(amount);
     }
 
     function creditTraderLoss(address user, string memory market, uint256 amount) public {
@@ -48,8 +48,8 @@ contract MainPool is RecapStorage {
     }
 
     function debitTraderProfit(address user, string memory market, uint256 amount) public {
-        state.vailedAddressTrader(amount);
-        state.validateDebitTraderProfit();
+        state.vailedAddressTrader();
+        state.validateDebitTraderProfit(amount);
         state.debitTraderProfit(user, market, amount);
     }
 
