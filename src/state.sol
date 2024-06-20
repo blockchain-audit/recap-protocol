@@ -15,7 +15,7 @@ struct ChainLink{
     AggregatorV3Interface sequencerUptimeFeed;
 }
 struct Pool {
-    uint256 BPS_DIVIDER   ;
+    uint256 BPS_DIVIDER;
     address  gov;
     address  trade;
     address  treasury;
