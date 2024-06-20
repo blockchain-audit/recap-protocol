@@ -3,7 +3,7 @@ pragma solidity ^0.8.7;
 
 // import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 import "../../../lib/chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
-// import {SequencerDown} from "./libraries/Error.sol";
+import {Error} from "./libraries/Error.sol";
 
 contract Chainlink {
     // -- Constants -- //
@@ -47,14 +47,14 @@ contract Chainlink {
             // Answer == 1: Sequencer is down
             bool isSequencerUp = answer == 0;
             if (!isSequencerUp) {
-                revert SequencerDown();
+                revert Error.SequencerDown();
             }
 
             // Make sure the grace period has passed after the sequencer is back up.
             uint256 timeSinceUp = block.timestamp - startedAt;
 
             if (timeSinceUp <= GRACE_PERIOD_TIME) {
-                revert GracePeriodNotOver();
+                revert Error.GracePeriodNotOver();
             }
         }
 

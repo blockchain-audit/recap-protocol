@@ -2,6 +2,7 @@
 pragma solidity ^0.8.23;
 
 import {State} from "../../Storage.sol";
+
 import "../Event.sol";
 
 library Liquidity {
@@ -18,7 +19,7 @@ library Liquidity {
         state.pool.store.incrementPoolBalance(amount);
         state.pool.store.mintCLP(user, clpAmount);
 
-        emit AddLiquidity(user, amount, clpAmount, state.pool.store.poolBalance());
+        // emit AddLiquidity(user, amount, clpAmount, state.pool.store.poolBalance());
     }
 
     function addLiquidityThroughUniswap(
@@ -36,16 +37,16 @@ library Liquidity {
         address user = from;
 
         // executes swap, tokens will be deposited to store contract
-        uint256 amountOut = store.swapExactInputSingle{value: val}(user, amountIn, amountOutMin, tokenIn, poolFee);
+        uint256 amountOut = State.store.swapExactInputSingle{value: val}(user, amountIn, amountOutMin, tokenIn, poolFee);
 
         // add store supported liquidity
-        uint256 balance = store.poolBalance();
-        uint256 clpSupply = store.getCLPSupply();
+        uint256 balance = State.store.poolBalance();
+        uint256 clpSupply = State.store.getCLPSupply();
         uint256 clpAmount = balance == 0 || clpSupply == 0 ? amountOut : amountOut * clpSupply / balance;
 
-        store.incrementPoolBalance(amountOut);
-        store.mintCLP(user, clpAmount);
+        State.store.incrementPoolBalance(amountOut);
+        State.store.mintCLP(user, clpAmount);
 
-        emit AddLiquidity(user, amountOut, clpAmount, store.poolBalance());
+        // emit AddLiquidity(user, amountOut, clpAmount, state.poolBalance());
     }
 }
