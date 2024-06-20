@@ -5,8 +5,8 @@ import "forge-std/console.sol";
 
 import {State} from "../../contracts/CapStorage.sol";
 
-import {CLPToken} from "./CLPToken.sol";
-import {PoolActions} from "./PoolActions.sol";
+import {CLPToken} from "../CLPToken.sol";
+import {Pool} from "../Pool.sol";
 import {SwapMethods} from "./SwapMethods.sol";
 
 import {Errors} from "../Errors.sol";
@@ -15,7 +15,7 @@ import {Events} from "../Events.sol";
 library AddLiquidityThroughUniswap {
 
     using CLPToken for State;
-    using PoolActions for State;
+    using Pool for State;
     using SwapMethods for State;
 
     function validateAddLiquidityThroughUniswap(State storage state, address tokenIn, uint256 amountIn, uint24 poolFee) external view {

@@ -5,8 +5,8 @@ import "forge-std/console.sol";
 
 import {State} from "../../contracts/CapStorage.sol";
 
-import {CLPToken} from "./CLPToken.sol";
-import {PoolActions} from "./PoolActions.sol";
+import {CLPToken} from "../CLPToken.sol";
+import {Pool} from "../Pool.sol";
 
 import {Errors} from "../Errors.sol";
 import {Events} from "../Events.sol";
@@ -14,7 +14,7 @@ import {Events} from "../Events.sol";
 library AddLiquidity {
 
     using CLPToken for State;
-    using PoolActions for State;
+    using Pool for State;
 
     function validateAddLiquidity(State storage state, uint256 amount) external view {
         if (amount == 0) {

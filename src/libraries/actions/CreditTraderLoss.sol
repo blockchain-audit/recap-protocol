@@ -5,10 +5,10 @@ import "forge-std/console.sol";
 
 import {State} from "../../contracts/CapStorage.sol";
 
-import {CLPToken} from "./CLPToken.sol";
-import {PoolActions} from "./PoolActions.sol";
-import {UserBalance} from "./UserBalance.sol";
-import {Buffer} from "./Buffer.sol";
+import {CLPToken} from "../CLPToken.sol";
+import {Pool} from "../Pool.sol";
+import {User} from "../User.sol";
+import {Buffer} from "../Buffer.sol";
 
 
 import {Errors} from "../Errors.sol";
@@ -17,8 +17,8 @@ import {Events} from "../Events.sol";
 library CreditTraderLoss {
 
     using CLPToken for State;
-    using PoolActions for State;
-    using UserBalance for State;
+    using Pool for State;
+    using User for State;
     using Buffer for State;
 
     function validateCreditTraderLoss(State storage state) external view {

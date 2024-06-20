@@ -5,43 +5,46 @@ import "forge-std/console.sol";
 
 import {State} from "../../contracts/CapStorage.sol";
 
-import {CLPToken} from "./CLPToken.sol";
-import {PoolActions} from "./PoolActions.sol";
-import {UserBalance} from "./UserBalance.sol";
-import {Buffer} from "./Buffer.sol";
+import {Pool} from "../Pool.sol";
+import {User} from "../User.sol";
+import {Buffer} from "../Buffer.sol";
 
 import {Errors} from "../Errors.sol";
 import {Events} from "../Events.sol";
 
 library DebitTraderProfit {
 
-    using CLPToken for State;
-    using PoolActions for State;
-    using UserBalance for State;
+    using Pool for State;
+    using User for State;
     using Buffer for State;
 
     function validateDebitTraderProfit(State storage state, uint256 amount) external view {
         if (amount == 0) {
             revert Errors.NULL_INPUT();
         }
+
+        if (msg.sender != state.contracts.trade) {
+            revert Errors.NOT_TRADER();
+        }
     }
 
-    function executeDebitTraderProfit(address user, string memory market, uint256 amount) external onlyTrade {
+    function executeDebitTraderProfit(State storage state, string memory market, uint256 amount) external {
+        address user = msg.sender;
 
-        uint256 bufferBalance = store.bufferBalance;
+        uint256 bufferBalance = state.variables.bufferBalance;
 
         if (amount > bufferBalance) {
             uint256 diffToPayFromPool = amount - bufferBalance;
-            uint256 poolBalance = store.poolBalance();
+            uint256 poolBalance = state.variables.poolBalance;
             require(diffToPayFromPool < poolBalance, "!pool-balance");
-            store.decrementBufferBalance(bufferBalance);
-            store.decrementPoolBalance(diffToPayFromPool);
+            state.decrementBufferBalance(bufferBalance);
+            state.decrementPoolBalance(diffToPayFromPool);
         } else {
-            store.decrementBufferBalance(amount);
+            state.decrementBufferBalance(amount);
         }
 
-        store.incrementBalance(user, amount);
+        state.incrementBalance(user, amount);
 
-        emit PoolPayOut(user, market, amount, store.poolBalance(), store.bufferBalance());
+        emit Events.PoolPayOut(user, market, amount, state.variables.poolBalance, state.variables.bufferBalance);
     }
 }
