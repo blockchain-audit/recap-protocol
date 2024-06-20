@@ -84,7 +84,10 @@ interface ITrade {
 
     function getLiquidatableUsers() external view returns (address[] memory usersToLiquidate);
 
-    function getMarketsWithPrices() external view returns (IStorage.Market[] memory _markets, uint256[] memory _prices);
+    function getMarketsWithPrices()
+        external
+        view
+        returns (IStorage.Market[] memory _markets, uint256[] memory _prices);
 
     function getUpl(address user) external view returns (int256 upl);
 

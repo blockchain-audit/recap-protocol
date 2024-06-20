@@ -11,7 +11,7 @@ contract Pool is IPool {
     address public trade;
     address public treasury;
 
-    IStore public store;
+    IStorage public store;
 
     // Methods
 
@@ -40,7 +40,7 @@ contract Pool is IPool {
 
     function link(address _trade, address _store, address _treasury) external onlyGov {
         trade = _trade;
-        store = IStore(_store);
+        store = IStorage(_store);
         treasury = _treasury;
     }
 
@@ -169,6 +169,6 @@ contract Pool is IPool {
             fee, // paid by user //
             poolFee,
             isLiquidation
-            );
+        );
     }
 }

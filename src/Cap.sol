@@ -3,13 +3,14 @@ pragma solidity ^0.8.13;
 
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
-import "@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol";
-import "@uniswap/v3-periphery/contracts/interfaces/IQuoter.sol";
+import "../lib/v3-periphery/contracts/interfaces/ISwapRouter.sol";
+import "../lib/v3-periphery/contracts/interfaces/IQuoter.sol";
 
-import "./interfaces/IStore.sol";
-import "./interfaces/ICLP.sol";
+import "./Interfaces/IStorage.sol";
+import "./Interfaces/ICLP.sol";
+import "./CapStorage.sol";
 
-contract Cap is IStore {
+contract Cap is IStorage , CapStorage {
     using EnumerableSet for EnumerableSet.UintSet;
     using EnumerableSet for EnumerableSet.Bytes32Set;
     using EnumerableSet for EnumerableSet.AddressSet;
@@ -18,17 +19,17 @@ contract Cap is IStore {
     // Modifiers
 
     modifier onlyContract() {
-        require(msg.sender == trade || msg.sender == pool, "!contract");
+        require(msg.sender == state.poolContracts.trade || msg.sender == state.poolContracts.pool, "!contract");
         _;
     }
 
     modifier onlyGov() {
-        require(msg.sender == gov, "!governance");
+        require(msg.sender == state.currencyContracts.gov, "!governance");
         _;
     }
 
     constructor(address _gov) {
-        gov = _gov;
+        state.currencyContracts.gov = _gov;
     }
 
     // Gov methods
@@ -36,77 +37,79 @@ contract Cap is IStore {
     function updateGov(address _gov) external onlyGov {
         require(_gov != address(0), "!address");
 
-        address oldGov = gov;
-        gov = _gov;
+        address oldGov = state.currencyContracts.gov;
+        state.currencyContracts.gov = _gov;
 
         emit GovernanceUpdated(oldGov, _gov);
     }
 
     function link(address _trade, address _pool, address _currency, address _clp) external onlyGov {
-        trade = _trade;
-        pool = _pool;
-        currency = _currency;
-        clp = _clp;
+        state.poolContracts.trade = _trade;
+        state.poolContracts.pool = _pool;
+        state.currencyContracts.currency = _currency;
+        state.currencyContracts.clp = _clp;
     }
 
     function linkUniswap(address _swapRouter, address _quoter, address _weth) external onlyGov {
-        swapRouter = _swapRouter;
-        quoter = _quoter;
-        weth = _weth; // _weth = WMATIC on Polygon
+        state.swapContracts.swapRouter = _swapRouter;
+        state.swapContracts.quoter = _quoter;
+        state.swapContracts.weth = _weth; // _weth = WMATIC on Polygon
     }
 
     function setPoolFeeShare(uint256 amount) external onlyGov {
-        poolFeeShare = amount;
+        state.fee.poolFeeShare = amount;
     }
 
     function setKeeperFeeShare(uint256 amount) external onlyGov {
         require(amount <= MAX_KEEPER_FEE_SHARE, "!max-keeper-fee-share");
-        keeperFeeShare = amount;
+        state.fee.keeperFeeShare = amount;
     }
 
     function setPoolWithdrawalFee(uint256 amount) external onlyGov {
         require(amount <= MAX_POOL_WITHDRAWAL_FEE, "!max-pool-withdrawal-fee");
-        poolWithdrawalFee = amount;
+        state.fee.poolWithdrawalFee = amount;
     }
 
     function setMinimumMarginLevel(uint256 amount) external onlyGov {
-        minimumMarginLevel = amount;
+        state.fee.minimumMarginLevel = amount;
     }
 
     function setBufferPayoutPeriod(uint256 amount) external onlyGov {
-        bufferPayoutPeriod = amount;
+        state.buffer.bufferPayoutPeriod = amount;
     }
 
     function setMarket(string calldata market, Market calldata marketInfo) external onlyGov {
         require(marketInfo.fee <= MAX_FEE, "!max-fee");
-        markets[market] = marketInfo;
-        for (uint256 i = 0; i < marketList.length; i++) {
-            if (keccak256(abi.encodePacked(marketList[i])) == keccak256(abi.encodePacked(market))) return;
+        state.marketData.markets[market] = marketInfo;
+        for (uint256 i = 0; i < state.marketData.marketList.length; i++) {
+            if (keccak256(abi.encodePacked(state.marketData.marketList[i])) == keccak256(abi.encodePacked(market))) {
+                return;
+            }
         }
-        marketList.push(market);
+        state.marketData.marketList.push(market);
     }
 
     // Methods
 
     function transferIn(address user, uint256 amount) external onlyContract {
-        IERC20(currency).safeTransferFrom(user, address(this), amount);
+        IERC20(state.currencyContracts.currency).safeTransferFrom(user, address(this), amount);
     }
 
     function transferOut(address user, uint256 amount) external onlyContract {
-        IERC20(currency).safeTransfer(user, amount);
+        IERC20(state.currencyContracts.currency).safeTransfer(user, amount);
     }
 
     // CLP methods
     function mintCLP(address user, uint256 amount) external onlyContract {
-        ICLP(clp).mint(user, amount);
+        ICLP(state.currencyContracts.clp).mint(user, amount);
     }
 
     function burnCLP(address user, uint256 amount) external onlyContract {
-        ICLP(clp).burn(user, amount);
+        ICLP(state.currencyContracts.clp).burn(user, amount);
     }
 
     function getCLPSupply() external view returns (uint256) {
-        return IERC20(clp).totalSupply();
+        return IERC20(state.currencyContracts.clp).totalSupply();
     }
 
     // Uniswap methods
@@ -116,21 +119,21 @@ contract Cap is IStore {
         onlyContract
         returns (uint256 amountOut)
     {
-        require(address(swapRouter) != address(0), "!swapRouter");
+        require(address(state.swapContracts.swapRouter) != address(0), "!swapRouter");
 
         if (msg.value != 0) {
             // there are no direct ETH pairs in Uniswapv3, so router converts ETH to WETH before swap
-            tokenIn = weth;
+            tokenIn = state.swapContracts.weth;
             amountIn = msg.value;
         } else {
             // transfer token to be swapped
             IERC20(tokenIn).safeTransferFrom(user, address(this), amountIn);
-            IERC20(tokenIn).safeApprove(address(swapRouter), amountIn);
+            IERC20(tokenIn).safeApprove(address(state.swapContracts.swapRouter), amountIn);
         }
 
         ISwapRouter.ExactInputSingleParams memory params = ISwapRouter.ExactInputSingleParams({
             tokenIn: tokenIn,
-            tokenOut: currency, // store supported currency
+            tokenOut: state.currencyContracts.currency, // store supported currency
             fee: poolFee,
             recipient: address(this),
             deadline: block.timestamp + 15,
@@ -140,7 +143,7 @@ contract Cap is IStore {
         });
 
         // The call to `exactInputSingle` executes the swap.
-        amountOut = ISwapRouter(swapRouter).exactInputSingle{value: msg.value}(params);
+        amountOut = ISwapRouter(state.swapContractsswapRouter).exactInputSingle{value: msg.value}(params);
     }
 
     // Function is not marked as view because it relies on calling non-view functions
@@ -149,155 +152,157 @@ contract Cap is IStore {
         external
         returns (uint256 amountOut)
     {
-        return IQuoter(quoter).quoteExactInputSingle(tokenIn, currency, poolFee, amountIn, 0);
+        return IQuoter(state.swapContracts.quoter).quoteExactInputSingle(
+            tokenIn, state.currencyContracts.currency, poolFee, amountIn, 0
+        );
     }
 
     // User balance
     function incrementBalance(address user, uint256 amount) external onlyContract {
-        balances[user] += amount;
+        state.userData.balances[user] += amount;
     }
 
     function decrementBalance(address user, uint256 amount) external onlyContract {
-        require(amount <= balances[user], "!balance");
-        balances[user] -= amount;
+        require(amount <= state.userData.balances[user], "!balance");
+        state.userData.balances[user] -= amount;
     }
 
     function getBalance(address user) external view returns (uint256) {
-        return balances[user];
+        return state.userData.balances[user];
     }
 
     // Pool
     function incrementPoolBalance(uint256 amount) external onlyContract {
-        poolBalance += amount;
+        state.poolBalance.poolBalance += amount;
     }
 
     function decrementPoolBalance(uint256 amount) external onlyContract {
-        poolBalance -= amount;
+        state.poolBalance.poolBalance -= amount;
     }
 
     function setPoolLastPaid(uint256 timestamp) external onlyContract {
-        poolLastPaid = timestamp;
+        state.poolBalance.poolLastPaid = timestamp;
     }
 
     function getUserPoolBalance(address user) external view returns (uint256) {
-        uint256 clpSupply = IERC20(clp).totalSupply();
+        uint256 clpSupply = IERC20(state.currencyContracts.clp).totalSupply();
         if (clpSupply == 0) return 0;
-        return IERC20(clp).balanceOf(user) * poolBalance / clpSupply;
+        return IERC20(state.currencyContracts.clp).balanceOf(user) * state.poolBalance.poolBalance / clpSupply;
     }
 
     // Buffer
     function incrementBufferBalance(uint256 amount) external onlyContract {
-        bufferBalance += amount;
+        state.poolBalance.bufferBalance += amount;
     }
 
     function decrementBufferBalance(uint256 amount) external onlyContract {
-        bufferBalance -= amount;
+        state.poolBalance.bufferBalance -= amount;
     }
 
     // Margin
     function lockMargin(address user, uint256 amount) external onlyContract {
-        lockedMargins[user] += amount;
-        usersWithLockedMargin.add(user);
+        state.userData.lockedMargins[user] += amount;
+        state.userData.usersWithLockedMargin.add(user);
     }
 
     function unlockMargin(address user, uint256 amount) external onlyContract {
-        if (amount > lockedMargins[user]) {
-            lockedMargins[user] = 0;
+        if (amount > state.userData.lockedMargins[user]) {
+            state.userData.lockedMargins[user] = 0;
         } else {
-            lockedMargins[user] -= amount;
+            state.userData.lockedMargins[user] -= amount;
         }
-        if (lockedMargins[user] == 0) {
-            usersWithLockedMargin.remove(user);
+        if (state.userData.lockedMargins[user] == 0) {
+            state.userData.usersWithLockedMargin.remove(user);
         }
     }
 
     function getLockedMargin(address user) external view returns (uint256) {
-        return lockedMargins[user];
+        return state.userData.lockedMargins[user];
     }
 
     function getUsersWithLockedMarginLength() external view returns (uint256) {
-        return usersWithLockedMargin.length();
+        return state.userData.usersWithLockedMargin.length();
     }
 
     function getUserWithLockedMargin(uint256 i) external view returns (address) {
-        return usersWithLockedMargin.at(i);
+        return state.userData.usersWithLockedMargin.at(i);
     }
 
     // Open interest
     function incrementOI(string calldata market, uint256 size, bool isLong) external onlyContract {
         if (isLong) {
-            OILong[market] += size;
-            require(markets[market].maxOI >= OILong[market], "!max-oi");
+            state.marketData.OILong[market] += size;
+            require(state.marketData.markets[market].maxOI >= state.marketData.OILong[market], "!max-oi");
         } else {
-            OIShort[market] += size;
-            require(markets[market].maxOI >= OIShort[market], "!max-oi");
+            state.marketData.OIShort[market] += size;
+            require(state.marketData.markets[market].maxOI >= state.marketData.OIShort[market], "!max-oi");
         }
     }
 
     function decrementOI(string calldata market, uint256 size, bool isLong) external onlyContract {
         if (isLong) {
-            if (size > OILong[market]) {
-                OILong[market] = 0;
+            if (size > state.marketData.OILong[market]) {
+                state.marketData.OILong[market] = 0;
             } else {
-                OILong[market] -= size;
+                state.marketData.OILong[market] -= size;
             }
         } else {
-            if (size > OIShort[market]) {
-                OIShort[market] = 0;
+            if (size > state.marketData.OIShort[market]) {
+                state.marketData.OIShort[market] = 0;
             } else {
-                OIShort[market] -= size;
+                state.marketData.OIShort[market] -= size;
             }
         }
     }
 
     function getOILong(string calldata market) external view returns (uint256) {
-        return OILong[market];
+        return state.marketData.OILong[market];
     }
 
     function getOIShort(string calldata market) external view returns (uint256) {
-        return OIShort[market];
+        return state.marketData.OIShort[market];
     }
 
     // Orders
     function addOrder(Order memory order) external onlyContract returns (uint256) {
-        uint256 nextOrderId = ++orderId;
+        uint256 nextOrderId = ++state.Order.orderId;
         order.orderId = uint72(nextOrderId);
-        orders[nextOrderId] = order;
-        userOrderIds[order.user].add(nextOrderId);
-        orderIds.add(nextOrderId);
+        state.order.orders[nextOrderId] = order;
+        state.order.userOrderIds[order.user].add(nextOrderId);
+        state.order.orderIds.add(nextOrderId);
         return nextOrderId;
     }
 
     function updateOrder(Order calldata order) external onlyContract {
-        orders[order.orderId] = order;
+        state.order.orders[order.orderId] = order;
     }
 
     function removeOrder(uint256 _orderId) external onlyContract {
-        Order memory order = orders[_orderId];
+        Order memory order = state.order.orders[_orderId];
         if (order.size == 0) return;
-        userOrderIds[order.user].remove(_orderId);
-        orderIds.remove(_orderId);
-        delete orders[_orderId];
+        state.order.userOrderIds[order.user].remove(_orderId);
+        state.order.orderIds.remove(_orderId);
+        delete state.order.orders[_orderId];
     }
 
     function getOrder(uint256 id) external view returns (Order memory _order) {
-        return orders[id];
+        return state.order.orders[id];
     }
 
     function getOrders() external view returns (Order[] memory _orders) {
-        uint256 length = orderIds.length();
+        uint256 length = state.order.orderIds.length();
         _orders = new Order[](length);
         for (uint256 i = 0; i < length; i++) {
-            _orders[i] = orders[orderIds.at(i)];
+            _orders[i] = state.order.orders[state.orderData.orderIds.at(i)];
         }
         return _orders;
     }
 
     function getUserOrders(address user) external view returns (Order[] memory _orders) {
-        uint256 length = userOrderIds[user].length();
+        uint256 length = state.orderData.userOrderIds[user].length();
         _orders = new Order[](length);
         for (uint256 i = 0; i < length; i++) {
-            _orders[i] = orders[userOrderIds[user].at(i)];
+            _orders[i] = state.order.orders[state.orderData.userOrderIds[user].at(i)];
         }
         return _orders;
     }
@@ -305,30 +310,30 @@ contract Cap is IStore {
     // Positions
     function addOrUpdatePosition(Position calldata position) external onlyContract {
         bytes32 key = _getPositionKey(position.user, position.market);
-        positions[key] = position;
-        positionKeysForUser[position.user].add(key);
-        positionKeys.add(key);
+        state.positionData.positions[key] = position;
+        state.positionData.positionKeysForUser[position.user].add(key);
+        state.positionData.positionKeys.add(key);
     }
 
     function removePosition(address user, string calldata market) external onlyContract {
         bytes32 key = _getPositionKey(user, market);
-        positionKeysForUser[user].remove(key);
-        positionKeys.remove(key);
-        delete positions[key];
+        state.positionData.positionKeysForUser[user].remove(key);
+        state.positionData.positionKeys.remove(key);
+        delete state.positionData.positions[key];
     }
 
     function getUserPositions(address user) external view returns (Position[] memory _positions) {
-        uint256 length = positionKeysForUser[user].length();
+        uint256 length = state.positionData.positionKeysForUser[user].length();
         _positions = new Position[](length);
         for (uint256 i = 0; i < length; i++) {
-            _positions[i] = positions[positionKeysForUser[user].at(i)];
+            _positions[i] = state.positionData.positions[state.positionData.positionKeysForUser[user].at(i)];
         }
         return _positions;
     }
 
     function getPosition(address user, string calldata market) public view returns (Position memory position) {
         bytes32 key = _getPositionKey(user, market);
-        return positions[key];
+        return state.positionData.positions[key];
     }
 
     function _getPositionKey(address user, string calldata market) internal pure returns (bytes32) {
@@ -337,31 +342,31 @@ contract Cap is IStore {
 
     // Markets
     function getMarket(string calldata market) external view returns (Market memory _market) {
-        return markets[market];
+        return state.marketData.markets[market];
     }
 
     function getMarketList() external view returns (string[] memory) {
-        return marketList;
+        return state.marketData.marketList;
     }
 
     // Funding
     function setFundingLastUpdated(string calldata market, uint256 timestamp) external onlyContract {
-        fundingLastUpdated[market] = timestamp;
+        state.funding.fundingLastUpdated[market] = timestamp;
     }
 
     function updateFundingTracker(string calldata market, int256 fundingIncrement) external onlyContract {
-        fundingTrackers[market] += fundingIncrement;
+        state.funding.fundingTrackers[market] += fundingIncrement;
     }
 
     function getFundingLastUpdated(string calldata market) external view returns (uint256) {
-        return fundingLastUpdated[market];
+        return state.funding.fundingLastUpdated[market];
     }
 
     function getFundingFactor(string calldata market) external view returns (uint256) {
-        return markets[market].fundingFactor;
+        return state.marketData.markets[market].fundingFactor;
     }
 
     function getFundingTracker(string calldata market) external view returns (int256) {
-        return fundingTrackers[market];
+        return state.funding.fundingTrackers[market];
     }
 }
