@@ -5,16 +5,16 @@ import "forge-std/console.sol";
 
 import {State} from "../contracts/CapStorage.sol";
 
-import {CLPToken} from "./CLPToken.sol";
+import {CLPToken} from "./CLPtoken.sol";
 
 import {Errors} from "./Errors.sol";
 
 library Pool {
     function incrementPoolBalance(State storage state, uint256 amount) external {
-        state.variables.poolBalance += amount;
+        state.balances.poolBalance += amount;
     }
 
     function decrementPoolBalance(State storage state, uint256 amount) external {
-        state.variables.poolBalance -= amount;
+        state.balances.poolBalance -= amount;
     }
 }

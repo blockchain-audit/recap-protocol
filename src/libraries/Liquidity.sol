@@ -3,20 +3,21 @@ pragma solidity ^0.8.24;
 
 import "forge-std/console.sol";
 
-import {State} from "../../contracts/CapStorage.sol";
-import {CLPToken} from "./CLPToken.sol";
-import {Pool} from "./Pool";
-import {UniSwapMethods} from "./UniswapMethods";
+import {State} from "src/contracts/CapStorage.sol";
+import {CLPToken} from "./CLPtoken.sol";
+import {Pool} from "./Pool.sol";
+import {UniswapMethods} from "./UniswapMethods.sol";
 import {Errors} from "./Errors.sol";
-import {Math} from "./Math";
-import {Events} from "./Events";
+import {Math} from "./Math.sol";
+import {Events} from "./Events.sol";
 
 library Liquidity {
 
     using CLPToken for State;
     using Pool for State;
-    using UniswapMethods for state;
+    using UniswapMethods for State;
     using Math for State;
+    using Math for uint256;
 
     
     function validateAddLiquidity(State storage state, uint256 amount) external view {
@@ -46,8 +47,8 @@ library Liquidity {
         if (msg.value == 0 || amountIn == 0 && tokenIn == address(0)) {
             revert Errors.NULL_INPUT();
         }
-        if (address(state.ContractAddresses.swapRouter) == address(0)) {
-            revert Erroes.NULL_ADDRESS();
+        if (address(state.contractAddresses.swapRouter) == address(0)) {
+            revert Errors.NULL_ADDRESS();
         }
     }
 
@@ -57,7 +58,7 @@ library Liquidity {
         uint256 amountOut = state.swapExactInputSingle(amountIn, amountOutMin, tokenIn, poolFee);
         uint256 balance = state.balances.poolBalance;
         uint256 clpSupply = state.getCLPSupply();
-        uint256 clpAmount = amountOut.calculateCLPAmount(clpSupply, balance);
+        uint256 clpAmount = state.calculateCLPAmount(amountOut, clpSupply, balance);
 
         state.incrementPoolBalance(amountOut);
         state.mintCLP(clpAmount);
@@ -69,23 +70,23 @@ library Liquidity {
         require(amount > 0, "!amount");
     }
 
-      function validateremoveLiquidity(State storage state, uint256 amount, address user) external {
-        uint256 balance = state.balances.poolBalance;
-        uint256 clpSupply = state.getCLPSupply();
-        require(balance > 0 && clpSupply > 0, "!empty");
+    //   function validateremoveLiquidity(State storage state, uint256 amount, address user) external {
+    //     uint256 balance = state.balances.poolBalance;
+    //     uint256 clpSupply = state.getCLPSupply();
+    //     require(balance > 0 && clpSupply > 0, "!empty");
 
-        uint256 userBalance = state.getUserPoolBalance(user);
-        if (amount > userBalance) amount = userBalance;
+    //     uint256 userBalance = state.getUserPoolBalance(user);
+    //     if (amount > userBalance) amount = userBalance;
 
-        uint256 feeAmount = amount.calculateFeeAmount(store.poolWithdrawalFee());
-        uint256 amountMinusFee = amount.calculateAmountMinusFee(feeAmount);
+    //     uint256 feeAmount = amount.calculateFeeAmount(store.poolWithdrawalFee());
+    //     uint256 amountMinusFee = amount.calculateAmountMinusFee(feeAmount);
 
-        uint256 clpAmount = amountMinusFee.calculateCLPAmount(clpSupply, balance);
+    //     uint256 clpAmount = amountMinusFee.calculateCLPAmount(clpSupply, balance);
 
-        store.decrementPoolBalance(amountMinusFee);
-        store.burnCLP(user, clpAmount);
-        store.transferOut(user, amountMinusFee);
+    //     store.decrementPoolBalance(amountMinusFee);
+    //     store.burnCLP(user, clpAmount);
+    //     store.transferOut(user, amountMinusFee);
 
-        emit RemoveLiquidity(user, amount, feeAmount, clpAmount, store.poolBalance());
-    }
+    //     emit Events.RemoveLiquidity(user, amount, feeAmount, clpAmount, store.poolBalance());
+    // }
 }

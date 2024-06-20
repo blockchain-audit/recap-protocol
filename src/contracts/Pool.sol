@@ -3,13 +3,13 @@ pragma solidity ^0.8.24;
 
 import "./CapStorage.sol";
 import "../interfaces/IPool.sol";
-import {Liquidity} from "../libraries/Liquidity.sol";
+import {Liquidity} from "src/libraries/Liquidity.sol";
 
 contract Pool is IPool, CapStorage {
 
     using Liquidity for State;
 
-    function addLiquidity(uint256 amount) public payable {
+    function addLiquidity(uint256 amount) public {
         state.validateAddLiquidity(amount);
         state.executeAddLiquidity(amount);
     }
@@ -20,8 +20,17 @@ contract Pool is IPool, CapStorage {
     }
 
     function removeLiquidity(uint256 amount) public {
-        state.validateRemoveLiquidity(amount);
-        state.executeRemoveLiquidity(amount);       
+        // state.validateRemoveLiquidity(amount);
+        // state.executeRemoveLiquidity(amount);       
     }
+  function creditFee(address user, string memory market, uint256 fee, bool isLiquidation) external{}
+
+    function creditTraderLoss(address user, string memory market, uint256 amount) external{}
+
+    function debitTraderProfit(address user, string memory market, uint256 amount) external{}
+
+    function link(address _trade, address _store, address _treasury) external{}
+
+    function updateGov(address _gov) external{}
 } 
 
