@@ -3,7 +3,6 @@ pragma solidity ^0.8.20;
 import "@hack/interfaces/IChainlink.sol";
 import "@hack/interfaces/IPool.sol";
 import "@hack/interfaces/IStore.sol";
-
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
@@ -12,27 +11,29 @@ import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
     using EnumerableSet for EnumerableSet.AddressSet;
 
 struct ChainLink{
-    uint256  UNIT ;
-    uint256 GRACE_PERIOD_TIME  ;
+    // uint256  UNIT ;
+    // uint256 GRACE_PERIOD_TIME  ;
     AggregatorV3Interface sequencerUptimeFeed;
 }
 
-struct Pool {
-    uint256 BPS_DIVIDER   ;
+struct PoolS {
+    // uint256 BPS_DIVIDER   ;
     address  gov;
     address  trade;
     address  treasury;
     IStore  store;
 }
 
-struct StoreConstants{
-    uint256  BPS_DIVIDER ;
-    uint256 MAX_FEE ; 
-    uint256 MAX_KEEPER_FEE_SHARE ; 
-    uint256 MAX_POOL_WITHDRAWAL_FEE ;
-    uint256 FUNDING_INTERVAL ; 
 
-}
+
+// struct StoreConstants{
+//     uint256  BPS_DIVIDER ;
+//     uint256 MAX_FEE ; 
+//     uint256 MAX_KEEPER_FEE_SHARE ; 
+//     uint256 MAX_POOL_WITHDRAWAL_FEE ;
+//     uint256 FUNDING_INTERVAL ; 
+
+// }
 
 struct StoreAddressContracts {
     address  gov;
@@ -83,8 +84,8 @@ struct StoreArr{
 }
 
 struct Trade { 
-    uint256  UNIT ;
-    uint256  BPS_DIVIDER ;
+    // uint256  UNIT ;
+    // uint256  BPS_DIVIDER ;
     address  gov;
     IChainlink  chainlink;
     IPool  pool;
@@ -93,7 +94,7 @@ struct Trade {
 
 struct State {
     ChainLink chinLink;
-    Pool pool;
+    PoolS pools;
     StoreAddressContracts storeAddressContracts;
     // StoreConstants storeConstants;
     StoreVariables storeVariables;
@@ -104,17 +105,6 @@ struct State {
 }
 
 abstract contract Storage {
-    State internal state;
-    
-    StoreConstants private constants  =  StoreConstants({
-        BPS_DIVIDER: 10000,
-        MAX_FEE : 500,
-        MAX_KEEPER_FEE_SHARE : 2000,
-        MAX_POOL_WITHDRAWAL_FEE : 500,
-        FUNDING_INTERVAL : 1 hours
-
-    });
-
-    
+    State internal state;   
 }
 
