@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: BUSL-1.1
+<<<<<<< HEAD
 pragma solidity ^0.8.13;
 
 interface IPool {
@@ -23,6 +24,15 @@ interface IPool {
     function addLiquidityThroughUniswap(address tokenIn, uint256 amountIn, uint256 amountOutMin, uint24 poolFee)
         external
         payable;
+=======
+pragma solidity ^0.8.24;
+
+interface IPool {
+
+    function addLiquidity(uint256 amount) external;
+
+    function addLiquidityThroughUniswap(address tokenIn, uint256 amountIn, uint256 amountOutMin, uint24 poolFee) external payable;
+>>>>>>> 0cd4141c02bc25a80743f082e767129745105be7
 
     function creditFee(address user, string memory market, uint256 fee, bool isLiquidation) external;
 
