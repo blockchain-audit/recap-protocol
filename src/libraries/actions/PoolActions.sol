@@ -7,9 +7,8 @@ import {State} from "../../contracts/CapStorage.sol";
 
 import {CLPToken} from "./CLPToken.sol";
 
-import {Errors} from "../Errors.sol";
-
 library PoolActions {
+
     function incrementPoolBalance(State storage state, uint256 amount) external {
         state.variables.poolBalance += amount;
     }

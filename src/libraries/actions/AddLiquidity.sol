@@ -7,7 +7,6 @@ import {State} from "../../contracts/CapStorage.sol";
 
 import {CLPToken} from "./CLPToken.sol";
 import {PoolActions} from "./PoolActions.sol";
-import {SwapMethods} from "./SwapMethods.sol";
 
 import {Errors} from "../Errors.sol";
 import {Events} from "../Events.sol";
@@ -16,7 +15,6 @@ library AddLiquidity {
 
     using CLPToken for State;
     using PoolActions for State;
-    using SwapMethods for State;
 
     function validateAddLiquidity(State storage state, uint256 amount) external view {
         if (amount == 0) {
