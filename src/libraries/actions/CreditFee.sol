@@ -19,7 +19,7 @@ library CreditFee {
 
     function validateCreditFee(State storage state) external view {
         if (msg.sender != state.contracts.trade) {
-            revert Errors.NOT_TRADER();
+            revert Errors.NOT_ALLOWED();
         }
     }
 

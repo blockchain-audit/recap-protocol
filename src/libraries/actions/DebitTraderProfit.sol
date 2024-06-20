@@ -20,7 +20,7 @@ library DebitTraderProfit {
 
     function validateDebitTraderProfit(State storage state, uint256 amount) external view {
         if (msg.sender != state.contracts.trade) {
-            revert Errors.NOT_TRADER();
+            revert Errors.NULL_ADDRESS();
         }
 
         uint256 bufferBalance = state.variables.bufferBalance;
