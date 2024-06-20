@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 import {RecapStorage, State} from "../src/state.sol";
-import "../../src/library/PoolLibrary.sol";
 import {Liquidate} from "./library/Liquidate.sol";
+import {PoolLibrary} from "./library/PoolLibrary.sol";
+
 
 contract MainPool is RecapStorage{
     using PoolLibrary for State;
@@ -17,12 +18,13 @@ contract MainPool is RecapStorage{
         state.updateGov(state,newGov);
         
     }
-    // function addLiquidity(uint256 amount)public{
-    //     state.valiedAmountLiquidity(amount);
-    //     state.addLiquidity(amount);
-    // }
-    // function addLiquidityThroughUniswap( address tokenIn, uint256 amountIn, uint256 amountOutMin, uint24 poolFee)public{
-    //     state.addLiquidityThroughUniswap( tokenIn,  amountIn,  amountOutMin,  poolFee);
-    // }
+    function addLiquidity(uint256 amount)public{
+        state.valiedAmountLiquidity(amount);
+        state.addLiquidity(amount);
+    }
+    function addLiquidityToUniswap( address tokenIn, uint256 amountIn, uint256 amountOutMin, uint24 poolFee)public{
+        state.valiedUniswapDetails( tokenIn, amountIn);
+        state.addLiquidityThroughUniswap( tokenIn,  amountIn, amountOutMin, poolFee);
+    }
 
 }

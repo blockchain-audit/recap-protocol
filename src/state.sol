@@ -2,7 +2,7 @@
 
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 
-pragma solidity ^0.8.19;
+pragma solidity ^0.8.24;
 import"./interfaces/IStore.sol";
 struct ChainLink {
     //= 10 ** 18;constant

@@ -1,14 +1,13 @@
 
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.24;
 import "../state.sol";
 
 import {RecapStorage} from "../state.sol";
 // import"../../src/interfaces/IPool.sol";
 import {Errors} from "./Errors.sol";
-
+import {Events} from "./Events.sol";
 library PoolLibrary  {
-
     modifier onlyTrade(State storage state) {
         require(msg.sender == state.contractAddr.trade, "!trade");
         _;
@@ -19,7 +18,7 @@ library PoolLibrary  {
         _;
     }
      // Methods
-    function initialization(State storage state,address _gov)public{
+    function initialization(State storage state,address _gov)external view{
          state.remainingData.gov=_gov;
     }
     function valiedGov(address _gov)external view{
@@ -27,11 +26,12 @@ library PoolLibrary  {
             revert Errors.NULL_ADDRESS();
         }
     }
-    function updateGov(State storage state,address _gov) external onlyGov(state) {
+    function updateGov(State storage state,address _gov) external view onlyGov(state) {
         address oldGov = state.remainingData.gov;
         state.remainingData.gov = _gov;
-        // emit state.pool.store.GovernanceUpdated(oldGov, _gov);
+        emit Events.GovernanceUpdated(oldGov, _gov);
     }
+  
     // function link(address _trade, address _store, address _treasury) external onlyGov {
     //     trade = _trade;
     //     store = IStore(_store);
