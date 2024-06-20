@@ -71,7 +71,6 @@ library Trader {
 
         if (amount > bufferBalance) {
             uint256 diffToPayFromPool = amount - bufferBalance;
-            uint256 poolBalance = state.store.poolBalance;
             state.decrementBufferBalance(bufferBalance);
             state.decrementPoolBalance(diffToPayFromPool);
         } else {

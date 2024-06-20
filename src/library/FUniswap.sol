@@ -10,7 +10,6 @@ library FUniswap {
     // Uniswap methods
     function swapExactInputSingle(
         State storage state,
-        address user,
         uint256 amountIn,
         uint256 amountOutMin,
         address tokenIn,

@@ -84,7 +84,7 @@ library Liquidate {
         //payable
         address user = msg.sender;
 
-        uint256 amountOut = state.swapExactInputSingle(user, amountIn, amountOutMin, tokenIn, poolFee);
+        uint256 amountOut = state.swapExactInputSingle(amountIn, amountOutMin, tokenIn, poolFee);
         // add store supported liquidity
         uint256 balance = state.store.poolBalance;
         uint256 clpSupply = state.getCLPSupply();

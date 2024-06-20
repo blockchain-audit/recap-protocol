@@ -25,13 +25,10 @@ contract MainPool is RecapStorage {
         state.executeAddLiquidity(amount);
     }
 
-    function addLiquidityToUniswap(
-        address user,
-        uint256 amountIn,
-        uint256 amountOutMin,
-        address tokenIn,
-        uint24 poolFee
-    ) public payable {
+    function addLiquidityToUniswap(uint256 amountIn, uint256 amountOutMin, address tokenIn, uint24 poolFee)
+        public
+        payable
+    {
         state.valiedUniswap(tokenIn, amountIn, poolFee);
         state.valiedUniswapDetails(tokenIn, amountIn);
         state.executeAddLiquidityThroughUniswap(tokenIn, amountIn, amountOutMin, poolFee);

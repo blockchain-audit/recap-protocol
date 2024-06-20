@@ -9,17 +9,11 @@ import {Errors} from "./Errors.sol";
 import {Events} from "./Events.sol";
 
 library PoolLibrary {
-    modifier onlyTrade(State storage state) {
-        require(msg.sender == state.contractAddr.trade, "!trade");
-        _;
-    }
-
     modifier onlyGov(State storage state) {
         require(msg.sender == state.remainingData.gov, "!governance");
         _;
     }
     // Methods
-
     function initialization(State storage state, address _gov) external {
         state.remainingData.gov = _gov;
         state.remainingData.BPS_DIVIDER = 1000;
