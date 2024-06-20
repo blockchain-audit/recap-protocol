@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.13;
 
-interface IStore {
+interface IStorage {
     // Events
     event GovernanceUpdated(address indexed oldGov, address indexed newGov);
 
