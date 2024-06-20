@@ -6,4 +6,5 @@ library Errors {
     error NULL_ADDRESS();
     error NULL_BALANCE();
     error NOT_TRADER();
+    error POOL_BALANCE();
 }

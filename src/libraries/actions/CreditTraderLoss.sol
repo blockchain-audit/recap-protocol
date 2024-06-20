@@ -27,8 +27,7 @@ library CreditTraderLoss {
         }
     }
 
-    function executeCreditTraderLoss(State storage state, string memory market, uint256 amount) external {
-        address user = msg.sender;
+    function executeCreditTraderLoss(State storage state, address user, string memory market, uint256 amount) external {
 
         state.incrementBufferBalance(amount);
         state.decrementBalance(user, amount);

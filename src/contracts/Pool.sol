@@ -8,6 +8,7 @@ import {AddLiquidityThroughUniswap} from "../libraries/actions/AddLiquidityThrou
 import {RemoveLiquidity} from "../libraries/actions/RemoveLiquidity.sol";
 import {CreditTraderLoss} from "../libraries/actions/CreditTraderLoss.sol";
 import {DebitTraderProfit} from "../libraries/actions/DebitTraderProfit.sol";
+import {CreditFee} from "../libraries/actions/CreditFee.sol";
 
 contract Pool is CapStorage{
 
@@ -16,6 +17,7 @@ contract Pool is CapStorage{
     using RemoveLiquidity for State;
     using CreditTraderLoss for State;
     using DebitTraderProfit for State;
+    using CreditFee for State;
 
     function addLiquidity(uint256 amount) public payable {
         state.validateAddLiquidity(amount);
@@ -33,13 +35,18 @@ contract Pool is CapStorage{
         state.executeRemoveLiquidity(amount);
     }
 
-    function creditTraderLoss(string memory market, uint256 amount) public {
+    function creditTraderLoss(address user, string memory market, uint256 amount) public {
         state.validateCreditTraderLoss();
-        state.executeCreditTraderLoss(market, amount);
+        state.executeCreditTraderLoss(user, market, amount);
     }
 
-    function debitTraderProfit(string memory market, uint256 amount) public {
+    function debitTraderProfit(address user,string memory market, uint256 amount) public {
         state.validateDebitTraderProfit(amount);
-        state.executeDebitTraderProfit(market, amount);
+        state.executeDebitTraderProfit(user, market, amount);
+    }
+
+    function creditFee(address user,string memory market, uint256 fee, bool isLiquidation) public {
+        state.validateCreditFee();
+        state.executeCreditFee(user, market, fee, isLiquidation);
     }
 } 

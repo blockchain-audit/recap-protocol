@@ -44,7 +44,7 @@ library RemoveLiquidity {
         state.decrementPoolBalance(amountMinusFee);
         state.burnCLP(clpAmount);
 
-        state.transferOut(amountMinusFee);
+        state.transferOut(msg.sender, amountMinusFee);
 
         emit Events.RemoveLiquidity(user, amount, feeAmount, clpAmount, state.variables.poolBalance);
     }

@@ -116,6 +116,7 @@ struct State {
     Contracts contracts;
     Variables variables;
     Funding funding;
+    address treasury;
 }
 
 
