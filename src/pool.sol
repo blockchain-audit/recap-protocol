@@ -27,7 +27,7 @@ contract Pool is Storage{
     }
 
     function updateGov(address _gov) external onlyGov {
-        if(_gov != address(0)){
+        if(_gov == address(0)){
             revert errors.UnValidAddress();
         } 
         address oldGov = state.pools.gov;
@@ -43,7 +43,7 @@ contract Pool is Storage{
     }
 
     function addLiquidity(uint256 amount) external {
-        if(amount > 0){
+        if(amount <= 0){
             revert errors.UnvalidAmount();
         }
         
@@ -65,22 +65,29 @@ contract Pool is Storage{
         external
         payable
     {
-        require(poolFee > 0, "!poolFee");
-        require(msg.value != 0 || amountIn > 0 && tokenIn != address(0), "!input");
+        if(poolFee < 0){
+            revert errors.UnValidPoolFee();
+        }
+
+        if(msg.value == 0 || amountIn <= 0 && tokenIn == address(0)){
+            revert errors.UnValidInput();
+        }
 
         address user = msg.sender;
 
         // executes swap, tokens will be deposited to store contract
-        uint256 amountOut = store.swapExactInputSingle{value: msg.value}(user, amountIn, amountOutMin, tokenIn, poolFee);
+        uint256 amountOut = state.pools.store.swapExactInputSingle{value: msg.value}(user, amountIn, amountOutMin, tokenIn, poolFee);
 
         // add store supported liquidity
-        uint256 balance = store.poolBalance();
-        uint256 clpSupply = store.getCLPSupply();
+        uint256 balance = state.pools.store.poolBalance();
+        uint256 clpSupply = state.pools.store.getCLPSupply();
         uint256 clpAmount = balance == 0 || clpSupply == 0 ? amountOut : amountOut * clpSupply / balance;
 
-        store.incrementPoolBalance(amountOut);
-        store.mintCLP(user, clpAmount);
+        state.pools.store.incrementPoolBalance(amountOut);
+        state.pools.store.mintCLP(user, clpAmount);
 
-        emit AddLiquidity(user, amountOut, clpAmount, store.poolBalance());
+        emit events.AddLiquidity(user, amountOut, clpAmount, state.pools.store.poolBalance());
     }
+
+    
 }

@@ -7,5 +7,8 @@ library errors {
     error GracePeriodNotOver();
     error UnValidAddress();
     error UnvalidAmount();
+    error UnValidPoolFee();
+    error UnValidInput();
+
 }
 
