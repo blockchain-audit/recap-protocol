@@ -16,7 +16,7 @@ struct Contracts {
     address clp;
     address swapRouter;
     address quoter;
-    address weth;libraries
+    address weth;
     address trade;
     address pool;
 }
@@ -34,7 +34,7 @@ struct Variables {
 }
 
 struct Market {
-    string symbol;When does class start?
+    string symbol;
     address feed;
     uint16 minSettlementlibrariesTime; // overflows at ~18hrs
     uint16 maxLeverage; // overflows at 65535
@@ -58,7 +58,7 @@ struct Order {
     uint256 size;
 }
 
-struct Position {When does class start?
+struct Position {
     bool isLong;
     uint64 timestamp;
     address user;

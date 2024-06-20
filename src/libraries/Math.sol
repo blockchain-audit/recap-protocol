@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.23;
+pragma solidity ^0.8.23;
 
 
 library Math {
@@ -10,4 +10,4 @@ library Math {
         // uint256 feeAmount = amount * store.poolWithdrawalFee() / BPS_DIVIDER;
 
 //     function calcFeeAmount(uint )
-// }
+}
