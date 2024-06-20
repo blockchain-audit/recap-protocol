@@ -3,25 +3,28 @@ pragma solidity ^0.8.13;
 
 import "../../interfaces/IPool.sol";
 import "../../interfaces/IStore.sol";
+import "../Events.sol";
+import {State} from "./state.sol";
 
 library Liquidity {
     uint256 public constant BPS_DIVIDER = 10000;
-    IStore public store;
+
+    // using State for State.pool.store;
 
     function addLiquidity(uint256 amount) external {
         require(amount > 0, "!amount");
-        uint256 balance = store.poolBalance();
+        uint256 balance = State.store.poolBalance();
         address user = msg.sender;
-        store.transferIn(user, amount);
+        State.store.transferIn(user, amount);
 
-        uint256 clpSupply = store.getCLPSupply();
+        uint256 clpSupply = State.store.getCLPSupply();
 
         uint256 clpAmount = balance == 0 || clpSupply == 0 ? amount : amount * clpSupply / balance;
 
-        store.incrementPoolBalance(amount);
-        store.mintCLP(user, clpAmount);
+        State.store.incrementPoolBalance(amount);
+        State.store.mintCLP(user, clpAmount);
 
-        emit AddLiquidity(user, amount, clpAmount, store.poolBalance());
+        emit Events.AddLiquidity(user, amount, clpAmount, State.store.poolBalance());
     }
 
     function addLiquidityThroughUniswap(address tokenIn, uint256 amountIn, uint256 amountOutMin, uint24 poolFee)
@@ -34,41 +37,42 @@ library Liquidity {
         address user = msg.sender;
 
         // executes swap, tokens will be deposited to store contract
-        uint256 amountOut = store.swapExactInputSingle{value: msg.value}(user, amountIn, amountOutMin, tokenIn, poolFee);
+        uint256 amountOut =
+            State.store.swapExactInputSingle{value: msg.value}(user, amountIn, amountOutMin, tokenIn, poolFee);
 
         // add store supported liquidity
-        uint256 balance = store.poolBalance();
-        uint256 clpSupply = store.getCLPSupply();
+        uint256 balance = State.store.poolBalance();
+        uint256 clpSupply = State.store.getCLPSupply();
         uint256 clpAmount = balance == 0 || clpSupply == 0 ? amountOut : amountOut * clpSupply / balance;
 
-        store.incrementPoolBalance(amountOut);
-        store.mintCLP(user, clpAmount);
+        State.store.incrementPoolBalance(amountOut);
+        State.store.mintCLP(user, clpAmount);
 
-        emit AddLiquidity(user, amountOut, clpAmount, store.poolBalance());
+        emit Events.AddLiquidity(user, amountOut, clpAmount, State.store.poolBalance());
     }
 
     function removeLiquidity(uint256 amount) external {
         require(amount > 0, "!amount");
 
         address user = msg.sender;
-        uint256 balance = store.poolBalance();
-        uint256 clpSupply = store.getCLPSupply();
+        uint256 balance = State.store.poolBalance();
+        uint256 clpSupply = State.store.getCLPSupply();
         require(balance > 0 && clpSupply > 0, "!empty");
 
-        uint256 userBalance = store.getUserPoolBalance(user);
+        uint256 userBalance = State.store.getUserPoolBalance(user);
         if (amount > userBalance) amount = userBalance;
 
-        uint256 feeAmount = amount * store.poolWithdrawalFee() / BPS_DIVIDER;
+        uint256 feeAmount = amount * State.store.poolWithdrawalFee() / BPS_DIVIDER;
         uint256 amountMinusFee = amount - feeAmount;
 
         // CLP amount
         uint256 clpAmount = amountMinusFee * clpSupply / balance;
 
-        store.decrementPoolBalance(amountMinusFee);
-        store.burnCLP(user, clpAmount);
+        State.store.decrementPoolBalance(amountMinusFee);
+        State.store.burnCLP(user, clpAmount);
 
-        store.transferOut(user, amountMinusFee);
+        State.store.transferOut(user, amountMinusFee);
 
-        emit RemoveLiquidity(user, amount, feeAmount, clpAmount, store.poolBalance());
+        emit Events.RemoveLiquidity(user, amount, feeAmount, clpAmount, State.store.poolBalance());
     }
 }
