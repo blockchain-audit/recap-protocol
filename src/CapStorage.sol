@@ -40,20 +40,20 @@ struct Buffer {
 }
 
 struct OrderData {
-    mapping(uint256 => Order) orders;
+    mapping(uint256 => IStorage.Order) orders;
     mapping(address => EnumerableSet.UintSet) userOrderIds; // user => [order ids..]
     EnumerableSet.UintSet orderIds; // [order ids..]
 }
 
 struct MarketData {
     string[] marketList; // "ETH-USD", "BTC-USD", etc
-    mapping(string => Market) markets;  
+    mapping(string => IStorage.Market) markets;  
     mapping(string => uint256) OILong;
     mapping(string => uint256) OIShort;  
 }
 
 struct PositionData {
-    mapping(bytes32 => Position) positions; // key = user,market
+    mapping(bytes32 => IStorage.Position) positions; // key = user,market
     EnumerableSet.Bytes32Set positionKeys; // [position keys..]
     mapping(address => EnumerableSet.Bytes32Set) positionKeysForUser; // user => [position keys..]
 }
@@ -83,7 +83,7 @@ struct State {
     Funding funding;
 }
 
-abstract contract SizeStorage {
+abstract contract CapStorage {
     State internal state;
 
     // constants

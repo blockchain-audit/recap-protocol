@@ -84,20 +84,20 @@ interface ITrade {
 
     function getLiquidatableUsers() external view returns (address[] memory usersToLiquidate);
 
-    function getMarketsWithPrices() external view returns (IStore.Market[] memory _markets, uint256[] memory _prices);
+    function getMarketsWithPrices() external view returns (IStorage.Market[] memory _markets, uint256[] memory _prices);
 
     function getUpl(address user) external view returns (int256 upl);
 
     function getUserPositionsWithUpls(address user)
         external
         view
-        returns (IStore.Position[] memory _positions, int256[] memory _upls);
+        returns (IStorage.Position[] memory _positions, int256[] memory _upls);
 
     function link(address _chainlink, address _pool, address _store) external;
 
     function liquidateUsers() external;
 
-    function submitOrder(IStore.Order memory params, uint256 tpPrice, uint256 slPrice) external;
+    function submitOrder(IStorage.Order memory params, uint256 tpPrice, uint256 slPrice) external;
 
     function updateGov(address _gov) external;
 
