@@ -16,12 +16,21 @@ library User {
         state.store.poolBalance += amount;
     }
 
+    function decrementPoolBalance(State storage state, uint256 amount) external {
+        state.store.poolBalance -= amount;
+    }
+    //User balance
+
+    function incrementBalance(State storage state, address user, uint256 amount) external {
+        state.store.balances[user] += amount;
+    }
+
+    function getBalance(State storage state, address user) external view returns (uint256) {
+        return state.store.balances[user];
+    }
+
     function decrementBalance(State storage state, address user, uint256 amount) external {
         require(amount <= state.store.balances[user], "!balance");
         state.store.balances[user] -= amount;
-    }
-
-    function decrementPoolBalance(State storage state, uint256 amount) external {
-        state.store.poolBalance -= amount;
     }
 }

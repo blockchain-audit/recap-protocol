@@ -25,14 +25,14 @@ struct Store {
     address quoter;
     address weth;
     // // Variables
-    // uint256  poolFeeShare = 5000; // in bps
+     uint256  poolFeeShare; // in bps
     // uint256  keeperFeeShare = 1000; // in bps
     uint256 poolWithdrawalFee; // in bps
     // uint256  minimumMarginLevel = 2000; // 20% in bps, at which account is liquidated
     uint256 bufferBalance;
     uint256 poolBalance;
     uint256 poolLastPaid;
-    // uint256  bufferPayoutPeriod = 7 days;
+    uint256 bufferPayoutPeriod;
     uint256 orderId;
     mapping(uint256 => IStore.Order) orders;
     mapping(address => EnumerableSet.UintSet) userOrderIds; // user => [order ids..]

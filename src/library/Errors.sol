@@ -10,7 +10,10 @@ library Errors {
     // error USER_IS_UNDERWATER(address account, uint256 cr);
     error NULL_ADDRESS();
     error NULL_AMOUNT();
-    // error NULL_TENOR();
+    error NOT_TRADE_ADDRESS();
+    error NULL_INPUT();
+    error NULL_BALANCE();
+     error POOL_BALANCE();
     // error NULL_MAX_DUE_DATE();
     // error NULL_ARRAY();
     // error NULL_OFFER();

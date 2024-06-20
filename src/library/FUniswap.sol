@@ -6,7 +6,7 @@ import "../../lib/v3-periphery/contracts/interfaces/ISwapRouter.sol";
 import {RecapStorage} from "../state.sol";
 import "../state.sol";
 
-library FLiquidate {
+library FUniswap {
     // Uniswap methods
     function swapExactInputSingle(
         State storage state,
