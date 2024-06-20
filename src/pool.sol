@@ -3,13 +3,14 @@ pragma solidity ^0.8.20;
 
 import "./interfaces/IPool.sol";
 import "./interfaces/IStore.sol";
-import "./Math.sol"; // Importing the Math library
+import {Events} from "./libraries/events.sol";
+import "./libraries/math.sol";
 
-uint256 public constant BPS_DIVIDER = 10000;
-uint256 public constant MAX_FEE = 500; // in bps = 5%
-uint256 public constant MAX_KEEPER_FEE_SHARE = 2000; // in bps = 20%
-uint256 public constant MAX_POOL_WITHDRAWAL_FEE = 500; // in bps = 5%
-uint256 public constant FUNDING_INTERVAL = 1 hours; // In seconds.
+uint256 constant BPS_DIVIDER = 10000;
+uint256 constant MAX_FEE = 500; // in bps = 5%
+uint256 constant MAX_KEEPER_FEE_SHARE = 2000; // in bps = 20%
+uint256 constant MAX_POOL_WITHDRAWAL_FEE = 500; // in bps = 5%
+uint256 constant FUNDING_INTERVAL = 1 hours; // In seconds.
 
 contract Pool is IPool {
     using Math for uint256;
@@ -42,7 +43,7 @@ contract Pool is IPool {
         address oldGov = gov;
         gov = _gov;
 
-        emit GovernanceUpdated(oldGov, _gov);
+        emit Events.GovernanceUpdated(oldGov, _gov);
     }
 
     function link(address _trade, address _store, address _treasury) external onlyGov {
@@ -63,7 +64,7 @@ contract Pool is IPool {
         store.incrementPoolBalance(amount);
         store.mintCLP(user, clpAmount);
 
-        emit AddLiquidity(user, amount, clpAmount, store.poolBalance());
+        emit Events.AddLiquidity(user, amount, clpAmount, store.poolBalance());
     }
 
     function addLiquidityThroughUniswap(address tokenIn, uint256 amountIn, uint256 amountOutMin, uint24 poolFee)
@@ -86,7 +87,7 @@ contract Pool is IPool {
         store.incrementPoolBalance(amountOut);
         store.mintCLP(user, clpAmount);
 
-        emit AddLiquidity(user, amountOut, clpAmount, store.poolBalance());
+        emit Events.AddLiquidity(user, amountOut, clpAmount, store.poolBalance());
     }
 
     function removeLiquidity(uint256 amount) external {
@@ -111,7 +112,7 @@ contract Pool is IPool {
 
         store.transferOut(user, amountMinusFee);
 
-        emit RemoveLiquidity(user, amount, feeAmount, clpAmount, store.poolBalance());
+        emit Events.RemoveLiquidity(user, amount, feeAmount, clpAmount, store.poolBalance());
     }
 
     function creditTraderLoss(address user, string memory market, uint256 amount) external onlyTrade {
@@ -135,7 +136,7 @@ contract Pool is IPool {
             store.setPoolLastPaid(_now);
         }
 
-        emit PoolPayIn(user, market, amount, amountToSendPool, store.poolBalance(), store.bufferBalance());
+        emit Events.PoolPayIn(user, market, amount, amountToSendPool, store.poolBalance(), store.bufferBalance());
     }
 
     function debitTraderProfit(address user, string memory market, uint256 amount) external onlyTrade {
@@ -155,7 +156,7 @@ contract Pool is IPool {
 
         store.incrementBalance(user, amount);
 
-        emit PoolPayOut(user, market, amount, store.poolBalance(), store.bufferBalance());
+        emit Events.PoolPayOut(user, market, amount, store.poolBalance(), store.bufferBalance());
     }
 
     function creditFee(address user, string memory market, uint256 fee, bool isLiquidation) external onlyTrade {
@@ -167,7 +168,7 @@ contract Pool is IPool {
         store.incrementPoolBalance(poolFee);
         store.transferOut(treasury, treasuryFee);
 
-        emit FeePaid(
+        emit Events.FeePaid(
             user,
             market,
             fee, // paid by user //
