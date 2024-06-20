@@ -8,6 +8,7 @@ library Errors {
     error NULL_BALANCE();
     error NOT_TRADER();
     error AMOUNT_EXCEEDS_BALANCE();
+    error INSUFFICIENT_EQUITY();
 
 
 }

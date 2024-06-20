@@ -3,14 +3,14 @@ pragma solidity ^0.8.24;
 
 import "./CapStorage.sol";
 import "../interfaces/IPool.sol";
-import {AddLiquidityThroughUniswap} from "../libraries/actions/AddLiquidityThroughUniswap.sol";
+import {AddLiquidityThroughUniswap} from "../libraries/poolActions/AddLiquidityThroughUniswap.sol";
 
-import {AddLiquidity} from "../libraries/actions/AddLiquidity.sol";
+import {AddLiquidity} from "../libraries/poolActions/AddLiquidity.sol";
 
-import {RemoveLiquidity} from "../libraries/actions/RemoveLiquidity.sol";
-import {CreditTraderLoss} from "../libraries/actions/CreditTraderLoss.sol";
-import {DebitTraderProfit} from "../libraries/actions/DebitTraderProfit.sol";
-import {CreditFee} from "../libraries/actions/CreditFee.sol";
+import {RemoveLiquidity} from "../libraries/poolActions/RemoveLiquidity.sol";
+import {CreditTraderLoss} from "../libraries/poolActions/CreditTraderLoss.sol";
+import {DebitTraderProfit} from "../libraries/poolActions/DebitTraderProfit.sol";
+import {CreditFee} from "../libraries/poolActions/CreditFee.sol";
 
 contract Pool is CapStorage, IPool{
     using AddLiquidityThroughUniswap for State;
@@ -19,6 +19,10 @@ contract Pool is CapStorage, IPool{
     using CreditTraderLoss for State;
     using DebitTraderProfit for State;
     using CreditFee for State;
+
+    function link(address _trade, address _store, address _treasury) external{}
+
+    function updateGov(address _gov) external{}
 
 
     function addLiquidity(uint256 amount) external {
@@ -61,9 +65,5 @@ contract Pool is CapStorage, IPool{
 
     
 
-    function link(address _trade, address _store, address _treasury) external{}
 
-    
-
-    function updateGov(address _gov) external{}
 } 

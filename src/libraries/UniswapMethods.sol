@@ -10,11 +10,11 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "forge-std/console.sol";
 // import "/../../../lib/v3-periphery/contracts/interfaces/ISwapRouter.sol";
 
-import {State} from "../../contracts/CapStorage.sol";
+import {State} from "./../contracts/CapStorage.sol";
 
-import {Errors} from "../Errors.sol";
+import {Errors} from "./Errors.sol";
 
-import {Events} from "../Events.sol";
+import {Events} from "./Events.sol";
  
 
 library UniswapMethods {

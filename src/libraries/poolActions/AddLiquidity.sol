@@ -5,11 +5,11 @@ import "forge-std/console.sol";
 
 import {State} from "../../contracts/CapStorage.sol";
 
-import {CLPToken} from "./CLPToken.sol";
+import {CLPToken} from "../CLPToken.sol";
 
 import {Errors} from "../Errors.sol";
 
-import {PoolActions} from "./PoolActions.sol";
+import {PoolActions} from "../PoolActions.sol";
 
 import {Events} from "../Events.sol";
 
@@ -28,7 +28,7 @@ library AddLiquidity {
 
         uint256 balance = state.poolBalance;
 
-        state.transferIn(amount);
+        state.transferIn(msg.sender,amount);
 
         uint256 clpSupply = state.getCLPSupply();
 

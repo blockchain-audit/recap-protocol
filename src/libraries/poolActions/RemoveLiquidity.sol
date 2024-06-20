@@ -4,11 +4,11 @@ import "forge-std/console.sol";
 
 import {State} from "../../contracts/CapStorage.sol";
 
-import {CLPToken} from "./CLPToken.sol";
+import {CLPToken} from "../CLPToken.sol";
 
 import {Errors} from "../Errors.sol";
 
-import {PoolActions} from "./PoolActions.sol";
+import {PoolActions} from "../PoolActions.sol";
 
 import {Events} from "../Events.sol";
 

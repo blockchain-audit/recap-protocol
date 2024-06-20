@@ -4,13 +4,13 @@ pragma solidity ^0.8.24;
 import "forge-std/console.sol";
 
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import "../../interfaces/ICLP.sol";
+import "./../interfaces/ICLP.sol";
 
-import {State} from "../../contracts/CapStorage.sol";
+import {State} from "./../contracts/CapStorage.sol";
 
-import {Errors} from "../Errors.sol";
+import {Errors} from "./Errors.sol";
 
-import {Events} from "../Events.sol";
+import {Events} from "./Events.sol";
 
 
 library CLPToken {
@@ -29,8 +29,8 @@ library CLPToken {
         return IERC20(state.clp).totalSupply();
     }
   
-    function transferIn(State storage state, uint256 amount) external {
-        IERC20(state.currency).safeTransferFrom(msg.sender, address(this), amount);
+    function transferIn(State storage state, address user, uint256 amount) external {
+        IERC20(state.currency).safeTransferFrom(user, address(this), amount);
     }
 
     function transferOut(State storage state,address user, uint256 amount) external {
