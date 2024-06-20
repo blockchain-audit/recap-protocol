@@ -10,25 +10,15 @@ import "./interfaces/ICLP.sol";
 import "./interfaces/IPool.sol";
 
 struct ChainLink{
-    uint256  UNIT ;
-    uint256 GRACE_PERIOD_TIME  ;
     AggregatorV3Interface sequencerUptimeFeed;
 }
-struct Pool {
-    uint256 BPS_DIVIDER;
+struct Pools {
     address  gov;
     address  trade;
     address  treasury;
     IStore  store;
 }
 
-struct StoreConstants{
-    uint256 BPS_DIVIDER ;
-    uint256 MAX_FEE ;
-    uint256 MAX_KEEPER_FEE_SHARE ;
-    uint256 MAX_POOL_WITHDRAWAL_FEE ;
-    uint256 FUNDING_INTERVAL ;
-}
 struct StoreAddressContracts {
     address  gov;
     address  currency;
@@ -75,8 +65,6 @@ struct StoreArray {
 }
 
 struct Trade {
-    uint256  UNIT ;
-    uint256  BPS_DIVIDER ;
     address  gov;
     IChainlink  chainlink;
     IPool  pool;
@@ -85,7 +73,7 @@ struct Trade {
 
 struct State {
     ChainLink chainLink;
-    Pool pool;
+    Pools pools;
     // StoreConstants storeConstants;
     StoreAddressContracts storeAddressContracts;
     StoreVariables storeVariables;
@@ -98,20 +86,6 @@ struct State {
 
 abstract contract Storage {
     State internal state;
-    StoreConstants public constants = StoreConstants({
-        BPS_DIVIDER: 10000,
-        MAX_FEE: 500,
-        MAX_KEEPER_FEE_SHARE: 2000,
-        MAX_POOL_WITHDRAWAL_FEE: 500,
-        FUNDING_INTERVAL: 1 hours
-        });
-
-
-        // uint256 public constant BPS_DIVIDER = 10000;
-        // uint256 public constant MAX_FEE = 500; // in bps = 5%
-        // uint256 public constant MAX_KEEPER_FEE_SHARE = 2000; // in bps = 20%
-        // uint256 public constant MAX_POOL_WITHDRAWAL_FEE = 500; // in bps = 5%
-        // uint256 public constant FUNDING_INTERVAL = 1 hours; // In seconds.
     }
 // contract aa{
 //     uint a;
