@@ -17,8 +17,8 @@ library CreditFee {
     using CLPToken for State;
     using Pool for State;
 
-    function validateUpdateGov(State storage state, address user, address _gov) external view {
-        if (user != state.contracts.gov) {
+    function validateUpdateGov(State storage state, address _gov) external view {
+        if (msg.sender != state.contracts.gov) {
             revert Errors.NOT_ALLOWED();
         }
 
