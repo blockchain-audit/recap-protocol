@@ -11,7 +11,7 @@ import {Errors} from "./Errors.sol";
 
 import "src/interfaces/ICLP.sol";
 
-library CLPToken {
+library CLPMethods{
 
     using SafeERC20 for IERC20;
 
@@ -27,5 +27,9 @@ library CLPToken {
     }
     function transferIn(State storage state, uint256 amount) external {
         IERC20(state.contractAddresses.currency).safeTransferFrom(msg.sender, state.contractAddresses.pool, amount);
+    }
+
+    function transferOut(State storage state, address user, uint256 amount) external {
+        IERC20(state.contractAddresses.currency).safeTransfer(user, amount);
     }
 }

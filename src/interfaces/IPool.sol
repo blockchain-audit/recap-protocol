@@ -7,9 +7,9 @@ interface IPool {
 
     function addLiquidityThroughUniswap(address tokenIn, uint256 amountIn, uint256 amountOutMin, uint24 poolFee) external payable;
 
-    function creditFee(address user, string memory market, uint256 fee, bool isLiquidation) external;
+    function creditFee(string memory market, uint256 fee, bool isLiquidation) external;
 
-    function creditTraderLoss(address user, string memory market, uint256 amount) external;
+    function creditTraderLoss(string memory market, uint256 amount) external; // we delete address user
 
     function debitTraderProfit(address user, string memory market, uint256 amount) external;
 
