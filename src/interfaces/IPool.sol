@@ -39,14 +39,5 @@ interface IPool {
 
 
 
-    //storage
-    struct statePool {
-        uint256 public constant BPS_DIVIDER = 10000;
 
-        address public gov;
-        address public trade;
-        address public treasury;
-
-        IStore public store;
-    }
 }
