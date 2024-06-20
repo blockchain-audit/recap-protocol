@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.24;
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import "../../node_modules/@uniswap/v3-core/contracts/interfaces/callback/IUniswapV3SwapCallback.sol";
+import "../../lib/v3-periphery/contracts/interfaces/ISwapRouter.sol";
 import {RecapStorage} from "../state.sol";
 import "../state.sol";
 library FLiquidate {
