@@ -84,7 +84,7 @@ struct State {
 }
 
 abstract contract CapStorage {
-    State internal state;
+    State public state;
 
     // constants
     uint256 constant BPS_DIVIDER = 10000;
