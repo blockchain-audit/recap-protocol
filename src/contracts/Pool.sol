@@ -5,14 +5,15 @@ import "./CapStorage.sol";
 
 import {AddLiquidity} from "../libraries/actions/AddLiquidity.sol";
 import {AddLiquidityThroughUniswap} from "../libraries/actions/AddLiquidityThroughUniswap.sol";
-
 import {RemoveLiquidity} from "../libraries/actions/RemoveLiquidity.sol";
+import {CreditTraderLoss} from "../libraries/actions/CreditTraderLoss.sol";
 
 contract Pool is CapStorage{
 
     using AddLiquidity for State;
     using AddLiquidityThroughUniswap for State;
     using RemoveLiquidity for State;
+    using CreditTraderLoss for State;
 
     function addLiquidity(uint256 amount) public payable {
         state.validateAddLiquidity(amount);
@@ -28,5 +29,10 @@ contract Pool is CapStorage{
     function removeLiquidity(uint256 amount) public payable {
         state.validateRemoveLiquidity(amount);
         state.executeRemoveLiquidity(amount);
+    }
+
+    function creditTraderLoss(string memory market, uint256 amount) public payable {
+        state.validateCreditTraderLoss();
+        state.executeCreditTraderLoss(market, amount);
     }
 } 

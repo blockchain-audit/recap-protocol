@@ -16,4 +16,8 @@ library PoolActions {
     function decrementPoolBalance(State storage state, uint256 amount) external {
         state.variables.poolBalance -= amount;
     }
+
+    function setPoolLastPaid(State storage state, uint256 timestamp) external {
+        state.variables.poolLastPaid = timestamp;
+    }
 }

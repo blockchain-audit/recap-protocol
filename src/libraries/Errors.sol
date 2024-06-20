@@ -5,4 +5,5 @@ library Errors {
     error NULL_INPUT();
     error NULL_ADDRESS();
     error NULL_BALANCE();
+    error NOT_TRADER();
 }
