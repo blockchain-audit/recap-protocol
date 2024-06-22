@@ -7,6 +7,7 @@ import "lib/openzeppelin-contracts/contracts/utils/structs/EnumerableSet.sol";
 import "lib/v3-periphery/contracts/interfaces/ISwapRouter.sol";
 import "lib/v3-periphery/contracts/interfaces/IQuoter.sol";
 
+
     using EnumerableSet for EnumerableSet.UintSet;
     using EnumerableSet for EnumerableSet.Bytes32Set;
     using EnumerableSet for EnumerableSet.AddressSet;
@@ -60,15 +61,15 @@ struct Map{
 
 }
 
-struct state{
-    StateStore stateStore;
-    Map map;
+// struct state{
+//     StateStore stateStore;
+//     Map map;
 
-}
+// }
 
-    abstract contract storeStorage {
-    State internal state;
-}
+//     abstract contract storeStorage {
+//     State internal state;
+// }
 
 
    

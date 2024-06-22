@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.13;
 
-//import {stateStore, map} from "./storeStorage.sol";
-import {stateStore} from "./storeStorage.sol";
+
+import {StateStore} from "./storeStorage.sol";
 
 abstract contract viewStore is storeStorage {
     
