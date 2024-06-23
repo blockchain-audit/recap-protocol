@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: BUSL-1.1
+
 pragma solidity ^0.8.20;
+
 
 interface IStore {
     // Events
@@ -60,7 +62,7 @@ interface IStore {
 
     function bufferPayoutPeriod() external view returns (uint256);
 
-    // function burnCLP(address user, uint256 amount) external;
+    function burnCLP(address user, uint256 amount) external;
 
     function decrementBalance(address user, uint256 amount) external;
 
@@ -130,7 +132,7 @@ interface IStore {
 
     function minimumMarginLevel() external view returns (uint256);
 
-    // function mintCLP(address user, uint256 amount) external;
+    function mintCLP(address user, uint256 amount) external;
 
     function poolBalance() external view returns (uint256);
 

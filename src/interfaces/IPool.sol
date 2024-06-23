@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: BUSL-1.1
+
 pragma solidity ^0.8.20;
+
 
 interface IPool {
     event AddLiquidity(address indexed user, uint256 amount, uint256 clpAmount, uint256 poolBalance);
