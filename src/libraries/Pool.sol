@@ -14,14 +14,14 @@ import "../interfaces/ICLP.sol";
 library Pool {
     function incrementPoolBalance(State storage state ,uint256 amount) external {
 
-        state.poolBalance += amount;
+        state.balances.poolBalance += amount;
     }
 
     function decrementPoolBalance(State storage state, uint amount) external{
-        state.poolBalance -= amount;
+        state.balances.poolBalance -= amount;
     }
 
     function setPoolLastPaid(State storage state,uint256 timestamp) external {
-        state.poolLastPaid = timestamp;
+        state.balances.poolLastPaid = timestamp;
     }
 }

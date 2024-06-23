@@ -37,15 +37,15 @@ library CreditTraderLoss {
         state.incrementBufferBalance(amount);
         state.decrementBalance(user, amount);
 
-        uint256 lastPaid = state.poolLastPaid;
+        uint256 lastPaid = state.balances.poolLastPaid;
         uint256 _now = block.timestamp;
         uint256 amountToSendPool;
 
         if (lastPaid == 0) {
             state.setPoolLastPaid(_now);
         } else {
-            uint256 bufferBalance = state.bufferBalance;
-            uint256 bufferPayoutPeriod = state.bufferPayoutPeriod;
+            uint256 bufferBalance = state.balances.bufferBalance;
+            uint256 bufferPayoutPeriod = state.buffer.bufferPayoutPeriod;
 
             amountToSendPool = bufferBalance * (block.timestamp - lastPaid) / bufferPayoutPeriod;
 
@@ -56,7 +56,7 @@ library CreditTraderLoss {
             state.setPoolLastPaid(_now);
         }
 
-        emit Events.PoolPayIn(user, market, amount, amountToSendPool, state.poolBalance, state.bufferBalance);
+        emit Events.PoolPayIn(user, market, amount, amountToSendPool, state.balances.poolBalance, state.balances.bufferBalance);
 
     }
 

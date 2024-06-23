@@ -11,6 +11,7 @@ import {Errors} from "../../Errors.sol";
 import {Events} from "../../Events.sol";
 import {Pool} from "../../Pool.sol";
 import {CLPToken} from "../../CLPToken.sol";
+import {Constants} from "../../Constants.sol";
 
 library CreditFee{
 
@@ -25,7 +26,7 @@ library CreditFee{
     function executeCreditFee(State storage state,address user,string memory market, uint256 fee,bool isLiquidation) external{
         if (fee == 0) return;
 
-        uint256 poolFee = fee * state.poolFeeShare / state.BPS_DIVIDER;
+        uint256 poolFee = fee * state.fees.poolFeeShare / Constants.BPS_DIVIDER;
         uint256 treasuryFee = fee - poolFee;
 
         state.incrementPoolBalance(poolFee);

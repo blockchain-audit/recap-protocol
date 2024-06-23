@@ -6,7 +6,7 @@ import {Errors} from "../../Errors.sol";
 import {State} from "../../../contracts/CapStorage.sol";
 import {Events} from "../../Events.sol";
 import {CLPToken} from "../../CLPToken.sol";
-import {UniswapMethods} from "./UniswapMethods.sol";
+import {UniswapMethods} from "../../UniswapMethods.sol";
 
 import {Pool} from "../../Pool.sol";
 
@@ -47,7 +47,7 @@ library AddLiquidityThroughUniswap {
         );
 
         // add store supported liquidity
-        uint256 balance = state.poolBalance;
+        uint256 balance = state.balances.poolBalance;
         uint256 clpSupply = state.getCLPSupply();
         uint256 clpAmount = balance == 0 || clpSupply == 0
             ? amountOut
@@ -56,6 +56,6 @@ library AddLiquidityThroughUniswap {
         state.incrementPoolBalance(amountOut);
         state.mintCLP( clpAmount);
 
-        emit Events.AddLiquidity(msg.sender, amountOut, clpAmount, state.poolBalance);
+        emit Events.AddLiquidity(msg.sender, amountOut, clpAmount, state.balances.poolBalance);
     }
 }

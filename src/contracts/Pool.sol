@@ -11,7 +11,7 @@ import {DebitTraderProfit} from "../libraries/actions/Pool/DebitTraderProfit.sol
 import {CreditFee} from "../libraries/actions/Pool/CreditFee.sol";
 
 contract Pool is CapStorage{
-
+    
     using AddLiquidity for State;
     using AddLiquidityThroughUniswap for State;
     using RemoveLiquidity for State;

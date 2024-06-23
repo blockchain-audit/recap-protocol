@@ -32,11 +32,11 @@ library DebitTraderProfit {
         if(msg.sender!= state.addresses.trade)
             revert Errors.NOT_ALLOWED();
 
-        uint256 bufferBalance = state.bufferBalance;
+        uint256 bufferBalance = state.balances.bufferBalance;
 
         if (amount > bufferBalance) {
             uint256 diffToPayFromPool = amount - bufferBalance;
-            uint256 poolBalance = state.poolBalance;
+            uint256 poolBalance = state.balances.poolBalance;
             if(diffToPayFromPool < poolBalance)
             revert Errors.POOL_BALANCE();
     }
@@ -46,11 +46,11 @@ library DebitTraderProfit {
 
         if (amount == 0) return;
 
-        uint256 bufferBalance = state.bufferBalance;
+        uint256 bufferBalance = state.balances.bufferBalance;
 
         if (amount > bufferBalance) {
             uint256 diffToPayFromPool = amount - bufferBalance;
-            uint256 poolBalance = state.poolBalance;
+            uint256 poolBalance = state.balances.poolBalance;
             state.decrementBufferBalance(bufferBalance);
             state.decrementPoolBalance(diffToPayFromPool);
         } else {
@@ -59,7 +59,7 @@ library DebitTraderProfit {
 
         state.incrementBalance(user, amount);
 
-        emit Events.PoolPayOut(user, market, amount, state.poolBalance, state.bufferBalance);
+        emit Events.PoolPayOut(user, market, amount, state.balances.poolBalance, state.balances.bufferBalance);
     }
 
     

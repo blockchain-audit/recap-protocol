@@ -41,6 +41,6 @@ library CLPToken {
     function getUserPoolBalance(State storage state) external view returns (uint256) {
         uint256 clpSupply = IERC20(state.addresses.clp).totalSupply();
         if (clpSupply == 0) return 0;
-        return IERC20(state.addresses.clp).balanceOf(msg.sender) * state.poolBalance / clpSupply;
+        return IERC20(state.addresses.clp).balanceOf(msg.sender) * state.balances.poolBalance / clpSupply;
     }
 }

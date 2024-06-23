@@ -12,6 +12,7 @@ import {Errors} from "../../Errors.sol";
 import {Events} from "../../Events.sol";
 
 import {Pool} from "../../Pool.sol";
+import {Constants} from "../../Constants.sol";
 
 library RemoveLiquidity {
 
@@ -21,7 +22,7 @@ library RemoveLiquidity {
     function validateRemoveLiquidity(State storage state, uint256 amount) external {
         if(amount<=0)
         revert Errors.NULL_INPUT();
-        uint256 balance = state.poolBalance;
+        uint256 balance = state.balances.poolBalance;
         uint256 clpSupply = state.getCLPSupply();
         if(balance < 0 || clpSupply < 0)
         revert Errors.NULL_BALANCE();
@@ -31,13 +32,13 @@ library RemoveLiquidity {
 
     function executeRemoveLiquidity(State storage state, uint256 amount) external{
         address user = msg.sender;
-        uint256 balance = state.poolBalance;
+        uint256 balance = state.balances.poolBalance;
         uint256 clpSupply = state.getCLPSupply();
 
         uint256 userBalance = state.getUserPoolBalance();
         if (amount > userBalance) amount = userBalance;
 
-        uint256 feeAmount = amount * state.poolWithdrawalFee / state.BPS_DIVIDER;
+        uint256 feeAmount = amount * state.fees.poolWithdrawalFee / Constants.BPS_DIVIDER;
         uint256 amountMinusFee = amount - feeAmount;
 
         // CLP amount
@@ -48,7 +49,7 @@ library RemoveLiquidity {
 
         state.transferOut(msg.sender,amountMinusFee);
 
-        emit Events.RemoveLiquidity(user, amount, feeAmount, clpAmount, state.poolBalance);
+        emit Events.RemoveLiquidity(user, amount, feeAmount, clpAmount, state.balances.poolBalance);
     }
 
    
