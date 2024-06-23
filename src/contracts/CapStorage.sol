@@ -122,4 +122,17 @@ abstract contract CapStorage {
         state.validateUpdateGov(_gov);
         state.executeUpdateGov(_gov);
     }
+
+    // function link(address _pool) public {
+    //     state.contractAddresses.pool = _pool;
+    //     // address gov;
+    //     // address currency;
+    //     // address clp;
+    //     // address swapRouter;
+    //     // address quoter;
+    //     // address weth;
+    //     // address trade;
+    //     // address pool;
+    //     // address treasury;
+    // }
 }

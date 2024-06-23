@@ -49,4 +49,17 @@ contract Pool is CapStorage {
         state.validateCreditFee();
         state.executeCreditFee(user, market, fee, isLiquidation);
     }
+
+    function link(address _pool) public {
+        state.contractAddresses.pool = _pool;
+        // address gov;
+        // address currency;
+        // address clp;
+        // address swapRouter;
+        // address quoter;
+        // address weth;
+        // address trade;
+        // address pool;
+        // address treasury;
+    }
 } 
