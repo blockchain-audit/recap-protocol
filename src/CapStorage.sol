@@ -40,7 +40,7 @@ import {UpdateGov} from "src/libraries/UpdateGov.sol";
         uint256 margin;
         uint256 size;
     }
-    ///
+   
 struct ContractAddresses {
     address gov;
     address currency;
@@ -101,6 +101,9 @@ struct FundingData {
 }
 
 struct State {
+    Market market;
+    Order order;
+    Position position;
     ContractAddresses contractAddresses;
     Fees fees;
     Balances balances;
@@ -112,16 +115,8 @@ struct State {
     FundingData fundingData;
 }
 
-abstract contract CapStorage {
-
-   // using UpdateGov for State;
+abstract contract CapStorage {    
 
     State internal state;
-
-    function UpdateGov(address _gov) external {
-       // state.validateUpdateGov(_gov);
-       // state.executeUpdateGov(_gov);
-        
-    }
 
 }
