@@ -28,11 +28,11 @@ library DebitTraderProfit{
 
     }
     function executeDebitTraderProfit(State storage state, address user, string memory market, uint256 amount) external {
-        uint256 bufferBalance = state.bufferBalance;
+        uint256 bufferBalance = state.balances.bufferBalance;
 
         if (amount > bufferBalance) {
             uint256 diffToPayFromPool = amount - bufferBalance;
-            uint256 poolBalance = state.poolBalance;
+            uint256 poolBalance = state.balances.poolBalance;
             require(diffToPayFromPool < poolBalance, "!pool-balance");
             state.decrementBufferBalance(bufferBalance);
             state.decrementPoolBalance(diffToPayFromPool);
@@ -42,7 +42,7 @@ library DebitTraderProfit{
 
         state.incrementBalance(user, amount);
 
-        emit Events.PoolPayOut(user, market, amount, state.poolBalance, state.bufferBalance);
+        emit Events.PoolPayOut(user, market, amount, state.balances.poolBalance, state.balances.bufferBalance);
 
     }
 

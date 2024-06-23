@@ -11,12 +11,12 @@ import {Errors} from "./Errors.sol";
 import {Events} from "./Events.sol";
 library UserActions {
    function incrementBalance(State storage state,address user, uint256 amount) external  {
-        state.balances[user] += amount;
+        state.userBalances.balances[user] += amount;
     }
 
     function decrementBalance(State storage state, address user, uint256 amount) external  {
-        if (amount <= state.balances[user]){
-            state.balances[user] -= amount;
+        if (amount <= state.userBalances.balances[user]){
+            state.userBalances.balances[user] -= amount;
         }
         else {
             revert Errors.AMOUNT_EXCEEDS_BALANCE();
@@ -25,7 +25,7 @@ library UserActions {
     }
 
     function getBalance(State storage state, address user) external view returns (uint256) {
-        return state.balances[user];
+        return state.userBalances.balances[user];
     }
 
 }

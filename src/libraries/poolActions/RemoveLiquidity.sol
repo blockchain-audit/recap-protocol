@@ -21,18 +21,18 @@ library RemoveLiquidity {
         if (amount <= 0){
             revert Errors.NULL_AMOUNT();
         }
-        if (state.poolBalance <= 0 && state.getCLPSupply() <= 0){
+        if (state.balances.poolBalance <= 0 && state.getCLPSupply() <= 0){
             revert Errors.NULL_BALANCE();
         }
     }
     function executeRemoveLiquidity(State storage state, uint256 amount) external {
         address user = msg.sender;
-        uint256 balance = state.poolBalance;
+        uint256 balance = state.balances.poolBalance;
         uint256 clpSupply = state.getCLPSupply();
         uint256 userBalance = state.getUserPoolBalance(user);
         if (amount > userBalance) amount = userBalance;
 
-        uint256 feeAmount = amount * state.poolWithdrawalFee / state.BPS_DIVIDER;
+        uint256 feeAmount = amount * state.fees.poolWithdrawalFee / state.constants.BPS_DIVIDER;
         uint256 amountMinusFee = amount - feeAmount;
 
         // CLP amount
@@ -43,7 +43,7 @@ library RemoveLiquidity {
 
         state.transferOut(user,amountMinusFee);
 
-        emit Events.RemoveLiquidity(user, amount, feeAmount, clpAmount, state.poolBalance);
+        emit Events.RemoveLiquidity(user, amount, feeAmount, clpAmount, state.balances.poolBalance);
 
     }
  

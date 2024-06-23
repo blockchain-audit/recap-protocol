@@ -25,17 +25,17 @@ library UniswapMethods {
 
         if (msg.value != 0) {
             // there are no direct ETH pairs in Uniswapv3, so router converts ETH to WETH before swap
-            tokenIn = state.weth;
+            tokenIn = state.contractAddresses.weth;
             amountIn = msg.value;
         } else {
             // transfer token to be swapped
             IERC20(tokenIn).safeTransferFrom(user, address(this), amountIn);
-            IERC20(tokenIn).approve(address(state.swapRouter), amountIn);
+            IERC20(tokenIn).approve(address(state.contractAddresses.swapRouter), amountIn);
         }
 
         ISwapRouter.ExactInputSingleParams memory params = ISwapRouter.ExactInputSingleParams({
             tokenIn: tokenIn,
-            tokenOut: state.currency, // store supported currency
+            tokenOut: state.contractAddresses.currency, // store supported currency
             fee: poolFee,
             recipient: address(this),
             deadline: block.timestamp + 15,
@@ -45,7 +45,7 @@ library UniswapMethods {
         });
 
         // The call to `exactInputSingle` executes the swap.
-        amountOut = ISwapRouter(state.swapRouter).exactInputSingle{value: msg.value}(params);
+        amountOut = ISwapRouter(state.contractAddresses.swapRouter).exactInputSingle{value: msg.value}(params);
     }
 
     // // Function is not marked as view because it relies on calling non-view functions

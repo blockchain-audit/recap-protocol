@@ -30,11 +30,11 @@ function validateCreditFee(State storage state, address user, string memory mark
     if (fee == 0) return;
 }
 function executeCreditFee(State storage state,address user, string memory market, uint256 fee, bool isLiquidation) external{
-        uint256 poolFee = fee * state.poolFeeShare / state.BPS_DIVIDER;
+        uint256 poolFee = fee * state.fees.poolFeeShare / state.constants.BPS_DIVIDER;
         uint256 treasuryFee = fee - poolFee;
 
         state.incrementPoolBalance(poolFee);
-        state.transferOut(state.treasury, treasuryFee);
+        state.transferOut(state.contractAddresses.treasury, treasuryFee);
 
         emit Events.FeePaid( user,
             market,

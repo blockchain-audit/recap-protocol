@@ -18,22 +18,22 @@ library CLPToken {
     using SafeERC20 for IERC20;
 
     function mintCLP(State storage state, uint256 amount) external  {
-        ICLP(state.clp).mint(msg.sender, amount);
+        ICLP(state.contractAddresses.clp).mint(msg.sender, amount);
     }
 
     function burnCLP(State storage state, uint256 amount) external  {
-        ICLP(state.clp).burn(msg.sender, amount);
+        ICLP(state.contractAddresses.clp).burn(msg.sender, amount);
     }
 
     function getCLPSupply(State storage state) external view returns (uint256) {
-        return IERC20(state.clp).totalSupply();
+        return IERC20(state.contractAddresses.clp).totalSupply();
     }
   
     function transferIn(State storage state, address user, uint256 amount) external {
-        IERC20(state.currency).safeTransferFrom(user, address(this), amount);
+        IERC20(state.contractAddresses.currency).safeTransferFrom(user, address(this), amount);
     }
 
     function transferOut(State storage state,address user, uint256 amount) external {
-        IERC20(state.currency).safeTransfer(user, amount);
+        IERC20(state.contractAddresses.currency).safeTransfer(user, amount);
     }
 }

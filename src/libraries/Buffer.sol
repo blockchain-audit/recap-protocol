@@ -12,11 +12,11 @@ import {Events} from "./Events.sol";
 
 library Buffer {
     function incrementBufferBalance(State storage state, uint256 amount) external {
-        state.bufferBalance += amount;
+        state.balances.bufferBalance += amount;
     }
 
     function decrementBufferBalance(State storage state, uint256 amount) external {
-        state.bufferBalance -= amount;
+        state.balances.bufferBalance -= amount;
     }
 
 }

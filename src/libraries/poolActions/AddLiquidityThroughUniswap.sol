@@ -37,13 +37,13 @@ library AddLiquidityThroughUniswap {
         uint256 amountOut = state.swapExactInputSingle(msg.sender, amountIn, amountOutMin, tokenIn, poolFee);
 
         // add store supported liquidity
-        uint256 balance = state.poolBalance;
+        uint256 balance = state.balances.poolBalance;
         uint256 clpSupply = state.getCLPSupply();
         uint256 clpAmount = balance == 0 || clpSupply == 0 ? amountOut : amountOut * clpSupply / balance;
 
         state.incrementPoolBalance(amountOut);
         state.mintCLP(clpAmount);
 
-        emit Events.AddLiquidity(msg.sender, amountOut, clpAmount, state.poolBalance);
+        emit Events.AddLiquidity(msg.sender, amountOut, clpAmount, state.balances.poolBalance);
     }
 }

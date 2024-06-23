@@ -26,7 +26,7 @@ library AddLiquidity {
 
     function executeAddLiquidity(State storage state, uint256 amount) external {
 
-        uint256 balance = state.poolBalance;
+        uint256 balance = state.balances.poolBalance;
 
         state.transferIn(msg.sender,amount);
 
@@ -38,6 +38,6 @@ library AddLiquidity {
         
         state.mintCLP(clpAmount);
 
-        emit Events.AddLiquidity(msg.sender, amount, clpAmount, state.poolBalance);
+        emit Events.AddLiquidity(msg.sender, amount, clpAmount, state.balances.poolBalance);
     }
 }
