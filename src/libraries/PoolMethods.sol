@@ -12,10 +12,10 @@ import {CLPMethods} from "./CLPMethods.sol";
 import {Errors} from "./Errors.sol";
 
 library PoolMethods {
-
     using SafeERC20 for IERC20;
 
     using CLPMethods for State;
+
     function incrementPoolBalance(State storage state, uint256 amount) external {
         state.balances.poolBalance += amount;
     }
@@ -23,6 +23,7 @@ library PoolMethods {
     function decrementPoolBalance(State storage state, uint256 amount) external {
         state.balances.poolBalance -= amount;
     }
+
     function setPoolLastPaid(State storage state, uint256 timestamp) external {
         state.balances.poolLastPaid = timestamp;
     }

@@ -11,8 +11,7 @@ import {Errors} from "./Errors.sol";
 
 import "src/interfaces/ICLP.sol";
 
-library CLPMethods{
-
+library CLPMethods {
     using SafeERC20 for IERC20;
 
     function getCLPSupply(State storage state) external view returns (uint256) {
@@ -22,9 +21,11 @@ library CLPMethods{
     function mintCLP(State storage state, uint256 amount) external {
         ICLP(state.contractAddresses.clp).mint(msg.sender, amount);
     }
+
     function burnCLP(State storage state, uint256 amount) external {
         ICLP(state.contractAddresses.clp).burn(msg.sender, amount);
     }
+
     function transferIn(State storage state, uint256 amount) external {
         IERC20(state.contractAddresses.currency).safeTransferFrom(msg.sender, state.contractAddresses.pool, amount);
     }

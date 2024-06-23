@@ -8,7 +8,6 @@ import {CreditTraderLoss} from "src/libraries/CreditTraderLoss.sol";
 import {CreditFee} from "src/libraries/CreditFee.sol";
 
 contract Pool is IPool, CapStorage {
-
     using Liquidity for State;
     using CreditTraderLoss for State;
     using CreditFee for State;
@@ -18,16 +17,20 @@ contract Pool is IPool, CapStorage {
         state.executeAddLiquidity(amount);
     }
 
-    function addLiquidityThroughUniswap(address tokenIn, uint256 amountIn, uint256 amountOutMin, uint24 poolFee) public payable {
-            state.validateAddLiquidityThroughUniswap(tokenIn, amountIn, poolFee);
-            state.executeAddLiquidityThroughUniswap(tokenIn, amountIn, amountOutMin, poolFee);     
+    function addLiquidityThroughUniswap(address tokenIn, uint256 amountIn, uint256 amountOutMin, uint24 poolFee)
+        public
+        payable
+    {
+        state.validateAddLiquidityThroughUniswap(tokenIn, amountIn, poolFee);
+        state.executeAddLiquidityThroughUniswap(tokenIn, amountIn, amountOutMin, poolFee);
     }
 
     function removeLiquidity(uint256 amount) public {
         state.validateRemoveLiquidity(amount);
-        state.executeRemoveLiquidity(amount);       
+        state.executeRemoveLiquidity(amount);
     }
-    function creditFee(string memory market, uint256 fee, bool isLiquidation) external{
+
+    function creditFee(string memory market, uint256 fee, bool isLiquidation) external {
         state.validateCreditFee(fee);
         state.executeCreditFee(market, fee, isLiquidation);
     }
@@ -37,10 +40,9 @@ contract Pool is IPool, CapStorage {
         state.executeCreditTraderLoss(market, amount);
     }
 
-    function debitTraderProfit(address user, string memory market, uint256 amount) external{}
+    function debitTraderProfit(address user, string memory market, uint256 amount) external {}
 
-    function link(address _trade, address _store, address _treasury) external{}
+    function link(address _trade, address _store, address _treasury) external {}
 
-    function updateGov(address _gov) external{}
-} 
-
+    function updateGov(address _gov) external {}
+}

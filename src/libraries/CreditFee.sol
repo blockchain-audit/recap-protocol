@@ -7,15 +7,12 @@ import {PoolMethods} from "./PoolMethods.sol";
 import {CLPMethods} from "./CLPMethods.sol";
 import {Constants} from "./Constants.sol";
 
-
 library CreditFee {
-
     using PoolMethods for State;
     using CLPMethods for State;
 
-
     function validateCreditFee(State storage state, uint256 fee) external {
-        if(msg.sender != state.contractAddresses.trade) {
+        if (msg.sender != state.contractAddresses.trade) {
             revert Errors.NOT_TRADER();
         }
 
@@ -25,7 +22,6 @@ library CreditFee {
     }
 
     function executeCreditFee(State storage state, string memory market, uint256 fee, bool isLiquidation) external {
-        
         address user = msg.sender;
 
         // if (fee == 0) return;
@@ -38,5 +34,4 @@ library CreditFee {
 
         emit Events.FeePaid(user, market, fee, poolFee, isLiquidation);
     }
-    
 }

@@ -12,19 +12,17 @@ import {Math} from "./Math.sol";
 import {Events} from "./Events.sol";
 
 library Liquidity {
-
     using CLPMethods for State;
     using PoolMethods for State;
     using UniswapMethods for State;
     using Math for State;
     using Math for uint256;
 
-    
     function validateAddLiquidity(State storage state, uint256 amount) external view {
-         if(amount == 0) {
+        if (amount == 0) {
             revert Errors.NULL_INPUT();
-         }
-     }
+        }
+    }
 
     function executeAddLiquidity(State storage state, uint256 amount) external {
         address user = msg.sender;
@@ -40,7 +38,11 @@ library Liquidity {
 
         emit Events.AddLiquidity(user, amount, clpAmount, state.balances.poolBalance);
     }
-    function validateAddLiquidityThroughUniswap(State storage state, address tokenIn, uint256 amountIn, uint24 poolFee) external view {
+
+    function validateAddLiquidityThroughUniswap(State storage state, address tokenIn, uint256 amountIn, uint24 poolFee)
+        external
+        view
+    {
         if (poolFee > 0) {
             revert Errors.NULL_INPUT();
         }
@@ -52,7 +54,13 @@ library Liquidity {
         }
     }
 
-    function executeAddLiquidityThroughUniswap(State storage state, address tokenIn, uint256 amountIn, uint256 amountOutMin, uint24 poolFee) external {
+    function executeAddLiquidityThroughUniswap(
+        State storage state,
+        address tokenIn,
+        uint256 amountIn,
+        uint256 amountOutMin,
+        uint24 poolFee
+    ) external {
         address user = msg.sender;
 
         uint256 amountOut = state.swapExactInputSingle(amountIn, amountOutMin, tokenIn, poolFee);
@@ -66,7 +74,7 @@ library Liquidity {
         emit Events.AddLiquidity(user, amountOut, clpAmount, state.balances.poolBalance);
     }
 
-      function validateRemoveLiquidity(State storage  state, uint256 amount) external {
+    function validateRemoveLiquidity(State storage state, uint256 amount) external {
         if (amount == 0) {
             revert Errors.NULL_INPUT();
         }
@@ -75,9 +83,9 @@ library Liquidity {
         }
     }
 
-      function executeRemoveLiquidity(State storage state, uint256 amount) external {
+    function executeRemoveLiquidity(State storage state, uint256 amount) external {
         address user = msg.sender;
-        
+
         uint256 balance = state.balances.poolBalance;
         uint256 clpSupply = state.getCLPSupply();
 
@@ -96,6 +104,4 @@ library Liquidity {
 
         emit Events.RemoveLiquidity(user, amount, feeAmount, clpAmount, state.balances.poolBalance);
     }
-
-    
 }
