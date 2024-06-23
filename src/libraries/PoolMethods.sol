@@ -5,7 +5,11 @@ import "forge-std/console.sol";
 
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
+<<<<<<< HEAD
 import {State} from "../contracts/CapStorage.sol";
+=======
+import {State} from "../CapStorage.sol";
+>>>>>>> 97389c2686c0464212163418f9fbabb59f70850f
 
 import {CLPMethods} from "./CLPMethods.sol";
 

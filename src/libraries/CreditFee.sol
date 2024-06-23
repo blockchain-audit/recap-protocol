@@ -1,6 +1,10 @@
 pragma solidity ^0.8.24;
 
+<<<<<<< HEAD
 import {State} from "src/contracts/CapStorage.sol";
+=======
+import {State} from "src/CapStorage.sol";
+>>>>>>> 97389c2686c0464212163418f9fbabb59f70850f
 import {Events} from "./Events.sol";
 import {Errors} from "./Errors.sol";
 import {PoolMethods} from "./PoolMethods.sol";

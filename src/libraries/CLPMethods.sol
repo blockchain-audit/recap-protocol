@@ -5,7 +5,11 @@ import "forge-std/console.sol";
 
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
+<<<<<<< HEAD
 import {State} from "src/contracts/CapStorage.sol";
+=======
+import {State} from "src/CapStorage.sol";
+>>>>>>> 97389c2686c0464212163418f9fbabb59f70850f
 
 import {Errors} from "./Errors.sol";
 
@@ -32,4 +36,8 @@ library CLPMethods{
     function transferOut(State storage state, address user, uint256 amount) external {
         IERC20(state.contractAddresses.currency).safeTransfer(user, amount);
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 97389c2686c0464212163418f9fbabb59f70850f

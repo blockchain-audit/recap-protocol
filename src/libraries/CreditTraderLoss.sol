@@ -1,7 +1,11 @@
  pragma solidity ^0.8.24;
 import "forge-std/console.sol";
 
+<<<<<<< HEAD
 import {State} from "src/contracts/CapStorage.sol";
+=======
+import {State} from "src/CapStorage.sol";
+>>>>>>> 97389c2686c0464212163418f9fbabb59f70850f
 import {PoolMethods} from "./PoolMethods.sol";
 import {UserBalance} from "./UserBalance.sol";
 import {Errors} from "./Errors.sol";
@@ -50,4 +54,8 @@ library CreditTraderLoss {
     }
 
  }
+<<<<<<< HEAD
  
+=======
+ 
+>>>>>>> 97389c2686c0464212163418f9fbabb59f70850f

@@ -3,7 +3,11 @@ pragma solidity ^0.8.24;
 
 import "forge-std/console.sol";
 
+<<<<<<< HEAD
 import {State} from "src/contracts/CapStorage.sol";
+=======
+import {State} from "src/CapStorage.sol";
+>>>>>>> 97389c2686c0464212163418f9fbabb59f70850f
 import {CLPMethods} from "./CLPMethods.sol";
 import {PoolMethods} from "./PoolMethods.sol";
 import {UniswapMethods} from "./UniswapMethods.sol";

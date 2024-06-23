@@ -1,7 +1,13 @@
+<<<<<<< HEAD
 
 pragma solidity ^0.8.24;
 
 import {State} from "src/contracts/CapStorage.sol";
+=======
+pragma solidity ^0.8.24;
+
+import {State} from "src/CapStorage.sol";
+>>>>>>> 97389c2686c0464212163418f9fbabb59f70850f
 import {Errors} from "./Errors.sol";
 import {Events} from "./Events.sol";
 
@@ -22,4 +28,8 @@ library UpdateGov {
 
         emit Events.GovernanceUpdated(oldGov, _gov);
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 97389c2686c0464212163418f9fbabb59f70850f

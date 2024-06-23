@@ -40,7 +40,7 @@ import {UpdateGov} from "src/libraries/UpdateGov.sol";
         uint256 margin;
         uint256 size;
     }
-    ///
+   
 struct ContractAddresses {
     address gov;
     address currency;
@@ -101,6 +101,9 @@ struct FundingData {
 }
 
 struct State {
+    Market market;
+    Order order;
+    Position position;
     ContractAddresses contractAddresses;
     Fees fees;
     Balances balances;
@@ -112,6 +115,7 @@ struct State {
     FundingData fundingData;
 }
 
+<<<<<<< HEAD:src/contracts/CapStorage.sol
 abstract contract CapStorage {
 
     using UpdateGov for State;
@@ -124,4 +128,10 @@ abstract contract CapStorage {
         
     }
 
+=======
+abstract contract CapStorage {    
+
+    State internal state;
+
+>>>>>>> 97389c2686c0464212163418f9fbabb59f70850f:src/CapStorage.sol
 }
