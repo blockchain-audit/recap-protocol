@@ -10,6 +10,6 @@ remappings = [
     "solmate/=lib/solmate/src/",
     "@openzeppelin/=lib/openzeppelin-contracts/",
     "@chainlink/=lib/chainlink",
-    "@uniswap/=lib/v3-core",
+    "@uniswap/=lib",
 ]
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
