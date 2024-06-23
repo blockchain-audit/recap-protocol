@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.7;
+pragma solidity ^0.8.24;
 
-import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+import "lib/chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
+import "src/libraries/eror.sol";
 
 contract Chainlink {
     // -- Constants -- //
@@ -45,14 +46,14 @@ contract Chainlink {
             // Answer == 1: Sequencer is down
             bool isSequencerUp = answer == 0;
             if (!isSequencerUp) {
-                revert SequencerDown();
+                Error.sequencerDown();
             }
 
             // Make sure the grace period has passed after the sequencer is back up.
             uint256 timeSinceUp = block.timestamp - startedAt;
 
             if (timeSinceUp <= GRACE_PERIOD_TIME) {
-                revert GracePeriodNotOver();
+                Error.gracePeriodNotOver();
             }
         }
 

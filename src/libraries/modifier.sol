@@ -1,16 +1,14 @@
-    // SPDX-License-Identifier: MIT
-pragma solidity <= 0.8.19;
-
-import {State} from "../Storage.sol";
-
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.24;
+//import {State} from "../Storage.sol";
+import "../Storage.sol";
 library Modifier {
     modifier onlyGov(address from) {
-        require(from == state.gov, "!governance");
+        require(from == State.gov, "!governance");
         _;
     }
-
-    modifier onlyTrade() {
-        require(from == state.trade, "!trade");
+    modifier onlyTrade(address from)  {
+        require(from ==  State.trade, "!trade");
         _;
     }
 }
