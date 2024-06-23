@@ -1,7 +1,7 @@
  pragma solidity ^0.8.24;
 import "forge-std/console.sol";
 
-import {State} from "src/contracts/CapStorage.sol";
+import {State} from "src/CapStorage.sol";
 import {PoolMethods} from "./PoolMethods.sol";
 import {UserBalance} from "./UserBalance.sol";
 import {Errors} from "./Errors.sol";
