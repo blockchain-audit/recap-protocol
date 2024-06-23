@@ -27,12 +27,12 @@ library AddLiquidity {
 
         state.transferIn(amount);
 
-        uint256 balance = state.variables.poolBalance;
+        uint256 balance = state.balances.poolBalance;
         uint256 clpSupply = state.getCLPSupply();
         uint256 clpAmount = balance == 0 || clpSupply == 0 ? amount : amount * clpSupply / balance;
 
         state.incrementPoolBalance(amount);
         state.mintCLP(clpAmount);
-        emit Events.AddLiquidity(user, amount, clpAmount, state.variables.poolBalance);
+        emit Events.AddLiquidity(user, amount, clpAmount, state.balances.poolBalance);
     }
 }

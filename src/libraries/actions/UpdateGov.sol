@@ -18,7 +18,7 @@ library UpdateGov {
     using Pool for State;
 
     function validateUpdateGov(State storage state, address _gov) external view {
-        if (msg.sender != state.contracts.gov) {
+        if (msg.sender != state.contractAddresses.gov) {
             revert Errors.NOT_ALLOWED();
         }
 
@@ -29,8 +29,8 @@ library UpdateGov {
 
     function executeUpdateGov(State storage state, address _gov) external {
 
-        address oldGov = state.contracts.gov;
-        state.contracts.gov = _gov;
+        address oldGov = state.contractAddresses.gov;
+        state.contractAddresses.gov = _gov;
 
         emit Events.GovernanceUpdated(oldGov, _gov);
     }

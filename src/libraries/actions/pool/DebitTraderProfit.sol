@@ -19,14 +19,14 @@ library DebitTraderProfit {
     using Buffer for State;
 
     function validateDebitTraderProfit(State storage state, uint256 amount) external view {
-        if (msg.sender != state.contracts.trade) {
+        if (msg.sender != state.contractAddresses.trade) {
             revert Errors.NULL_ADDRESS();
         }
 
-        uint256 bufferBalance = state.variables.bufferBalance;
+        uint256 bufferBalance = state.balances.bufferBalance;
         if (amount > bufferBalance) {
             uint256 diffToPayFromPool = amount - bufferBalance;
-            uint256 poolBalance = state.variables.poolBalance;
+            uint256 poolBalance = state.balances.poolBalance;
             if (diffToPayFromPool < poolBalance) {
                 revert Errors.POOL_BALANCE();
             }
@@ -36,7 +36,7 @@ library DebitTraderProfit {
     function executeDebitTraderProfit(State storage state, address user, string memory market, uint256 amount) external {
         if (amount == 0) return;
 
-        uint256 bufferBalance = state.variables.bufferBalance;
+        uint256 bufferBalance = state.balances.bufferBalance;
 
         if (amount > bufferBalance) {
             uint256 diffToPayFromPool = amount - bufferBalance;
@@ -48,6 +48,6 @@ library DebitTraderProfit {
 
         state.incrementBalance(user, amount);
 
-        emit Events.PoolPayOut(user, market, amount, state.variables.poolBalance, state.variables.bufferBalance);
+        emit Events.PoolPayOut(user, market, amount, state.balances.poolBalance, state.balances.bufferBalance);
     }
 }

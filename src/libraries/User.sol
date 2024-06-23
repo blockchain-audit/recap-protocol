@@ -7,15 +7,15 @@ import {State} from "../contracts/CapStorage.sol";
 
 library User {
     function incrementBalance(State storage state, address user, uint256 amount) external {
-        state.variables.balances[user] += amount;
+        state.userBalances.balances[user] += amount;
     }
 
     function decrementBalance(State storage state, address user, uint256 amount) external {
-        require(amount <= state.variables.balances[user], "!balance");
-        state.variables.balances[user] -= amount;
+        require(amount <= state.userBalances.balances[user], "!balance");
+        state.userBalances.balances[user] -= amount;
     }
 
     function getBalance(State storage state, address user) external view returns (uint256) {
-        return state.variables.balances[user];
+        return state.userBalances.balances[user];
     }
 }

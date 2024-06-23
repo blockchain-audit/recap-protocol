@@ -27,7 +27,7 @@ library AddLiquidityThroughUniswap {
             revert Errors.NULL_INPUT();
         }
 
-        if (address(state.contracts.swapRouter) != address(0)) {
+        if (address(state.contractAddresses.swapRouter) != address(0)) {
             revert Errors.NULL_ADDRESS();
         }
     }
@@ -41,13 +41,13 @@ library AddLiquidityThroughUniswap {
         uint256 amountOut = state.swapExactInputSingle(amountIn, amountOutMin, tokenIn, poolFee);
 
         // add store supported liquidity
-        uint256 balance = state.variables.poolBalance;
+        uint256 balance = state.balances.poolBalance;
         uint256 clpSupply = state.getCLPSupply();
         uint256 clpAmount = balance == 0 || clpSupply == 0 ? amountOut : amountOut * clpSupply / balance;
 
         state.incrementPoolBalance(amountOut);
         state.mintCLP(clpAmount);
 
-        emit Events.AddLiquidity(user, amountOut, clpAmount, state.variables.poolBalance);
+        emit Events.AddLiquidity(user, amountOut, clpAmount, state.balances.poolBalance);
     }
 }

@@ -10,14 +10,14 @@ import {CLPToken} from "./CLPToken.sol";
 library Pool {
 
     function incrementPoolBalance(State storage state, uint256 amount) external {
-        state.variables.poolBalance += amount;
+        state.balances.poolBalance += amount;
     }
 
     function decrementPoolBalance(State storage state, uint256 amount) external {
-        state.variables.poolBalance -= amount;
+        state.balances.poolBalance -= amount;
     }
 
     function setPoolLastPaid(State storage state, uint256 timestamp) external {
-        state.variables.poolLastPaid = timestamp;
+        state.balances.poolLastPaid = timestamp;
     }
 }

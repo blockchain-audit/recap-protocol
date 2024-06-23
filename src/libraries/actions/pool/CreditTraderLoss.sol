@@ -22,7 +22,7 @@ library CreditTraderLoss {
     using Buffer for State;
 
     function validateCreditTraderLoss(State storage state) external view {
-        if (msg.sender != state.contracts.trade) {
+        if (msg.sender != state.contractAddresses.trade) {
             revert Errors.NOT_ALLOWED();
         }
     }
@@ -32,15 +32,15 @@ library CreditTraderLoss {
         state.incrementBufferBalance(amount);
         state.decrementBalance(user, amount);
 
-        uint256 lastPaid = state.variables.poolLastPaid;
+        uint256 lastPaid = state.balances.poolLastPaid;
         uint256 _now = block.timestamp;
         uint256 amountToSendPool;
 
         if (lastPaid == 0) {
             state.setPoolLastPaid(_now);
         } else {
-            uint256 bufferBalance = state.variables.bufferBalance;
-            uint256 bufferPayoutPeriod = state.variables.bufferPayoutPeriod;
+            uint256 bufferBalance = state.balances.bufferBalance;
+            uint256 bufferPayoutPeriod = state.buffer.bufferPayoutPeriod;
 
             amountToSendPool = bufferBalance * (block.timestamp - lastPaid) / bufferPayoutPeriod;
 
@@ -51,6 +51,6 @@ library CreditTraderLoss {
             state.setPoolLastPaid(_now);
         }
 
-        emit Events.PoolPayIn(user, market, amount, amountToSendPool, state.variables.poolBalance, state.variables.bufferBalance);
+        emit Events.PoolPayIn(user, market, amount, amountToSendPool, state.balances.poolBalance, state.balances.bufferBalance);
     }
 }

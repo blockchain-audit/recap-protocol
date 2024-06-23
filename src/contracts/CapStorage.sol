@@ -6,10 +6,10 @@ import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 struct Market {
     string symbol;
     address feed;
-    uint16 minSettlementTime;
-    uint16 maxLeverage;
-    uint32 fee;
-    uint32 fundingFactor;
+    uint16 minSettlementTime; // overflows at ~18hrs
+    uint16 maxLeverage; // overflows at 65535
+    uint32 fee; // in bps, overflows at 4.3 billion
+    uint32 fundingFactor; // Yearly funding rate if OI is completely skewed to one side. In bps.
     uint256 maxOI;
     uint256 minSize;
 }
@@ -17,8 +17,8 @@ struct Market {
 struct Order {
     bool isLong;
     bool isReduceOnly;
-    uint8 orderType;
-    uint72 orderId;
+    uint8 orderType; // 0 = market, 1 = limit, 2 = stop
+    uint72 orderId; // overflows at 4.7 * 10**21
     address user;
     string market;
     uint64 timestamp;
@@ -38,85 +38,76 @@ struct Position {
     uint256 margin;
     uint256 size;
 }
-
-struct Constants {
-    // uint256 constant BPS_DIVIDER = 10000;
-    // uint256 constant MAX_FEE = 500; // in bps = 5%
-    // uint256 constant MAX_KEEPER_FEE_SHARE = 2000; // in bps = 20%
-    // uint256 constant MAX_POOL_WITHDRAWAL_FEE = 500; // in bps = 5%
-    // uint256 constant FUNDING_INTERVAL = 1 hours; // In seconds.
-
-    uint256 BPS_DIVIDER;
-    uint256 MAX_FEE; // in bps = 5%
-    uint256 MAX_KEEPER_FEE_SHARE; // in bps = 20%
-    uint256 MAX_POOL_WITHDRAWAL_FEE; // in bps = 5%
-    uint256 FUNDING_INTERVAL; // In seconds.
-}
-
-struct Contracts {
+    
+struct ContractAddresses {
     address gov;
     address currency;
     address clp;
-
     address swapRouter;
     address quoter;
     address weth;
-
     address trade;
     address pool;
+    address treasury;
 }
 
-struct Variables {
-    // uint256 poolFeeShare = 5000; // in bps
-    // uint256 keeperFeeShare = 1000; // in bps
-    // uint256 poolWithdrawalFee = 10; // in bps
-    // uint256 minimumMarginLevel = 2000; // 20% in bps, at which account is liquidated
+struct Fees {
+    uint256 poolFeeShare;
+    uint256 keeperFeeShare;
+    uint256 poolWithdrawalFee;
+    uint256 minimumMarginLevel;
+}
 
-    uint256 poolFeeShare; // in bps
-    uint256 keeperFeeShare; // in bps
-    uint256 poolWithdrawalFee; // in bps
-    uint256 minimumMarginLevel; // 20% in bps, at which account is liquidated
-
+struct Balances {
     uint256 bufferBalance;
     uint256 poolBalance;
     uint256 poolLastPaid;
-
-    // uint256 bufferPayoutPeriod = 7 days;
-
-    uint256 bufferPayoutPeriod;
-
-    uint256 orderId;
-
-    mapping(uint256 => Order) orders;
-    mapping(address => EnumerableSet.UintSet) userOrderIds; // user => [order ids..]
-    EnumerableSet.UintSet orderIds; // [order ids..]
-
-    string[] marketList; // "ETH-USD", "BTC-USD", etc
-    mapping(string => Market) markets;
-
-    mapping(bytes32 => Position) positions; // key = user,market
-    EnumerableSet.Bytes32Set positionKeys; // [position keys..]
-    mapping(address => EnumerableSet.Bytes32Set) userPositionKeys; // user => [position keys..]
-
-    mapping(string => uint256) OILong;
-    mapping(string => uint256) OIShort;
-
-    mapping(address => uint256) balances; // user => amount
-    mapping(address => uint256) lockedMargins; // user => amount
-    EnumerableSet.AddressSet usersWithLockedMargin; // [users...]
 }
 
-struct Funding {
-    mapping(string => int256) fundingTrackers; // market => funding tracker (long) (short is opposite) // in UNIT * bps
-    mapping(string => uint256) fundingLastUpdated; // market => last time fundingTracker was updated. In seconds.
+struct Buffer {
+    uint256 bufferPayoutPeriod;
+}
+
+struct OrderData {
+    mapping(uint256 => Order) orders;
+    mapping(address => EnumerableSet.UintSet) userOrderIds;
+    EnumerableSet.UintSet orderIds;
+}
+
+struct MarketData {
+    string[] marketList;
+    mapping(string => Market) markets;
+    mapping(string => uint256) OILong;
+    mapping(string => uint256) OIShort;
+}
+
+struct PositionData {
+    mapping(bytes32 => Position) positions;
+    EnumerableSet.Bytes32Set positionKeys;
+    mapping(address => EnumerableSet.Bytes32Set) positionKeysForUser;
+}
+
+struct UserBalances {
+    mapping(address => uint256) balances;
+    mapping(address => uint256) lockedMargins;
+    EnumerableSet.AddressSet usersWithLockedMargin;
+}
+
+struct FundingData {
+    mapping(string => int256) fundingTrackers;
+    mapping(string => uint256) fundingLastUpdated;
 }
 
 struct State {
-    Constants constants;
-    Contracts contracts;
-    Variables variables;
-    Funding funding;
-    address treasury;
+    ContractAddresses contractAddresses;
+    Fees fees;
+    Balances balances;
+    Buffer buffer;
+    OrderData orderData;
+    MarketData marketData;
+    PositionData positionData;
+    UserBalances userBalances;
+    FundingData fundingData;
 }
 
 import {UpdateGov} from "../libraries/actions/UpdateGov.sol";
