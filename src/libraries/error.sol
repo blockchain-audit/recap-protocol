@@ -9,6 +9,7 @@ library errors {
     error UnvalidAmount();
     error UnValidPoolFee();
     error UnValidInput();
-
+    error CantBeEmpty();
+    error NotAPoolBalance();
 }
 

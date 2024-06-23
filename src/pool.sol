@@ -69,7 +69,7 @@ contract Pool is Storage{
             revert errors.UnValidPoolFee();
         }
 
-        if(msg.value == 0 || amountIn <= 0 && tokenIn == address(0)){
+        if(msg.value == 0 && amountIn <= 0 || tokenIn == address(0)){
             revert errors.UnValidInput();
         }
 
@@ -89,5 +89,99 @@ contract Pool is Storage{
         emit events.AddLiquidity(user, amountOut, clpAmount, state.pools.store.poolBalance());
     }
 
-    
+    function removeLiquidity(uint amount) external {
+        if(amount <= 0) {
+            revert errors.UnvalidAmount();
+        }
+        
+        address user = msg.sender;
+        uint balance = state.pools.store.poolBalance();
+        uint clpSupply = state.pools.store.getCLPSupply();
+
+        if(balance <= 0 || clpSupply <= 0){
+            revert errors.CantBeEmpty();
+        }
+
+        uint256 userBalance = state.pools.store.getUserPoolBalance(user);
+        if(amount > userBalance) amount = userBalance;
+
+        uint256 feeAmount = amount * state.pools.store.poolWithdrawalFee() / constants.BPS_DIVIDER;
+        uint256 amountMinusFee = amount - feeAmount;
+
+        // CLP amount
+        uint256 clpAmount = amountMinusFee * clpSupply / balance;
+
+        state.pools.store.decrementPoolBalance(amountMinusFee);
+        state.pools.store.burnCLP(user, clpAmount);
+
+        state.pools.store.transferOut(user, amountMinusFee);
+
+        emit events.RemoveLiquidity(user, amount, feeAmount, clpAmount, state.pools.store.poolBalance());
+    }   
+
+    function creditTraderLoss(address user, string memory market, uint256 amount) external onlyTrade {
+        state.pools.store.incrementBufferBalance(amount);
+        state.pools.store.decrementBalance(user, amount);
+
+        uint256 lastPaid = state.pools.store.poolLastPaid();
+        uint256 _now = block.timestamp;
+        uint256 amountToSendPool;
+
+        if (lastPaid == 0) {
+            state.pools.store.setPoolLastPaid(_now);
+        } else {
+            uint256 bufferBalance = state.pools.store.bufferBalance();
+            uint256 bufferPayoutPeriod = state.pools.store.bufferPayoutPeriod();
+
+            amountToSendPool = bufferBalance * (block.timestamp - lastPaid) / bufferPayoutPeriod;
+
+            if (amountToSendPool > bufferBalance) amountToSendPool = bufferBalance;
+
+            state.pools.store.incrementPoolBalance(amountToSendPool);
+            state.pools.store.decrementBufferBalance(amountToSendPool);
+            state.pools.store.setPoolLastPaid(_now);
+        }
+
+        emit events.PoolPayIn(user, market, amount, amountToSendPool, state.pools.store.poolBalance(), state.pools.store.bufferBalance());
+    }
+
+    function debitTraderProfit(address user, string memory market, uint256 amount) external onlyTrade {
+        if (amount == 0) return;
+
+        uint256 bufferBalance = state.pools.store.bufferBalance();
+
+        if (amount > bufferBalance) {
+            uint256 diffToPayFromPool = amount - bufferBalance;
+            uint256 poolBalance = state.pools.store.poolBalance();
+            if(diffToPayFromPool >= poolBalance){
+                revert errors.NotAPoolBalance();
+            } 
+            state.pools.store.decrementBufferBalance(bufferBalance);
+            state.pools.store.decrementPoolBalance(diffToPayFromPool);
+        } else {
+            state.pools.store.decrementBufferBalance(amount);
+        }
+
+        state.pools.store.incrementBalance(user, amount);
+
+        emit events.PoolPayOut(user, market, amount, state.pools.store.poolBalance(), state.pools.store.bufferBalance());
+    }
+
+    function creditFee(address user, string memory market, uint256 fee, bool isLiquidation) external onlyTrade {
+        if (fee == 0) return;
+
+        uint256 poolFee = fee * state.pools.store.poolFeeShare() / constants.BPS_DIVIDER;
+        uint256 treasuryFee = fee - poolFee;
+
+        state.pools.store.incrementPoolBalance(poolFee);
+        state.pools.store.transferOut(state.pools.treasury, treasuryFee);
+
+        emit events.FeePaid(
+            user,
+            market,
+            fee, // paid by user //
+            poolFee,
+            isLiquidation
+            );
+    }
 }
