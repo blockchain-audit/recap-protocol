@@ -15,12 +15,6 @@ library Withdraw {
     using User for State;
 
     function validateWithdraw(State storage state) external view {
-        // if (poolFee == 0) {
-        //     revert Errors.NULL_INPUT();
-        // }
-        // if (msg.value == 0 || amountIn == 0 && tokenIn == address(0)) {
-        //     revert Errors.NULL_INPUT();
-        // }
     }
 
     function executeWithdraw(State storage state, uint256 amount) external {
