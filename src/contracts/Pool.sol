@@ -51,7 +51,7 @@ contract Pool is IPool {
         store.transferIn(user, amount);
 
         uint256 clpSupply = store.getCLPSupply();
-        
+
         uint256 clpAmount = balance == 0 || clpSupply == 0 ? amount : amount * clpSupply / balance;
         //clpAmount=calcClpAmount();
 

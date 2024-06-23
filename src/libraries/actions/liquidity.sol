@@ -4,7 +4,7 @@ pragma solidity ^0.8.13;
 import "../../interfaces/IPool.sol";
 import "../../interfaces/IStore.sol";
 import "../Events.sol";
-import {State} from "./state.sol";
+import "../../storage.sol";
 
 library Liquidity {
     uint256 public constant BPS_DIVIDER = 10000;
@@ -13,7 +13,7 @@ library Liquidity {
 
     function addLiquidity(uint256 amount) external {
         require(amount > 0, "!amount");
-        uint256 balance = State.store.poolBalance();
+        uint256 balance = State.Store.poolBalance();
         address user = msg.sender;
         State.store.transferIn(user, amount);
 
