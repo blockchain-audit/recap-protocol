@@ -4,11 +4,11 @@ import "./CapStorage.sol";
 import "../interfaces/ITrade.sol";
 import {Deposit} from "../libraries/tradeActions/Deposit.sol";
 import {DepositThroughUniswap} from "../libraries/tradeActions/DepositThroughUniswap.sol";
-// import {Withdraw} from "../libraries/tradeActions/Withdraw.sol";
+import {Withdraw} from "../libraries/tradeActions/Withdraw.sol";
 contract Trade is CapStorage{
     using Deposit for State;
     using DepositThroughUniswap for State;
-    // using Withdraw for State;
+    using Withdraw for State;
 
     function deposit(uint256 amount) external{
         state.validateDeposit(amount);
@@ -20,8 +20,8 @@ contract Trade is CapStorage{
             state.executeDepositThroughUniswap(tokenIn,amountIn,amountOutMin,poolFee);
         } 
     function withdraw(uint256 amount) external{
-        // state.validateWithdraw(amount);
-        // state.executeWithdraw(amount);
+        state.validateWithdraw(amount);
+        state.executeWithdraw(amount);
     }
     function cancelOrder(uint256 orderId) external{}
 

@@ -1,15 +1,15 @@
-// pragma solidity ^0.8.24;
+pragma solidity ^0.8.24;
 
-// import "forge-std/console.sol";
+import "forge-std/console.sol";
 
-// import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
-// import {State} from "./../contracts/CapStorage.sol";
+import {State} from "./../contracts/CapStorage.sol";
 
-// import {Errors} from "./Errors.sol";
+import {Errors} from "./Errors.sol";
 
-// import {Events} from "./Events.sol";
-// library Margin {
+import {Events} from "./Events.sol";
+library Margin {
 
 // function lockMargin(address user, uint256 amount) external onlyContract {
 //         lockedMargins[user] += amount;
@@ -27,16 +27,16 @@
 //         }
 //     }
 
-//     function getLockedMargin(address user) external view returns (uint256) {
-//         return lockedMargins[user];
-//     }
+    function getLockedMargin(address user) external view returns (uint256) {
+        return state.userBalances.lockedMargins[user];
+    }
 
-//     function getUsersWithLockedMarginLength() external view returns (uint256) {
-//         return usersWithLockedMargin.length();
-//     }
+    // function getUsersWithLockedMarginLength() external view returns (uint256) {
+    //     return usersWithLockedMargin.length();
+    // }
 
-//     function getUserWithLockedMargin(uint256 i) external view returns (address) {
-//         return usersWithLockedMargin.at(i);
-//     }
+    // function getUserWithLockedMargin(uint256 i) external view returns (address) {
+    //     return usersWithLockedMargin.at(i);
+    // }
     
-//     }
+    }
