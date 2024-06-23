@@ -8,5 +8,6 @@ library Error {
     error UnValidAmount();
     error UnVolidpoolFee();
     error UnValidInput();
-    error Empty();
+    error CantBeEmpty();
+    error NotPoolBalance();
 }
