@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 
 
-library View{
+contract View{
 
 function getBalance(address user) external view returns (uint256) {
         return balances[user];

@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 
 
-library Modifier{
+contract Modifier{
  
  modifier onlyTrade() {
         require(msg.sender == trade, "!trade");
