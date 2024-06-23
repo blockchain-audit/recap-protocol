@@ -16,6 +16,5 @@ contract PoolTest is Test {
     function testAddLiquidity() public {
         uint256 amount = 10;
         pool.addLiquidity(amount);
-        
     }
 }
