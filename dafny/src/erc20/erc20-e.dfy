@@ -1,4 +1,3 @@
-
 include "../util/solidity.dfy"
 
 
@@ -90,4 +89,3 @@ class ERC20 {
     }
 
 }
-
