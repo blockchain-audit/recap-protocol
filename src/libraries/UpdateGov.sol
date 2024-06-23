@@ -1,6 +1,6 @@
 pragma solidity ^0.8.24;
 
-import {State} from "src/contracts/CapStorage.sol";
+import {State} from "src/CapStorage.sol";
 import {Errors} from "./Errors.sol";
 import {Events} from "./Events.sol";
 

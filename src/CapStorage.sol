@@ -114,13 +114,13 @@ struct State {
 
 abstract contract CapStorage {
 
-    using UpdateGov for State;
+   // using UpdateGov for State;
 
     State internal state;
 
     function UpdateGov(address _gov) external {
-        state.validateUpdateGov(_gov);
-        state.executeUpdateGov(_gov);
+       // state.validateUpdateGov(_gov);
+       // state.executeUpdateGov(_gov);
         
     }
 
