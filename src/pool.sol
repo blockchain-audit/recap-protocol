@@ -15,11 +15,11 @@ uint256 constant FUNDING_INTERVAL = 1 hours; // In seconds.
 contract Pool is IPool {
     using Math for uint256;
 
-    address public gov;
-    address public trade;
-    address public treasury;
+    // address public gov;
+    // address public trade;
+    // address public treasury;
 
-    IStore public store;
+    // IStore public store;
 
     // Methods
 
