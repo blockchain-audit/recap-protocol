@@ -2,6 +2,13 @@
 pragma solidity 0.8.24;
 
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
+import "../interfaces/IChainlink.sol";
+import "../interfaces/IPool.sol";
+
+struct Trade {
+    IChainlink chainlink;
+    IPool pool; 
+}
 
 struct Market {
     string symbol;
@@ -118,10 +125,10 @@ abstract contract CapStorage {
 
     State internal state;
 
-    function updateGov(address _gov) public {
-        state.validateUpdateGov(_gov);
-        state.executeUpdateGov(_gov);
-    }
+    // function updateGov(address _gov) public {
+    //     state.validateUpdateGov(_gov);
+    //     state.executeUpdateGov(_gov);
+    // }
 
     // function link(address _pool) public {
     //     state.contractAddresses.pool = _pool;

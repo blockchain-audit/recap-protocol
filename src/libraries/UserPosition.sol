@@ -3,7 +3,7 @@ pragma solidity ^0.8.24;
 
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import "forge-std/console.sol";
-import { State, PositionData } from "../contracts/CapStorage.sol";
+import { State } from "../contracts/CapStorage.sol";
 import { Position } from "../contracts/CapStorage.sol";
 
 library UserPosition {

@@ -2,6 +2,7 @@
 pragma solidity ^0.8.24;
 
 import "./CapStorage.sol";
+import "../interfaces/IPool.sol";
 
 import {AddLiquidity} from "../libraries/actions/pool/AddLiquidity.sol";
 import {AddLiquidityThroughUniswap} from "../libraries/actions/pool/AddLiquidityThroughUniswap.sol";
@@ -10,7 +11,7 @@ import {CreditTraderLoss} from "../libraries/actions/pool/CreditTraderLoss.sol";
 import {DebitTraderProfit} from "../libraries/actions/pool/DebitTraderProfit.sol";
 import {CreditFee} from "../libraries/actions/pool/CreditFee.sol";
 
-contract Pool is CapStorage {
+contract Pool is CapStorage, IPool {
 
     using AddLiquidity for State;
     using AddLiquidityThroughUniswap for State;
@@ -19,7 +20,7 @@ contract Pool is CapStorage {
     using DebitTraderProfit for State;
     using CreditFee for State;
 
-    function addLiquidity(uint256 amount) public payable {
+    function addLiquidity(uint256 amount) public {
         state.validateAddLiquidity(amount);
         state.executeAddLiquidity(amount);
     }
@@ -30,7 +31,7 @@ contract Pool is CapStorage {
         state.executeAddLiquidityThroughUniswap(tokenIn, amountIn, amountOutMin, poolFee);
     }
 
-    function removeLiquidity(uint256 amount) public payable {
+    function removeLiquidity(uint256 amount) public {
         state.validateRemoveLiquidity(amount);
         state.executeRemoveLiquidity(amount);
     }
@@ -50,16 +51,16 @@ contract Pool is CapStorage {
         state.executeCreditFee(user, market, fee, isLiquidation);
     }
 
-    function link(address _pool) public {
-        state.contractAddresses.pool = _pool;
-        // address gov;
-        // address currency;
-        // address clp;
-        // address swapRouter;
-        // address quoter;
-        // address weth;
-        // address trade;
-        // address pool;
-        // address treasury;
-    }
+    // function link(address _pool) public {
+    //     state.contractAddresses.pool = _pool;
+    //     // address gov;
+    //     // address currency;
+    //     // address clp;
+    //     // address swapRouter;
+    //     // address quoter;
+    //     // address weth;
+    //     // address trade;
+    //     // address pool;
+    //     // address treasury;
+    // }
 } 
