@@ -10,7 +10,7 @@ import {CreditTraderLoss} from "../libraries/actions/pool/CreditTraderLoss.sol";
 import {DebitTraderProfit} from "../libraries/actions/pool/DebitTraderProfit.sol";
 import {CreditFee} from "../libraries/actions/pool/CreditFee.sol";
 
-contract Pool is CapStorage{
+contract Pool is CapStorage {
 
     using AddLiquidity for State;
     using AddLiquidityThroughUniswap for State;
