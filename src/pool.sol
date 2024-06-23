@@ -90,6 +90,39 @@ abstract contract Pool is IPool, Storage{
         emit Events.AddLiquidity(user, amountOut, clpAmount, state.pools.store.poolBalance());
     }
 
+     function removeLiquidity(uint256 amount) external {
+        // require(amount > 0, "!amount");
+        if(amount < 0){
+            revert Error.UnValidAmount();
+        }
+
+
+        address user = msg.sender;
+        uint256 balance = state.pools.store.poolBalance();
+        uint256 clpSupply = state.pools.store.getCLPSupply();
+        // require(balance > 0 && clpSupply > 0, "!empty");
+        if(balance < 0 && clpSupply < 0){
+          revert  Error.Empty();
+        }
+        uint256 userBalance = state.pools.store.getUserPoolBalance(user);
+        if (amount > userBalance) amount = userBalance;
+
+        uint256 feeAmount = amount * state.pools.store.poolWithdrawalFee() / Constant.BPS_DIVIDER;
+        uint256 amountMinusFee = amount - feeAmount;
+
+        // CLP amount
+        uint256 clpAmount = amountMinusFee * clpSupply / balance;
+
+        state.pools.store.decrementPoolBalance(amountMinusFee);
+        state.pools.store.burnCLP(user, clpAmount);
+
+        state.pools.store.transferOut(user, amountMinusFee);
+
+        emit Events.RemoveLiquidity(user, amount, feeAmount, clpAmount, state.pools.store.poolBalance());
+    }
+
+    
+
     
 
     
