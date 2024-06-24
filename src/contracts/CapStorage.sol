@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import "../interfaces/IChainlink.sol";
 import "../interfaces/IPool.sol";
 
-struct Trade {
+struct TradeData {
     IChainlink chainlink;
     IPool pool; 
 }

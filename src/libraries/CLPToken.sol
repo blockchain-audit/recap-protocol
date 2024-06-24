@@ -40,4 +40,8 @@ library CLPToken {
     function transferOut(State storage state, address from, uint256 amount) external {
         IERC20(state.contractAddresses.currency).safeTransfer(from, amount);
     }
+
+    function calculateCLPAmount(uint256 amount, uint256 clpSupply, uint256 balance) external pure returns (uint256) {
+        return balance == 0 || clpSupply == 0 ? amount : amount * clpSupply / balance;
+    }
 }

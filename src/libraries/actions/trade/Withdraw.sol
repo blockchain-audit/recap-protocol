@@ -6,7 +6,7 @@ import "forge-std/console.sol";
 import {State} from "../../../contracts/CapStorage.sol";
 
 import {User} from "../../User.sol";
-import {Functions} from "./Functions.sol";
+import {PositionLogic} from "./PositionLogic.sol";
 import {CLPToken} from "../../CLPToken.sol";
 
 import {Errors} from "../../Errors.sol";
@@ -15,7 +15,7 @@ import {Events} from "../../Events.sol";
 library Withdraw {
 
     using User for State;
-    using Functions for State;
+    using PositionLogic for State;
     using CLPToken for State;
 
     function validateWithdraw(State storage state, uint256 amount) external view {

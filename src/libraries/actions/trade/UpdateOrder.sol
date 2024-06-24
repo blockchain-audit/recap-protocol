@@ -3,10 +3,10 @@ pragma solidity ^0.8.24;
 
 import "forge-std/console.sol";
 
-import {State, Order, Market, Trade} from "../../../contracts/CapStorage.sol";
+import {State, Order, Market, TradeData} from "../../../contracts/CapStorage.sol";
 
 import {User} from "../../User.sol";
-import {Functions} from "./Functions.sol";
+import {PositionLogic} from "./PositionLogic.sol";
 import {CLPToken} from "../../CLPToken.sol";
 import {OrderLibrary} from "../../OrderLibrary.sol";
 
@@ -16,7 +16,7 @@ import {Events} from "../../Events.sol";
 library Withdraw {
 
     using User for State;
-    using Functions for State;
+    using PositionLogic for State;
     using CLPToken for State;
     using OrderLibrary for State;
 
@@ -33,7 +33,7 @@ library Withdraw {
         }
 
         Market memory market = state.marketData.markets[order.market];
-        Trade memory trade;
+        TradeData memory trade;
         uint256 chainlinkPrice = trade.chainlink.getPrice(market.feed);
         if (chainlinkPrice <= 0) {
             revert Errors.NULL_CHAINLINK();
@@ -44,7 +44,7 @@ library Withdraw {
         Order memory order = state.orderData.orders[orderId];
 
         Market memory market = state.marketData.markets[order.market];
-        Trade memory trade;
+        TradeData memory trade;
         uint256 chainlinkPrice = trade.chainlink.getPrice(market.feed);
 
         if (

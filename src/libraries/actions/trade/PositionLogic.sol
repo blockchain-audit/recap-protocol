@@ -4,7 +4,7 @@ pragma solidity ^0.8.24;
 import "forge-std/console.sol";
 
 import { State } from "../../../contracts/CapStorage.sol";
-import { Trade, Position, Market } from "../../../contracts/CapStorage.sol";
+import { TradeData, Position, Market } from "../../../contracts/CapStorage.sol";
 
 import "../../../interfaces/IChainlink.sol";
 
@@ -15,7 +15,7 @@ import { UserPosition } from "../../UserPosition.sol";
 import { Errors } from "../../Errors.sol";
 import { Events } from "../../Events.sol";
 
-library Functions {
+library PositionLogic {
 
     using UserPosition for State;
     
@@ -24,7 +24,7 @@ library Functions {
         for (uint256 j = 0; j < positions.length; j++) {
             Position memory position = positions[j];
             Market memory market = state.marketData.markets[position.market];
-            Trade memory trade;
+            TradeData memory trade;
             uint256 chainlinkPrice = trade.chainlink.getPrice(market.feed);
             if (chainlinkPrice == 0) continue;
 
