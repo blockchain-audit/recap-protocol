@@ -8,4 +8,6 @@ library errors {
     error UnvalidAmount();
     error UnvalidPoolfee();
     error UnvalidInput();
+    error CanNotBeEmoty();
+    error NotaPoolBalance();
 }
