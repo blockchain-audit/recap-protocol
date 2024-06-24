@@ -12,9 +12,11 @@ import {UserActions} from "../UserActions.sol";
 
 import {Events} from "../Events.sol";
 
+import "../../interfaces/Icapstorage.sol";
+
 library GetUpl {
-    function getUpl(State storage state,State memory stated,address user) public view returns (int256 upl) {
-        stated.position[] memory positions = store.getUserPositions(user);
+    function getUpl(State storage state,address user) public view returns (int256 upl) {
+        ICapStorage.Position[] memory positions = store.getUserPositions(user);
         for (uint256 j = 0; j < positions.length; j++) {
             IStore.Position memory position = positions[j];
             IStore.Market memory market = store.getMarket(position.market);
