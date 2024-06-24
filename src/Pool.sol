@@ -6,12 +6,23 @@ import "./interfaces/IPool.sol";
 import {Liquidity} from "src/libraries/Liquidity.sol";
 import {CreditTraderLoss} from "src/libraries/CreditTraderLoss.sol";
 import {CreditFee} from "src/libraries/CreditFee.sol";
+import {PoolMethods} from "src/libraries/PoolMethods.sol";
+import {UpdateGov} from "src/libraries/UpdateGov.sol";
+
 
 contract Pool is IPool, CapStorage {
     using Liquidity for State;
     using CreditTraderLoss for State;
     using CreditFee for State;
-
+    using PoolMethods for State;
+    using UpdateGov for State;
+     constructor(address _gov) {
+        state.initialization(_gov);
+    }
+    function updateGov(address newGov) public {
+        state.validateUpdateGov(newGov);
+        state.executeUpdateGov(newGov);
+    }
     function addLiquidity(uint256 amount) public {
         state.validateAddLiquidity(amount);
         state.executeAddLiquidity(amount);
@@ -43,6 +54,7 @@ contract Pool is IPool, CapStorage {
     function debitTraderProfit(address user, string memory market, uint256 amount) external {}
 
     function link(address _trade, address _store, address _treasury) external {}
-
-    function updateGov(address _gov) external {}
+   function getState() external view returns (State memory) {
+        return state;
+    }
 }
