@@ -4,6 +4,14 @@ pragma solidity ^0.8.13;
 import "./interfaces/IStore.sol";
 
 
+contract Chainlink {
+    uint256 public constant UNIT = 10 ** 18;
+    uint256 public constant GRACE_PERIOD_TIME = 3600;
+    AggregatorV3Interface internal sequencerUptimeFeed;
+}
+
+
+
 struct CLP is ERC20 {
     address public store;
 }
@@ -101,6 +109,7 @@ struct Trade is ITrade {
 
 
 struct State {
+Chainlink vhainlink;
 CLP clp;
 Pool pool;
 Store store;
