@@ -1,6 +1,6 @@
 pragma solidity ^0.8.24;
 
-import {State} from "src/CapStorage.sol";
+import {State} from "./../contracts/CapStorage.sol";
 
 library UserBalance {
     function incrementBalance(State storage state, address user, uint256 amount) external {

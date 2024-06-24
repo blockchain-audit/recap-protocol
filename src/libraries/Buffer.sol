@@ -1,6 +1,6 @@
 pragma solidity ^0.8.24;
 
-import {State} from "src/CapStorage.sol";
+import {State} from "./../contracts/CapStorage.sol";
 
 library Buffer {
     function incrementBufferBalance(State storage state, uint256 amount) external {

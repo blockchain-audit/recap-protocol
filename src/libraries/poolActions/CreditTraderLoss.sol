@@ -2,12 +2,12 @@ pragma solidity ^0.8.24;
 
 import "forge-std/console.sol";
 
-import {State} from "src/CapStorage.sol";
-import {PoolMethods} from "./PoolMethods.sol";
-import {UserBalance} from "./UserBalance.sol";
-import {Errors} from "./Errors.sol";
-import {Events} from "./Events.sol";
-import {Buffer} from "./Buffer.sol";
+import {State} from "../../contracts/CapStorage.sol";
+import {PoolMethods} from "../PoolMethods.sol";
+import {UserBalance} from "../UserBalance.sol";
+import {Errors} from "../Errors.sol";
+import {Events} from "../Events.sol";
+import {Buffer} from "../Buffer.sol";
 
 library CreditTraderLoss {
     using Buffer for State;

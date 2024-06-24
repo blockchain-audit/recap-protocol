@@ -3,13 +3,13 @@ pragma solidity ^0.8.24;
 
 import "forge-std/console.sol";
 
-import {State} from "src/CapStorage.sol";
-import {CLPMethods} from "./CLPMethods.sol";
-import {PoolMethods} from "./PoolMethods.sol";
-import {UniswapMethods} from "./UniswapMethods.sol";
-import {Errors} from "./Errors.sol";
-import {Math} from "./Math.sol";
-import {Events} from "./Events.sol";
+import {State} from "../../contracts/CapStorage.sol";
+import {CLPMethods} from "../CLPMethods.sol";
+import {PoolMethods} from "../PoolMethods.sol";
+import {UniswapMethods} from "../UniswapMethods.sol";
+import {Errors} from "../Errors.sol";
+import {Math} from "../Math.sol";
+import {Events} from "../Events.sol";
 
 library Liquidity {
     using CLPMethods for State;
