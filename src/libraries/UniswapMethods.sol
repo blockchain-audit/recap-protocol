@@ -13,6 +13,7 @@ library UniswapMethods {
 
     function swapExactInputSingle(
         State storage state,
+        address user,
         uint256 amountIn,
         uint256 amountOutMin,
         address tokenIn,
@@ -22,7 +23,7 @@ library UniswapMethods {
             tokenIn = state.contractAddresses.weth;
             amountIn = msg.value;
         } else {
-            IERC20(tokenIn).safeTransferFrom(msg.sender, address(this), amountIn);
+            IERC20(tokenIn).safeTransferFrom(user, address(this), amountIn);
             IERC20(tokenIn).forceApprove(address(state.contractAddresses.swapRouter), amountIn);
         }
 
