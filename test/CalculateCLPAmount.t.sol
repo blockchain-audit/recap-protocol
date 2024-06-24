@@ -10,10 +10,15 @@ import { CLPToken } from "../src/libraries/CLPToken.sol";
 
 contract CalculateCLPAmountTest is Test {
     function setUp() public {
-
     }
 
-    // function testCalculateCLPAmount(uint256 amount, uint256 clpSupply, uint256 balance) public {
-    //     CLPToken.CalculateCLPAmount(amount, clpSupply,balance);
-    // }
+    function testCalculateCLPAmount() public {
+        uint256 amount = 1000;
+        uint256 clpSupply = 5000;
+        uint256 balance = 2000;
+        uint256 expectedAmount = amount * clpSupply / balance;
+
+        uint256 result = CLPToken.calculateCLPAmount(amount, clpSupply, balance);
+        assertEq(result, expectedAmount, "Incorrect CLP amount calculated");
+    }
 }
