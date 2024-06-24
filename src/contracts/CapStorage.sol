@@ -114,14 +114,8 @@ struct State {
 }
 
 
-abstract contract CapStorage {
-
-    
+abstract contract CapStorage {    
     
     State internal state;   
 
-    // function updateGov(address sender,address gov) external{
-    //     state.validateUpdateGov(sender,gov);
-    //     state.executeUpdateGov(sender,gov);
-    // }
 }
