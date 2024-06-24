@@ -1,13 +1,10 @@
 pragma solidity ^0.8.24;
 
-<<<<<<< HEAD
-import {State} from "src/contracts/CapStorage.sol";
-=======
 import {State} from "src/CapStorage.sol";
->>>>>>> 97389c2686c0464212163418f9fbabb59f70850f
+
 
 library UserBalance {
-    function incrementBalance( State storage state, address user, uint256 amount) external {
+    function incrementBalance(State storage state, address user, uint256 amount) external {
         state.userBalances.balances[user] += amount;
     }
 
@@ -17,6 +14,6 @@ library UserBalance {
     }
 
     function getBalance(State storage state, address user) external view returns (uint256) {
-        return  state.userBalances.balances[user];
+        return state.userBalances.balances[user];
     }
 }

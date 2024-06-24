@@ -1,19 +1,13 @@
-<<<<<<< HEAD
 
-pragma solidity ^0.8.24;
-
-import {State} from "src/contracts/CapStorage.sol";
-=======
 pragma solidity ^0.8.24;
 
 import {State} from "src/CapStorage.sol";
->>>>>>> 97389c2686c0464212163418f9fbabb59f70850f
+
 import {Errors} from "./Errors.sol";
 import {Events} from "./Events.sol";
 
 library UpdateGov {
-
-    function validateUpdateGov(State storage state, address _gov) external {
+    function validateUpdateGov(State storage state, address _gov) view external {
         if (msg.sender != state.contractAddresses.gov) {
             revert Errors.NOT_GOV();
         }
@@ -21,15 +15,11 @@ library UpdateGov {
             revert Errors.NULL_ADDRESS();
         }
     }
-    function executeUpdateGov(State storage state, address _gov) external {
 
+    function executeUpdateGov(State storage state, address _gov) external {
         address oldGov = state.contractAddresses.gov;
         state.contractAddresses.gov = _gov;
 
         emit Events.GovernanceUpdated(oldGov, _gov);
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 97389c2686c0464212163418f9fbabb59f70850f
