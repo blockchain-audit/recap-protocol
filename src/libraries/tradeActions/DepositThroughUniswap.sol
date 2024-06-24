@@ -19,20 +19,28 @@ library DepositThroughUniswap {
     using CLPMethods for State;
     using UserBalance for State;
     using UniswapMethods for State;
-    
-    function validateDepositThroughUniswap(State storage state, address tokenIn, uint256 amountIn, uint24 poolFee) external {
-        if(poolFee == 0){
+
+    function validateDepositThroughUniswap(State storage state, address tokenIn, uint256 amountIn, uint24 poolFee)
+        external
+    {
+        if (poolFee == 0) {
             revert Errors.NULL_INPUT();
         }
-        if(msg.value == 0 || amountIn == 0 && tokenIn == address(0)){
+        if (msg.value == 0 || amountIn == 0 && tokenIn == address(0)) {
             revert Errors.NULL_INPUT();
         }
-         if (address(state.contractAddresses.swapRouter) == address(0)) {
+        if (address(state.contractAddresses.swapRouter) == address(0)) {
             revert Errors.NULL_ADDRESS();
         }
     }
-    function executeDepositThroughUniswap(State storage state, address tokenIn, uint256 amountIn, uint256 amountOutMin, uint24 poolFee)external {
 
+    function executeDepositThroughUniswap(
+        State storage state,
+        address tokenIn,
+        uint256 amountIn,
+        uint256 amountOutMin,
+        uint24 poolFee
+    ) external {
         address user = msg.sender;
 
         uint256 amountOut = state.swapExactInputSingle(user, amountIn, amountOutMin, tokenIn, poolFee);
@@ -41,5 +49,4 @@ library DepositThroughUniswap {
 
         emit Events.Deposit(user, amountOut);
     }
-    
-    }
+}

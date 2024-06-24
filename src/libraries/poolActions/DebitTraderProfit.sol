@@ -8,16 +8,12 @@ import {PoolMethods} from "../PoolMethods.sol";
 import {Events} from "../Events.sol";
 import {Errors} from "../Errors.sol";
 
-
-
 library DebitTraderProfit {
-
     using Buffer for State;
     using UserBalance for State;
     using PoolMethods for State;
 
-
-    function validateDebitTraderProfit(State storage state, address user, uint256 amount) view external {
+    function validateDebitTraderProfit(State storage state, address user, uint256 amount) external view {
         if (user != state.contractAddresses.trade) {
             revert Errors.NOT_TRADER();
         }
@@ -26,8 +22,9 @@ library DebitTraderProfit {
         }
     }
 
-    function executeDebitTraderProfit(State storage state, address user, string memory market, uint256 amount) external {
-        
+    function executeDebitTraderProfit(State storage state, address user, string memory market, uint256 amount)
+        external
+    {
         uint256 bufferBalance = state.balances.bufferBalance;
 
         if (amount > bufferBalance) {
@@ -36,8 +33,7 @@ library DebitTraderProfit {
             require(diffToPayFromPool < poolBalance, "!pool-balance");
             state.decrementBufferBalance(bufferBalance);
             state.decrementPoolBalance(diffToPayFromPool);
-        } 
-        else {
+        } else {
             state.decrementBufferBalance(amount);
         }
 

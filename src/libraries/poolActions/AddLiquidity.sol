@@ -16,6 +16,7 @@ import {PoolMethods} from "../PoolMethods.sol";
 import {UniswapMethods} from "../UniswapMethods.sol";
 
 import {Math} from "../Math.sol";
+
 library AddLiquidity {
     using CLPMethods for State;
     using PoolMethods for State;
@@ -23,9 +24,7 @@ library AddLiquidity {
     using Math for State;
     using Math for uint256;
 
-    function validateAddLiquidity (
-        uint256 amount
-    ) pure external  {
+    function validateAddLiquidity(uint256 amount) external pure {
         if (amount <= 0) {
             revert Errors.NULL_AMOUNT();
         }
@@ -48,11 +47,6 @@ library AddLiquidity {
 
         state.mintCLP(clpAmount);
 
-        emit Events.AddLiquidity(
-            user,
-            amount,
-            clpAmount,
-            state.balances.poolBalance
-        );
+        emit Events.AddLiquidity(user, amount, clpAmount, state.balances.poolBalance);
     }
 }

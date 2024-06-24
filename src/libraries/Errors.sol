@@ -10,5 +10,4 @@ library Errors {
     error AMOUNT_EXCEEDS_BALANCE();
     error INSUFFICIENT_EQUITY();
     error NOT_GOV();
-
 }
