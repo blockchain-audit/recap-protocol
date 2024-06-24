@@ -18,7 +18,11 @@ library Math {
         return amount - feeAmount;
     }
 
-    function calculateAmountToSendPool(uint256 bufferBalance, uint256 lastPaid, uint256 bufferPayoutPeriod) external view returns (uint256) {
+    function calculateAmountToSendPool(uint256 bufferBalance, uint256 lastPaid, uint256 bufferPayoutPeriod)
+        external
+        view
+        returns (uint256)
+    {
         uint256 amountToSendPool = bufferBalance * (block.timestamp - lastPaid) / bufferPayoutPeriod;
         return amountToSendPool > bufferBalance ? bufferBalance : amountToSendPool;
     }

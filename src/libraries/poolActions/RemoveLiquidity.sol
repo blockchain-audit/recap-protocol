@@ -23,10 +23,7 @@ library RemoveLiquidity {
     using Math for State;
     using Math for uint256;
 
-    function validateRemoveLiquidity(
-        State storage state,
-        uint256 amount
-    ) view external {
+    function validateRemoveLiquidity(State storage state, uint256 amount) external view {
         if (amount <= 0) {
             revert Errors.NULL_AMOUNT();
         }
@@ -34,38 +31,25 @@ library RemoveLiquidity {
             revert Errors.NULL_BALANCE();
         }
     }
-    function executeRemoveLiquidity(
-        State storage state,
-        uint256 amount
-    ) external {
+
+    function executeRemoveLiquidity(State storage state, uint256 amount) external {
         address user = msg.sender;
         uint256 balance = state.balances.poolBalance;
         uint256 clpSupply = state.getCLPSupply();
         uint256 userBalance = state.getUserPoolBalance(user);
         if (amount > userBalance) amount = userBalance;
 
-        uint256 feeAmount = amount.calculateFeeAmount(
-            state.fees.poolWithdrawalFee
-        );
+        uint256 feeAmount = amount.calculateFeeAmount(state.fees.poolWithdrawalFee);
         uint256 amountMinusFee = amount.calculateAmountMinusFee(feeAmount);
 
         // CLP amount
-        uint256 clpAmount = amountMinusFee.calculateCLPAmount(
-            clpSupply,
-            balance
-        );
+        uint256 clpAmount = amountMinusFee.calculateCLPAmount(clpSupply, balance);
 
         state.decrementPoolBalance(amountMinusFee);
         state.burnCLP(clpAmount);
 
         state.transferOut(user, amountMinusFee);
 
-        emit Events.RemoveLiquidity(
-            user,
-            amount,
-            feeAmount,
-            clpAmount,
-            state.balances.poolBalance
-        );
+        emit Events.RemoveLiquidity(user, amount, feeAmount, clpAmount, state.balances.poolBalance);
     }
 }

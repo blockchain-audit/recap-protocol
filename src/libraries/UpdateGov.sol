@@ -5,7 +5,7 @@ import {Errors} from "./Errors.sol";
 import {Events} from "./Events.sol";
 
 library UpdateGov {
-    function validateUpdateGov(State storage state, address _gov) view external {
+    function validateUpdateGov(State storage state, address _gov) external view {
         if (msg.sender != state.contractAddresses.gov) {
             revert Errors.NOT_GOV();
         }

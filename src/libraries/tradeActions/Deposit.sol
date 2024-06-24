@@ -18,12 +18,14 @@ import {Events} from "../Events.sol";
 library Deposit {
     using CLPMethods for State;
     using UserBalance for State;
-    function validateDeposit(uint256 amount) pure external{
-        if (amount == 0 ){
+
+    function validateDeposit(uint256 amount) external pure {
+        if (amount == 0) {
             revert Errors.NULL_AMOUNT();
         }
     }
-    function executeDeposit(State storage state, uint256 amount) external{
+
+    function executeDeposit(State storage state, uint256 amount) external {
         state.transferIn(msg.sender, amount);
         state.incrementBalance(msg.sender, amount);
         emit Events.Deposit(msg.sender, amount);
