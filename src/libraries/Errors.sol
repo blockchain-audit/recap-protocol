@@ -8,4 +8,8 @@ library Errors {
     error NOT_ALLOWED();
     error POOL_BALANCE();
     error NULL_EQUITY();
+    error NOT_USER();
+    error NULL_ORDER();
+    error NULL_MARKET_ORDER();
+    error NULL_CHAINLINK();
 }

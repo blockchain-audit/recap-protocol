@@ -37,11 +37,11 @@ library Withdraw {
             else amount = uint256(maxWithdrawableAmount);
         }
 
-        if (amount > 0) {
+        if (amount <= 0) {
             revert Errors.NULL_INPUT();
         }
 
-        if (int256(lockedMargin) <= int256(balance - amount) + upl) {
+        if (int256(lockedMargin) > int256(balance - amount) + upl) {
             revert Errors.NULL_EQUITY();
         }
     }
