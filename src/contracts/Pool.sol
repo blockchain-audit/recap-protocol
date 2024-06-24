@@ -10,7 +10,7 @@ import {AddLiquidityThroughUniswap} from "../libraries/poolActions/AddLiquidityT
 
 import {CreditTraderLoss} from "../libraries/poolActions/CreditTraderLoss.sol";
 import {CreditFee} from "../libraries/poolActions/CreditFee.sol";
-import {DebitTraderProfit} from "./libraries/DebitTraderProfit.sol";
+import {DebitTraderProfit} from "../libraries/poolActions/DebitTraderProfit.sol";
 
 
 contract Pool is IPool, CapStorage {

@@ -1,12 +1,12 @@
 pragma solidity ^0.8.24;
 
-import {State} from "src/CapStorage.sol";
-import {UserBalance} from "./UserBalance.sol";
-import {Buffer} from "./Buffer.sol";
-import {PoolMethods} from "./PoolMethods.sol";
+import {State} from "../../contracts/CapStorage.sol";
+import {UserBalance} from "../UserBalance.sol";
+import {Buffer} from "../Buffer.sol";
+import {PoolMethods} from "../PoolMethods.sol";
 
-import {Events} from "./Events.sol";
-import {Errors} from "./Errors.sol";
+import {Events} from "../Events.sol";
+import {Errors} from "../Errors.sol";
 
 
 
