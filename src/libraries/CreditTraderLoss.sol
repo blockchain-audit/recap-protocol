@@ -13,7 +13,7 @@ library CreditTraderLoss {
     using PoolMethods for State;
     using UserBalance for State;
 
-     function validateCreditTraderLoss(State storage state, string memory market, uint256 amount) external {
+     function validateCreditTraderLoss(State storage state) view external {
         if(msg.sender != state.contractAddresses.trade) {
             revert Errors.NOT_TRADER();
         }

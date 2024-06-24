@@ -17,7 +17,7 @@ library DebitTraderProfit {
     using PoolMethods for State;
 
 
-    function validateDebitTraderProfit(State storage state, address user, string memory market, uint256 amount) external {
+    function validateDebitTraderProfit(State storage state, address user, uint256 amount) view external {
         if (user != state.contractAddresses.trade) {
             revert Errors.NOT_TRADER();
         }

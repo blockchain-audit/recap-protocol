@@ -20,7 +20,7 @@ library Liquidity {
     using Math for uint256;
 
     
-    function validateAddLiquidity(State storage state, uint256 amount) external view {
+    function validateAddLiquidity(uint256 amount) external pure {
          if(amount == 0) {
             revert Errors.NULL_INPUT();
          }
@@ -32,7 +32,7 @@ library Liquidity {
 
         uint256 balance = state.balances.poolBalance;
         uint256 clpSupply = state.getCLPSupply();
-        uint256 clpAmount = state.calculateCLPAmount(amount, clpSupply, balance);
+        uint256 clpAmount = amount.calculateCLPAmount(clpSupply, balance);
 
         state.incrementPoolBalance(amount);
 
@@ -58,7 +58,7 @@ library Liquidity {
         uint256 amountOut = state.swapExactInputSingle(amountIn, amountOutMin, tokenIn, poolFee);
         uint256 balance = state.balances.poolBalance;
         uint256 clpSupply = state.getCLPSupply();
-        uint256 clpAmount = state.calculateCLPAmount(amountOut, clpSupply, balance);
+        uint256 clpAmount = amountOut.calculateCLPAmount(clpSupply, balance);
 
         state.incrementPoolBalance(amountOut);
         state.mintCLP(clpAmount);
@@ -66,7 +66,7 @@ library Liquidity {
         emit Events.AddLiquidity(user, amountOut, clpAmount, state.balances.poolBalance);
     }
 
-      function validateRemoveLiquidity(State storage  state, uint256 amount) external {
+      function validateRemoveLiquidity(State storage  state, uint256 amount) view external {
         if (amount == 0) {
             revert Errors.NULL_INPUT();
         }
@@ -85,10 +85,10 @@ library Liquidity {
         if (amount > userBalance) {
             amount = userBalance;
         }
-        uint256 feeAmount = state.calculateFeeAmount(amount, state.fees.poolWithdrawalFee);
-        uint256 amountMinusFee = state.calculateAmountMinusFee(amount, feeAmount);
+        uint256 feeAmount = amount.calculateFeeAmount(state.fees.poolWithdrawalFee);
+        uint256 amountMinusFee = amount.calculateAmountMinusFee(feeAmount);
 
-        uint256 clpAmount = state.calculateCLPAmount(amountMinusFee, clpSupply, balance);
+        uint256 clpAmount = amountMinusFee.calculateCLPAmount(clpSupply, balance);
 
         state.decrementPoolBalance(amountMinusFee);
         state.burnCLP(clpAmount);

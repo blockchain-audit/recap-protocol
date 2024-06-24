@@ -7,9 +7,11 @@ import {DepositWithdrawLogic} from "src/libraries/DepositWithdrawLogic.sol";
 
 contract Trade is ITrade, CapStorage {
     using DepositWithdrawLogic for State;
+    using DepositWithdrawLogic for uint256;
+
 
     function deposit(uint256 amount) external {
-        state.validateDeposit(amount);
+        amount.validateDeposit();
         state.executeDeposit(amount);
     }
 

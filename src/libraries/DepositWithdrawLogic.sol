@@ -14,7 +14,7 @@ library DepositWithdrawLogic {
     using UserBalance for State;
 
 
-    function validateDeposit(State storage state, uint256 amount) external {
+    function validateDeposit(uint256 amount) pure external {
         if (amount == 0) {
             revert Errors.NULL_INPUT();
         }

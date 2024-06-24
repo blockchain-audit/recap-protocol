@@ -11,12 +11,13 @@ import {DebitTraderProfit} from "./libraries/debitTraderProfit.sol";
 contract Pool is IPool, CapStorage {
 
     using Liquidity for State;
+    using Liquidity for uint256;
     using CreditTraderLoss for State;
     using CreditFee for State;
     using DebitTraderProfit for State;
 
     function addLiquidity(uint256 amount) public {
-        state.validateAddLiquidity(amount);
+        amount.validateAddLiquidity();
         state.executeAddLiquidity(amount);
     }
 
@@ -35,12 +36,12 @@ contract Pool is IPool, CapStorage {
     }
 
     function creditTraderLoss(string memory market, uint256 amount) external {
-        state.validateCreditTraderLoss(market, amount);
+        state.validateCreditTraderLoss();
         state.executeCreditTraderLoss(market, amount);
     }
 
     function debitTraderProfit(address user, string memory market, uint256 amount) external {
-        state.validateDebitTraderProfit(user, market, amount);
+        state.validateDebitTraderProfit(user, amount);
         state.executeDebitTraderProfit(user, market, amount);        
     }
 
