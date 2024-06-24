@@ -26,7 +26,7 @@ library RemoveLiquidity {
     function validateRemoveLiquidity(
         State storage state,
         uint256 amount
-    ) external {
+    ) view external {
         if (amount <= 0) {
             revert Errors.NULL_AMOUNT();
         }

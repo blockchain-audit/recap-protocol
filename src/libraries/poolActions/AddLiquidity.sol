@@ -23,10 +23,9 @@ library AddLiquidity {
     using Math for State;
     using Math for uint256;
 
-    function validateAddLiquidity(
-        State storage state,
+    function validateAddLiquidity (
         uint256 amount
-    ) external view {
+    ) pure external  {
         if (amount <= 0) {
             revert Errors.NULL_AMOUNT();
         }
