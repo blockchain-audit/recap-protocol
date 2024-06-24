@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@chainlink/contracts": "^0.2.2",
+    "@uniswap/v3-sdk": "^3.13.1",
+    "solc": "^0.8.25"
+  }
+}
