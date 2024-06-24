@@ -1,6 +1,20 @@
+pragma solidity ^0.8.24;
 
+// import {Math} from "@src/libraries/Math.sol";
+import {Math} from "src/libraries/Math.sol";
 
-function test_calculateCLPAmount() public {
+import {Test} from "forge-std/Test.sol";
+
+contract MathTest is Test {
+    function test_calculateAmountMinusFee() public pure{
+        uint256 amount = 100;
+        uint256 feePercentage = 10;
+     
+        uint256 result = Math.calculateAmountMinusFee( amount, feePercentage);
+        assertLt(result, amount, "its not correct");
+    }
+
+    function test_calculateCLPAmount() public pure{
     uint256 amount = 1000;
     uint256 clpSupply = 5000;
     uint256 balance = 2000;
@@ -28,4 +42,5 @@ function test_calculateCLPAmount() public {
     expectedAmount = amount;
     result = Math.calculateCLPAmount(amount, clpSupply, balance);
     assertEq(result, expectedAmount, "Incorrect CLP amount calculated when both balance and CLP supply are zero");
+}
 }

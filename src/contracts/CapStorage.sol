@@ -4,42 +4,7 @@ pragma solidity ^0.8.24;
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 
 import {UpdateGov} from "src/libraries/UpdateGov.sol";
-
-struct Market {
-    string symbol;
-    address feed;
-    uint16 minSettlementTime; // overflows at ~18hrs
-    uint16 maxLeverage; // overflows at 65535
-    uint32 fee; // in bps, overflows at 4.3 billion
-    uint32 fundingFactor; // Yearly funding rate if OI is completely skewed to one side. In bps.
-    uint256 maxOI;
-    uint256 minSize;
-}
-
-struct Order {
-    bool isLong;
-    bool isReduceOnly;
-    uint8 orderType; // 0 = market, 1 = limit, 2 = stop
-    uint72 orderId; // overflows at 4.7 * 10**21
-    address user;
-    string market;
-    uint64 timestamp;
-    uint192 fee;
-    uint256 price;
-    uint256 margin;
-    uint256 size;
-}
-
-struct Position {
-    bool isLong;
-    uint64 timestamp;
-    address user;
-    string market;
-    int256 fundingTracker;
-    uint256 price;
-    uint256 margin;
-    uint256 size;
-}
+import "../interfaces/ICapStorage.sol";
 
 struct ContractAddresses {
     address gov;
@@ -71,20 +36,20 @@ struct Buffer {
 }
 
 struct OrderData {
-    mapping(uint256 => Order) orders;
+    mapping(uint256 => ICapStorge.Order) orders;
     mapping(address => EnumerableSet.UintSet) userOrderIds;
     EnumerableSet.UintSet orderIds;
 }
 
 struct MarketData {
     string[] marketList;
-    mapping(string => Market) markets;
+    mapping(string => ICapStorge.Market) markets;
     mapping(string => uint256) OILong;
     mapping(string => uint256) OIShort;
 }
 
 struct PositionData {
-    mapping(bytes32 => Position) positions;
+    mapping(bytes32 => ICapStorge.Position) positions;
     EnumerableSet.Bytes32Set positionKeys;
     mapping(address => EnumerableSet.Bytes32Set) positionKeysForUser;
 }
@@ -101,9 +66,9 @@ struct FundingData {
 }
 
 struct State {
-    Market market;
-    Order order;
-    Position position;
+    ICapStorge.Market market;
+    ICapStorge.Order order;
+    ICapStorge.Position position;
     ContractAddresses contractAddresses;
     Fees fees;
     Balances balances;
