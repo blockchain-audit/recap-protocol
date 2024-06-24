@@ -26,8 +26,8 @@ library CLPMethods {
         ICLP(state.contractAddresses.clp).burn(msg.sender, amount);
     }
 
-    function transferIn(State storage state, uint256 amount) external {
-        IERC20(state.contractAddresses.currency).safeTransferFrom(msg.sender, state.contractAddresses.pool, amount);
+    function transferIn(State storage state, address user, uint256 amount) external {
+        IERC20(state.contractAddresses.currency).safeTransferFrom(user, state.contractAddresses.pool, amount);
     }
 
     function transferOut(State storage state, address user, uint256 amount) external {

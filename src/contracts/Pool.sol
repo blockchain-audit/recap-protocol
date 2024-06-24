@@ -3,20 +3,26 @@ pragma solidity ^0.8.24;
 
 import "./CapStorage.sol";
 import "../interfaces/IPool.sol";
-import {Liquidity} from "../libraries/poolActions/Liquidity.sol";
+import {RemoveLiquidity} from "../libraries/poolActions/RemoveLiquidity.sol";
+import {AddLiquidity} from "../libraries/poolActions/AddLiquidity.sol";
+import {AddLiquidityThroughUniswap} from "../libraries/poolActions/AddLiquidityThroughUniswap.sol";
+
 import {CreditTraderLoss} from "../libraries/poolActions/CreditTraderLoss.sol";
 import {CreditFee} from "../libraries/poolActions/CreditFee.sol";
 
 contract Pool is IPool, CapStorage {
 
-    using Liquidity for State;
-    using Liquidity for uint256;
+    using RemoveLiquidity for State;
+    using AddLiquidity for State;
+    using AddLiquidityThroughUniswap for State;
+
+    // using Liquidity for uint256;
     using CreditTraderLoss for State;
     using CreditFee for State;
     // using DebitTraderProfit for State;
 
     function addLiquidity(uint256 amount) public {
-        amount.validateAddLiquidity();
+        state.validateAddLiquidity(amount);
         state.executeAddLiquidity(amount);
     }
 
