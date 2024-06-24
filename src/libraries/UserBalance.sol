@@ -3,7 +3,7 @@ pragma solidity ^0.8.24;
 import {State} from "src/CapStorage.sol";
 
 library UserBalance {
-    function incrementBalance( State storage state, address user, uint256 amount) external {
+    function incrementBalance(State storage state, address user, uint256 amount) external {
         state.userBalances.balances[user] += amount;
     }
 
@@ -13,6 +13,6 @@ library UserBalance {
     }
 
     function getBalance(State storage state, address user) external view returns (uint256) {
-        return  state.userBalances.balances[user];
+        return state.userBalances.balances[user];
     }
 }

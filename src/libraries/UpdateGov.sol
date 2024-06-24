@@ -5,7 +5,6 @@ import {Errors} from "./Errors.sol";
 import {Events} from "./Events.sol";
 
 library UpdateGov {
-
     function validateUpdateGov(State storage state, address _gov) external {
         if (msg.sender != state.contractAddresses.gov) {
             revert Errors.NOT_GOV();
@@ -14,8 +13,8 @@ library UpdateGov {
             revert Errors.NULL_ADDRESS();
         }
     }
-    function executeUpdateGov(State storage state, address _gov) external {
 
+    function executeUpdateGov(State storage state, address _gov) external {
         address oldGov = state.contractAddresses.gov;
         state.contractAddresses.gov = _gov;
 

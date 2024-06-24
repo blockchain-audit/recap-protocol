@@ -2,10 +2,11 @@
 pragma solidity ^0.8.24;
 
 interface IPool {
-
     function addLiquidity(uint256 amount) external;
 
-    function addLiquidityThroughUniswap(address tokenIn, uint256 amountIn, uint256 amountOutMin, uint24 poolFee) external payable;
+    function addLiquidityThroughUniswap(address tokenIn, uint256 amountIn, uint256 amountOutMin, uint24 poolFee)
+        external
+        payable;
 
     function creditFee(string memory market, uint256 fee, bool isLiquidation) external;
 

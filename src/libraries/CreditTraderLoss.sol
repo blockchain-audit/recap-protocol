@@ -1,4 +1,5 @@
- pragma solidity ^0.8.24;
+pragma solidity ^0.8.24;
+
 import "forge-std/console.sol";
 
 import {State} from "src/CapStorage.sol";
@@ -7,20 +8,20 @@ import {UserBalance} from "./UserBalance.sol";
 import {Errors} from "./Errors.sol";
 import {Events} from "./Events.sol";
 import {Buffer} from "./Buffer.sol";
-library CreditTraderLoss {
 
+library CreditTraderLoss {
     using Buffer for State;
     using PoolMethods for State;
     using UserBalance for State;
 
-     function validateCreditTraderLoss(State storage state, string memory market, uint256 amount) external {
-        if(msg.sender != state.contractAddresses.trade) {
+    function validateCreditTraderLoss(State storage state, string memory market, uint256 amount) external {
+        if (msg.sender != state.contractAddresses.trade) {
             revert Errors.NOT_TRADER();
         }
-     }
-     function executeCreditTraderLoss(State storage state, string memory market, uint256 amount) external {
+    }
 
-        address user = msg.sender; 
+    function executeCreditTraderLoss(State storage state, string memory market, uint256 amount) external {
+        address user = msg.sender;
 
         state.incrementBufferBalance(amount);
         state.decrementBalance(user, amount);
@@ -46,8 +47,8 @@ library CreditTraderLoss {
             state.setPoolLastPaid(_now);
         }
 
-        emit Events.PoolPayIn(user, market, amount, amountToSendPool, state.balances.poolBalance, state.balances.bufferBalance);
+        emit Events.PoolPayIn(
+            user, market, amount, amountToSendPool, state.balances.poolBalance, state.balances.bufferBalance
+        );
     }
-
- }
- 
+}
