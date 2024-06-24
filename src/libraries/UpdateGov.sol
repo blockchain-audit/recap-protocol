@@ -1,11 +1,11 @@
 pragma solidity ^0.8.24;
 
-import {State} from "src/CapStorage.sol";
+import {State} from "./../contracts/CapStorage.sol";
 import {Errors} from "./Errors.sol";
 import {Events} from "./Events.sol";
 
 library UpdateGov {
-    function validateUpdateGov(State storage state, address _gov) external {
+    function validateUpdateGov(State storage state, address _gov) view external {
         if (msg.sender != state.contractAddresses.gov) {
             revert Errors.NOT_GOV();
         }

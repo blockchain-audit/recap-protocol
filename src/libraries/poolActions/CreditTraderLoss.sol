@@ -2,23 +2,23 @@ pragma solidity ^0.8.24;
 
 import "forge-std/console.sol";
 
-import {State} from "src/CapStorage.sol";
-import {PoolMethods} from "./PoolMethods.sol";
-import {UserBalance} from "./UserBalance.sol";
-import {Errors} from "./Errors.sol";
-import {Events} from "./Events.sol";
-import {Buffer} from "./Buffer.sol";
+import {State} from "../../contracts/CapStorage.sol";
+import {PoolMethods} from "../PoolMethods.sol";
+import {UserBalance} from "../UserBalance.sol";
+import {Errors} from "../Errors.sol";
+import {Events} from "../Events.sol";
+import {Buffer} from "../Buffer.sol";
 
 library CreditTraderLoss {
     using Buffer for State;
     using PoolMethods for State;
     using UserBalance for State;
 
-    function validateCreditTraderLoss(State storage state, string memory market, uint256 amount) external {
-        if (msg.sender != state.contractAddresses.trade) {
+     function validateCreditTraderLoss(State storage state) view external {
+        if(msg.sender != state.contractAddresses.trade) {
             revert Errors.NOT_TRADER();
         }
-    }
+     }
 
     function executeCreditTraderLoss(State storage state, string memory market, uint256 amount) external {
         address user = msg.sender;
