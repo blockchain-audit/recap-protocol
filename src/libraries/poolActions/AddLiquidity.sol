@@ -3,7 +3,7 @@ pragma solidity ^0.8.24;
 
 import "forge-std/console.sol";
 
-import {State} from "../../contracts/CapStorage.sol";
+import {State} from "contracts/CapStorage.sol";
 
 import {Errors} from "../Errors.sol";
 

@@ -3,7 +3,7 @@ pragma solidity ^0.8.24;
 
 import "./CapStorage.sol";
 
-import "../interfaces/IPool.sol";
+import "interfaces/IPool.sol";
 import {RemoveLiquidity} from "../libraries/poolActions/RemoveLiquidity.sol";
 import {AddLiquidity} from "../libraries/poolActions/AddLiquidity.sol";
 import {AddLiquidityThroughUniswap} from "../libraries/poolActions/AddLiquidityThroughUniswap.sol";

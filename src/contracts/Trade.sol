@@ -2,9 +2,9 @@
 pragma solidity ^0.8.24;
 
 import "./CapStorage.sol";
-import "../interfaces/ITrade.sol";
-import {Deposit} from "../libraries/tradeActions/Deposit.sol";
-import {DepositThroughUniswap} from "../libraries/tradeActions/DepositThroughUniswap.sol";
+import "interfaces/ITrade.sol";
+import {Deposit} from "libraries/tradeActions/Deposit.sol";
+import {DepositThroughUniswap} from "libraries/tradeActions/DepositThroughUniswap.sol";
 contract Trade is CapStorage{
     using Deposit for State;
     using Deposit for uint256;

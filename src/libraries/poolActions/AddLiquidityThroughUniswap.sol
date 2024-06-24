@@ -1,11 +1,11 @@
 pragma solidity ^0.8.24;
 
 import "forge-std/console.sol";
-import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import "@openzeppelin-contracts/token/ERC20/utils/SafeERC20.sol";
 
 import {UniswapMethods} from "../UniswapMethods.sol";
 
-import {State} from "../../contracts/CapStorage.sol";
+import {State} from "contracts/CapStorage.sol";
 
 import {CLPMethods} from "../CLPMethods.sol";
 

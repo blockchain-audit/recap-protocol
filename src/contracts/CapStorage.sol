@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
+import "@openzeppelin-contracts/utils/structs/EnumerableSet.sol";
 
-import {UpdateGov} from "src/libraries/UpdateGov.sol";
+import {UpdateGov} from "libraries/UpdateGov.sol";
 
 struct Market {
     string symbol;
