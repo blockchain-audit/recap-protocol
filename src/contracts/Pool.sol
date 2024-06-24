@@ -2,6 +2,7 @@
 pragma solidity ^0.8.24;
 
 import "./CapStorage.sol";
+
 import "../interfaces/IPool.sol";
 import {RemoveLiquidity} from "../libraries/poolActions/RemoveLiquidity.sol";
 import {AddLiquidity} from "../libraries/poolActions/AddLiquidity.sol";
@@ -9,6 +10,8 @@ import {AddLiquidityThroughUniswap} from "../libraries/poolActions/AddLiquidityT
 
 import {CreditTraderLoss} from "../libraries/poolActions/CreditTraderLoss.sol";
 import {CreditFee} from "../libraries/poolActions/CreditFee.sol";
+import {DebitTraderProfit} from "./libraries/DebitTraderProfit.sol";
+
 
 contract Pool is IPool, CapStorage {
 
@@ -19,7 +22,7 @@ contract Pool is IPool, CapStorage {
     // using Liquidity for uint256;
     using CreditTraderLoss for State;
     using CreditFee for State;
-    // using DebitTraderProfit for State;
+    using DebitTraderProfit for State;
 
     function addLiquidity(uint256 amount) public {
         state.validateAddLiquidity(amount);
@@ -46,8 +49,8 @@ contract Pool is IPool, CapStorage {
     }
 
     function debitTraderProfit(address user, string memory market, uint256 amount) external {
-        // state.validateDebitTraderProfit(user, amount);
-        // state.executeDebitTraderProfit(user, market, amount);        
+        state.validateDebitTraderProfit(user, amount);
+        state.executeDebitTraderProfit(user, market, amount);        
     }
 
     function link(address _trade, address _store, address _treasury) external {}
