@@ -12,6 +12,6 @@ contract MathTest is Test {
         uint256 feePercentage = 10;
      
         uint256 result = Math.calculateAmountMinusFee( amount, feePercentage);
-        assertGt(result, amount, "its not correct");
+        assertLt(result, amount, "its not correct");
     }
 }
