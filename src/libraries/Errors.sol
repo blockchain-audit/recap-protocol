@@ -7,4 +7,5 @@ library Errors {
     error NULL_BALANCE();
     error NOT_ALLOWED();
     error POOL_BALANCE();
+    error NULL_EQUITY();
 }

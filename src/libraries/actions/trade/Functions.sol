@@ -15,7 +15,7 @@ import { UserPosition } from "../../UserPosition.sol";
 import { Errors } from "../../Errors.sol";
 import { Events } from "../../Events.sol";
 
-library Upl {
+library Functions {
 
     using UserPosition for State;
     
@@ -24,12 +24,12 @@ library Upl {
         for (uint256 j = 0; j < positions.length; j++) {
             Position memory position = positions[j];
             Market memory market = state.marketData.markets[position.market];
-            Trade.chainlink = IChainlink(address(1));
-            uint256 chainlinkPrice = Trade.chainlink.getPrice(market.feed);
+            Trade memory trade;
+            uint256 chainlinkPrice = trade.chainlink.getPrice(market.feed);
             if (chainlinkPrice == 0) continue;
 
             (int256 pnl,) = _getPnL(
-                position.market, position.isLong, chainlinkPrice, position.price, position.size, position.fundingTracker
+                state, position.market, position.isLong, chainlinkPrice, position.price, position.size, position.fundingTracker
             );
 
             upl += pnl;

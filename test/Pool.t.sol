@@ -10,7 +10,7 @@ contract PoolTest is Test {
 
     function setUp() public {
         pool = new Pool();
-        pool.link(address(pool));
+        // pool.link(address(pool));
         vm.deal(address(this), 1000000000000);
     }
 
