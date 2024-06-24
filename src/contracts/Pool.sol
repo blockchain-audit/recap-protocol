@@ -2,11 +2,10 @@
 pragma solidity ^0.8.24;
 
 import "./CapStorage.sol";
-import "./interfaces/IPool.sol";
-import {Liquidity} from "src/libraries/Liquidity.sol";
-import {CreditTraderLoss} from "src/libraries/CreditTraderLoss.sol";
-import {CreditFee} from "src/libraries/CreditFee.sol";
-// import {DebitTraderProfit} from "./libraries/debitTraderProfit.sol";
+import "../interfaces/IPool.sol";
+import {Liquidity} from "../libraries/poolActions/Liquidity.sol";
+import {CreditTraderLoss} from "../libraries/poolActions/CreditTraderLoss.sol";
+import {CreditFee} from "../libraries/poolActions/CreditFee.sol";
 
 contract Pool is IPool, CapStorage {
 

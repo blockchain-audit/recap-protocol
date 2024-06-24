@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
-import {State} from "src/CapStorage.sol";
+
+import {State} from "./../contracts/CapStorage.sol";
+
 library Math {
     uint256 public constant BPS_DIVIDER = 10000;
 

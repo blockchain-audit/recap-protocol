@@ -1,11 +1,11 @@
 pragma solidity ^0.8.24;
 
-import {State} from "src/CapStorage.sol";
-import {Events} from "./Events.sol";
-import {Errors} from "./Errors.sol";
-import {PoolMethods} from "./PoolMethods.sol";
-import {CLPMethods} from "./CLPMethods.sol";
-import {Constants} from "./Constants.sol";
+import {State} from "../../contracts/CapStorage.sol";
+import {Events} from "../Events.sol";
+import {Errors} from "../Errors.sol";
+import {PoolMethods} from "../PoolMethods.sol";
+import {CLPMethods} from "../CLPMethods.sol";
+import {Constants} from "../Constants.sol";
 
 library CreditFee {
     using PoolMethods for State;
