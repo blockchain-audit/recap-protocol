@@ -27,7 +27,7 @@ library Margin {
 //         }
 //     }
 
-    function getLockedMargin(address user) external view returns (uint256) {
+    function getLockedMargin(State storage state, address user) external view returns (uint256) {
         return state.userBalances.lockedMargins[user];
     }
 
