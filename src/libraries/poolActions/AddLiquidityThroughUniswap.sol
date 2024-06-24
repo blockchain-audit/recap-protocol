@@ -36,6 +36,10 @@ library AddLiquidityThroughUniswap {
         if (msg.value <= 0 || (amountIn < 0 && tokenIn == address(0))) {
             revert Errors.NULL_INPUT();
         }
+        if (address(state.contractAddresses.swapRouter) == address(0)) {
+            revert Errors.NULL_ADDRESS();
+        }
+
     }
 
     function executeAddLiquidityThroughUniswap(

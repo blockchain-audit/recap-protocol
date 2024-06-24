@@ -16,13 +16,13 @@ contract Pool is IPool, CapStorage {
     using AddLiquidity for State;
     using AddLiquidityThroughUniswap for State;
 
-    // using Liquidity for uint256;
+    using AddLiquidity for uint256;
     using CreditTraderLoss for State;
     using CreditFee for State;
     // using DebitTraderProfit for State;
 
     function addLiquidity(uint256 amount) public {
-        state.validateAddLiquidity(amount);
+        amount.validateAddLiquidity();
         state.executeAddLiquidity(amount);
     }
 
