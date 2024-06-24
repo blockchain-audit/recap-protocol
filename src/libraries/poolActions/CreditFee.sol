@@ -11,7 +11,7 @@ library CreditFee {
     using PoolMethods for State;
     using CLPMethods for State;
 
-    function validateCreditFee(State storage state, uint256 fee) view external {
+    function validateCreditFee(State storage state, uint256 fee) external view {
         if (msg.sender != state.contractAddresses.trade) {
             revert Errors.NOT_TRADER();
         }

@@ -18,11 +18,11 @@ library Liquidity {
     using Math for State;
     using Math for uint256;
 
-   function validateAddLiquidity(uint256 amount) external pure {
-         if(amount == 0) {
+    function validateAddLiquidity(uint256 amount) external pure {
+        if (amount == 0) {
             revert Errors.NULL_INPUT();
-         }
-     }
+        }
+    }
 
     function executeAddLiquidity(State storage state, uint256 amount) external {
         address user = msg.sender;
@@ -74,7 +74,7 @@ library Liquidity {
         emit Events.AddLiquidity(user, amountOut, clpAmount, state.balances.poolBalance);
     }
 
-    function validateRemoveLiquidity(State storage state, uint256 amount) view external {
+    function validateRemoveLiquidity(State storage state, uint256 amount) external view {
         if (amount == 0) {
             revert Errors.NULL_INPUT();
         }
