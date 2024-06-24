@@ -3,17 +3,17 @@ pragma solidity ^0.8.24;
 
 import "forge-std/console.sol";
 
-import { State } from "../../../contracts/CapStorage.sol";
-import { TradeData, Position, Market } from "../../../contracts/CapStorage.sol";
+import { State } from "../contracts/CapStorage.sol";
+import { TradeData, Position, Market } from "../contracts/CapStorage.sol";
 
-import "../../../interfaces/IChainlink.sol";
+import "../interfaces/IChainlink.sol";
 
-import { Constants } from "../../Constants.sol";
+import { Constants } from "./Constants.sol";
 
-import { UserPosition } from "../../UserPosition.sol";
+import { UserPosition } from "./UserPosition.sol";
 
-import { Errors } from "../../Errors.sol";
-import { Events } from "../../Events.sol";
+import { Errors } from "./Errors.sol";
+import { Events } from "./Events.sol";
 
 library PositionLogic {
 

@@ -6,7 +6,7 @@ import "forge-std/console.sol";
 import {State, Order, Market, TradeData} from "../../../contracts/CapStorage.sol";
 
 import {User} from "../../User.sol";
-import {PositionLogic} from "./PositionLogic.sol";
+import {PositionLogic} from "../../PositionLogic.sol";
 import {CLPToken} from "../../CLPToken.sol";
 import {OrderLibrary} from "../../OrderLibrary.sol";
 

@@ -117,7 +117,7 @@ struct State {
     FundingData fundingData;
 }
 
-import {UpdateGov} from "../libraries/actions/UpdateGov.sol";
+import {UpdateGov} from "../libraries/UpdateGov.sol";
 
 abstract contract CapStorage {
 

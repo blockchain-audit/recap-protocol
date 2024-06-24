@@ -7,7 +7,7 @@ import {State} from "../../../contracts/CapStorage.sol";
 
 import {CLPToken} from "../../CLPToken.sol";
 import {Pool} from "../../Pool.sol";
-import {SwapMethods} from "../SwapMethods.sol";
+import {SwapMethods} from "../../SwapMethods.sol";
 
 import {Errors} from "../../Errors.sol";
 import {Events} from "../../Events.sol";

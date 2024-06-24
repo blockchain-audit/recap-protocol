@@ -6,7 +6,7 @@ import "forge-std/console.sol";
 import {State} from "../../../contracts/CapStorage.sol";
 
 import {User} from "../../User.sol";
-import {PositionLogic} from "./PositionLogic.sol";
+import {PositionLogic} from "../../PositionLogic.sol";
 import {CLPToken} from "../../CLPToken.sol";
 
 import {Errors} from "../../Errors.sol";

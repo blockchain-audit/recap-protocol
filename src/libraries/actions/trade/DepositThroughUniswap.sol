@@ -6,7 +6,7 @@ import "forge-std/console.sol";
 import {State} from "../../../contracts/CapStorage.sol";
 
 import {User} from "../../User.sol";
-import {SwapMethods} from "../SwapMethods.sol";
+import {SwapMethods} from "../../SwapMethods.sol";
 
 import {Errors} from "../../Errors.sol";
 import {Events} from "../../Events.sol";
