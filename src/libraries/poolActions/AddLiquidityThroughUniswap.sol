@@ -17,7 +17,6 @@ import {Events} from "../Events.sol";
 
 import {Math} from "../Math.sol";
 
-
 library AddLiquidityThroughUniswap {
     using CLPMethods for State;
     using PoolMethods for State;
@@ -25,22 +24,37 @@ library AddLiquidityThroughUniswap {
     using Math for State;
     using Math for uint256;
 
-    function validateAddLiquidityThroughUniswap(State storage state, address tokenIn, uint256 amountIn, uint24 poolFee) external view 
-    {
+    function validateAddLiquidityThroughUniswap(
+        State storage state,
+        address tokenIn,
+        uint256 amountIn,
+        uint24 poolFee
+    ) external view {
         if (poolFee <= 0) {
             revert Errors.NULL_INPUT();
         }
-        if (msg.value <= 0 || amountIn < 0 && tokenIn == address(0)){
+        if (msg.value <= 0 || (amountIn < 0 && tokenIn == address(0))) {
             revert Errors.NULL_INPUT();
         }
     }
 
-    function executeAddLiquidityThroughUniswap(State storage state, address tokenIn, uint256 amountIn, uint256 amountOutMin, uint24 poolFee) external 
-    {
+    function executeAddLiquidityThroughUniswap(
+        State storage state,
+        address tokenIn,
+        uint256 amountIn,
+        uint256 amountOutMin,
+        uint24 poolFee
+    ) external {
         address user = msg.sender;
 
         // executes swap, tokens will be deposited to store contract
-        uint256 amountOut = state.swapExactInputSingle(user, amountIn, amountOutMin, tokenIn, poolFee);
+        uint256 amountOut = state.swapExactInputSingle(
+            user,
+            amountIn,
+            amountOutMin,
+            tokenIn,
+            poolFee
+        );
 
         // add store supported liquidity
         uint256 balance = state.balances.poolBalance;
@@ -49,6 +63,11 @@ library AddLiquidityThroughUniswap {
         state.incrementPoolBalance(amountOut);
         state.mintCLP(clpAmount);
 
-        emit Events.AddLiquidity(user, amountOut, clpAmount, state.balances.poolBalance);
+        emit Events.AddLiquidity(
+            user,
+            amountOut,
+            clpAmount,
+            state.balances.poolBalance
+        );
     }
 }

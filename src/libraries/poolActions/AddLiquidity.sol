@@ -23,7 +23,10 @@ library AddLiquidity {
     using Math for State;
     using Math for uint256;
 
-    function validateAddLiquidity(State storage state, uint256 amount) external view {
+    function validateAddLiquidity(
+        State storage state,
+        uint256 amount
+    ) external view {
         if (amount <= 0) {
             revert Errors.NULL_AMOUNT();
         }
@@ -34,21 +37,23 @@ library AddLiquidity {
 
         uint256 balance = state.balances.poolBalance;
 
-        state.transferIn(user,amount);
+        state.transferIn(user, amount);
 
         uint256 clpSupply = state.getCLPSupply();
 
         uint256 clpAmount = amount.calculateCLPAmount(clpSupply, balance);
 
-
         // uint256 clpAmount = balance == 0 || clpSupply == 0 ? amount : amount * clpSupply / balance;
 
         state.incrementPoolBalance(amount);
-        
+
         state.mintCLP(clpAmount);
 
-        emit Events.AddLiquidity(user, amount, clpAmount, state.balances.poolBalance);
+        emit Events.AddLiquidity(
+            user,
+            amount,
+            clpAmount,
+            state.balances.poolBalance
+        );
     }
 }
-
-    
