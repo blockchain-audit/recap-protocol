@@ -9,6 +9,8 @@ library Errors {
     error NOT_TRADER();
     error AMOUNT_EXCEEDS_BALANCE();
     error INSUFFICIENT_EQUITY();
+    error NOT_GOV();
+
 
 
 }

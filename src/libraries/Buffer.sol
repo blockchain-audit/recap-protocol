@@ -18,5 +18,4 @@ library Buffer {
     function decrementBufferBalance(State storage state, uint256 amount) external {
         state.balances.bufferBalance -= amount;
     }
-
 }
